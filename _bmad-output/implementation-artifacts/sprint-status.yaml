@@ -1,0 +1,110 @@
+# generated: 2026-02-08
+# project: auto
+# project_key: NOKEY
+# tracking_system: file-system
+# story_location: _bmad-output/implementation-artifacts
+
+# STATUS DEFINITIONS:
+# ==================
+# Epic Status:
+#   - backlog: Epic not yet started
+#   - in-progress: Epic actively being worked on
+#   - done: All stories in epic completed
+#
+# Epic Status Transitions:
+#   - backlog -> in-progress: Automatically when first story is created (via create-story)
+#   - in-progress -> done: Manually when all stories reach 'done' status
+#
+# Story Status:
+#   - backlog: Story only exists in epic file
+#   - ready-for-dev: Story file created in stories folder
+#   - in-progress: Developer actively working on implementation
+#   - review: Ready for code review (via Dev's code-review workflow)
+#   - done: Story completed
+#
+# Retrospective Status:
+#   - optional: Can be completed but not required
+#   - done: Retrospective has been completed
+#
+# WORKFLOW NOTES:
+# ===============
+# - Epic transitions to 'in-progress' automatically when first story is created
+# - Stories can be worked in parallel if team capacity allows
+# - SM typically creates next story after previous one is 'done' to incorporate learnings
+# - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
+
+generated: 2026-02-08
+project: auto
+project_key: NOKEY
+tracking_system: file-system
+story_location: _bmad-output/implementation-artifacts
+
+development_status:
+  # Epic 1: Authentification & Gestion des Comptes (7 stories)
+  epic-1: in-progress
+  1-1-project-bootstrap: done
+  1-2-user-registration: done
+  1-3-consent-rgpd: done
+  1-4-authentication: in-progress
+  1-5-rbac: ready-for-dev
+  1-6-user-profile: ready-for-dev
+  1-7-anonymization-export: ready-for-dev
+  epic-1-retrospective: optional
+
+  # Epic 2: Configuration Zero-Hardcode & Administration (8 stories)
+  epic-2: in-progress
+  2-1-config-engine: ready-for-dev
+  2-2-platform-config-ui: ready-for-dev
+  2-3-api-provider-management: ready-for-dev
+  2-4-admin-dashboard-kpis: ready-for-dev
+  2-5-configurable-alerts: ready-for-dev
+  2-6-seo-templates: ready-for-dev
+  2-7-legal-texts: ready-for-dev
+  2-8-audit-trail: ready-for-dev
+  epic-2-retrospective: optional
+
+  # Epic 3: Creation d'Annonces Certifiees, Publication & Paiement (11 stories)
+  epic-3: in-progress
+  3-1-adapter-pattern: ready-for-dev
+  3-2-vehicle-autofill: ready-for-dev
+  3-3-listing-form-declared-fields: ready-for-dev
+  3-4-photo-management: ready-for-dev
+  3-5-visibility-score: ready-for-dev
+  3-6-draft-management: ready-for-dev
+  3-7-declaration-of-honor: ready-for-dev
+  3-8-vehicle-history-report: ready-for-dev
+  3-9-batch-publication-payment: ready-for-dev
+  3-10-listing-lifecycle: ready-for-dev
+  3-11-api-resilience: ready-for-dev
+  epic-3-retrospective: optional
+
+  # Epic 4: Marketplace, Recherche & Decouverte (5 stories)
+  epic-4: in-progress
+  4-1-public-listing-cards: ready-for-dev
+  4-2-multi-criteria-search: ready-for-dev
+  4-3-certification-market-price-filters: ready-for-dev
+  4-4-favorites-watchlist: ready-for-dev
+  4-5-seo-pages-structured-data: ready-for-dev
+  epic-4-retrospective: optional
+
+  # Epic 5: Communication Temps Reel & Notifications (2 stories)
+  epic-5: in-progress
+  5-1-realtime-chat: ready-for-dev
+  5-2-notifications-push: ready-for-dev
+  epic-5-retrospective: optional
+
+  # Epic 6: Cockpit Vendeur & Intelligence Marche (4 stories)
+  epic-6: in-progress
+  6-1-seller-dashboard-kpis: ready-for-dev
+  6-2-market-price-positioning: ready-for-dev
+  6-3-market-watch: ready-for-dev
+  6-4-empty-state-onboarding: ready-for-dev
+  epic-6-retrospective: optional
+
+  # Epic 7: Moderation & Qualite du Contenu (4 stories)
+  epic-7: in-progress
+  7-1-abuse-reporting: ready-for-dev
+  7-2-moderation-cockpit: ready-for-dev
+  7-3-moderation-actions: ready-for-dev
+  7-4-seller-history: ready-for-dev
+  epic-7-retrospective: optional

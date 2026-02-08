@@ -1,0 +1,112 @@
+Functional Specification – Auto & Motorcycle Classifieds Platform
+1. Project Objective
+
+Build a car and motorcycle classifieds platform focused on transparency, trust, and mandatory disclosure, with the goal of reducing hidden defects and overpriced listings.
+
+2. Scope
+
+Cars
+
+Motorcycles
+
+Listings published by:
+
+Private sellers
+
+Professional sellers
+
+3. Listing Creation
+
+A listing cannot be published unless all required information is provided.
+
+General Information
+
+Brand / Manufacturer
+
+Model
+
+Year of manufacture
+
+Mileage
+
+Fuel type
+
+Transmission
+
+Asking price
+
+Location
+
+Mandatory Transparency Requirements
+
+Declared technical inspection (date + result)
+
+Upload of the official technical inspection report
+
+Signed declaration of honor stating that no known hidden defects exist
+
+4. Market Price Comparison
+
+The platform automatically compares the asking price with an estimated market price.
+
+A visual indicator is displayed:
+
+Below market price
+
+Market-aligned
+
+Above market price
+
+5. CarVertical Report
+
+A CarVertical report is mandatory for every listing.
+
+Integrated cost: €4
+
+Report displayed directly within the listing
+
+Included data:
+
+Mileage history
+
+Accident records
+
+Theft history
+
+Country of origin
+
+Ownership history
+
+6. Buyer Experience
+
+Advanced filters (budget, valid technical inspection, below market price, etc.)
+
+Trust score based on declared data and third-party reports
+
+7. Business Model
+
+Fixed cost per listing: €15
+
+Breakdown:
+
+€4: CarVertical report
+
+€11: Listing publication, automated checks, and moderation
+
+No free listings are allowed.
+
+8. Moderation
+
+Automatic rejection if the technical inspection is missing
+
+User reporting system
+
+Suspension of fraudulent sellers
+
+9. Future Enhancements
+
+Identity verification
+
+Seller ratings and reviews
+
+Integrated insurance and financing options

@@ -1,0 +1,12 @@
+# Ignore sub-repos (they have their own git repos)
+auto-frontend/
+auto-backend/
+auto-shared/
+
+# System files
+nul
+.DS_Store
+Thumbs.db
+
+# Node
+node_modules/

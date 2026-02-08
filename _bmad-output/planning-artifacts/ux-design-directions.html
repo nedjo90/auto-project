@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>auto — Design Directions Showcase</title>
+<style>
+  :root {
+    --certified: #30A46C;
+    --certified-subtle: #ECFDF5;
+    --declared: #F59E0B;
+    --declared-subtle: #FFFBEB;
+    --primary: #3B82F6;
+    --primary-light: #60A5FA;
+    --background: #FCFCFC;
+    --foreground: #0F172A;
+    --card: #FFFFFF;
+    --muted: #64748B;
+    --border: #E2E8F0;
+    --secondary-bg: #F1F5F9;
+    --destructive: #EF4444;
+    --success: #22C55E;
+    --market-above: #F97316;
+    --ring: #3B82F6;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #0F172A;
+    color: #F8FAFC;
+    line-height: 1.5;
+  }
+
+  /* === NAVIGATION === */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding: 12px 24px;
+    display: flex; align-items: center; gap: 16px;
+    overflow-x: auto;
+  }
+  .nav-title {
+    font-size: 14px; font-weight: 700; color: var(--primary-light);
+    white-space: nowrap; margin-right: 8px;
+  }
+  .nav-btn {
+    padding: 6px 14px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.15);
+    background: transparent; color: #94A3B8; cursor: pointer;
+    font-size: 12px; font-weight: 500; white-space: nowrap;
+    transition: all 0.2s;
+  }
+  .nav-btn:hover, .nav-btn.active {
+    background: var(--primary); color: white; border-color: var(--primary);
+  }
+
+  /* === SECTIONS === */
+  .section {
+    display: none; min-height: 100vh; padding: 80px 24px 48px;
+  }
+  .section.active { display: block; }
+  .section-header {
+    max-width: 1200px; margin: 0 auto 48px;
+  }
+  .section-header h1 {
+    font-size: 32px; font-weight: 700; margin-bottom: 8px;
+  }
+  .section-header p {
+    font-size: 16px; color: #94A3B8; max-width: 640px;
+  }
+  .section-header .badge {
+    display: inline-block; padding: 4px 10px; border-radius: 4px;
+    font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;
+    margin-bottom: 12px;
+  }
+  .badge-recommended { background: var(--certified); color: white; }
+  .badge-explored { background: rgba(255,255,255,0.1); color: #94A3B8; }
+
+  /* === MOCKUP CONTAINERS === */
+  .mockup-grid {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; gap: 32px;
+  }
+  .mockup-grid.cols-2 { grid-template-columns: 1fr 1fr; }
+  .mockup-grid.cols-1 { grid-template-columns: 1fr; }
+
+  @media (max-width: 900px) {
+    .mockup-grid.cols-2 { grid-template-columns: 1fr; }
+  }
+
+  .mockup {
+    background: var(--card); border-radius: 12px; overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+  }
+  .mockup-label {
+    padding: 12px 16px; background: var(--foreground);
+    font-size: 13px; font-weight: 600; color: #94A3B8;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .mockup-label .tag {
+    font-size: 10px; padding: 2px 8px; border-radius: 3px;
+    background: var(--certified); color: white; font-weight: 700;
+  }
+  .mockup-content {
+    color: var(--foreground); background: var(--background);
+  }
+
+  /* === DIRECTION A: AÉRÉ === */
+  .airy .listing-card {
+    display: flex; flex-direction: column; padding: 24px; gap: 20px;
+  }
+  .airy .card-photo {
+    width: 100%; aspect-ratio: 16/10; background: linear-gradient(135deg, #E2E8F0, #CBD5E1);
+    border-radius: 10px; position: relative; overflow: hidden;
+  }
+  .airy .card-photo::after {
+    content: '📸 Peugeot 3008'; position: absolute; bottom: 12px; left: 12px;
+    background: rgba(0,0,0,0.6); color: white; padding: 4px 10px; border-radius: 6px;
+    font-size: 11px;
+  }
+  .airy .card-info { display: flex; flex-direction: column; gap: 8px; }
+  .airy .card-title { font-size: 18px; font-weight: 600; color: var(--foreground); }
+  .airy .card-price { font-size: 24px; font-weight: 700; color: var(--foreground); }
+  .airy .card-meta { font-size: 13px; color: var(--muted); display: flex; gap: 16px; }
+  .airy .card-cert {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 11px; color: var(--certified); font-weight: 500;
+    background: var(--certified-subtle); padding: 4px 8px; border-radius: 4px;
+  }
+
+  /* === DIRECTION B: CERTIFICATION FORWARD === */
+  .cert-forward .listing-card {
+    display: grid; grid-template-columns: 140px 1fr; gap: 0;
+  }
+  .cert-forward .card-photo {
+    width: 140px; height: 100%; min-height: 160px;
+    background: linear-gradient(135deg, #E2E8F0, #CBD5E1);
+  }
+  .cert-forward .card-body { padding: 16px; display: flex; flex-direction: column; gap: 8px; }
+  .cert-forward .cert-banner {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--certified-subtle); border: 1px solid var(--certified);
+    padding: 6px 10px; border-radius: 6px; font-size: 12px; font-weight: 600;
+    color: var(--certified);
+  }
+  .cert-forward .cert-banner .shield { font-size: 14px; }
+  .cert-forward .card-title { font-size: 15px; font-weight: 600; color: var(--foreground); }
+  .cert-forward .card-price { font-size: 20px; font-weight: 700; color: var(--foreground); }
+  .cert-forward .card-specs {
+    display: flex; gap: 8px; flex-wrap: wrap;
+  }
+  .cert-forward .spec {
+    display: inline-flex; align-items: center; gap: 3px;
+    font-size: 11px; padding: 3px 7px; border-radius: 4px;
+    background: var(--secondary-bg); color: var(--foreground);
+  }
+  .cert-forward .spec.certified { background: var(--certified-subtle); color: var(--certified); }
+  .cert-forward .spec.certified::before { content: '🛡️'; font-size: 9px; }
+  .cert-forward .spec.declared { background: var(--declared-subtle); color: #92400E; }
+  .cert-forward .spec.declared::before { content: '✏️'; font-size: 9px; }
+
+  /* === DIRECTION C: MAGAZINE === */
+  .magazine .listing-card {
+    display: flex; flex-direction: column;
+  }
+  .magazine .card-photo {
+    width: 100%; aspect-ratio: 16/9;
+    background: linear-gradient(135deg, #334155, #1E293B);
+    position: relative;
+  }
+  .magazine .card-photo .overlay {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: linear-gradient(transparent, rgba(0,0,0,0.7));
+    padding: 24px 20px 16px; color: white;
+  }
+  .magazine .card-photo .overlay h3 {
+    font-family: 'Georgia', serif; font-size: 20px; font-weight: 700; margin-bottom: 4px;
+  }
+  .magazine .card-photo .overlay .price {
+    font-size: 22px; font-weight: 700;
+  }
+  .magazine .card-bottom {
+    padding: 12px 20px; display: flex; justify-content: space-between; align-items: center;
+    background: white;
+  }
+  .magazine .card-bottom .meta { font-size: 12px; color: var(--muted); }
+  .magazine .cert-label {
+    font-size: 11px; font-weight: 600; padding: 4px 10px;
+    border-radius: 4px; background: var(--certified); color: white;
+  }
+
+  /* === DIRECTION D: TOOL === */
+  .tool .listing-row {
+    display: grid; grid-template-columns: 80px 1fr 120px 100px 100px 140px;
+    align-items: center; gap: 12px; padding: 10px 16px;
+    border-bottom: 1px solid var(--border); font-size: 13px;
+  }
+  .tool .listing-row:first-child {
+    font-weight: 600; font-size: 11px; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.05em;
+    background: var(--secondary-bg);
+  }
+  .tool .row-photo {
+    width: 80px; height: 52px; background: var(--border); border-radius: 4px;
+  }
+  .tool .row-title { font-weight: 500; color: var(--foreground); }
+  .tool .row-price { font-weight: 700; color: var(--foreground); }
+  .tool .row-km { color: var(--muted); }
+  .tool .row-cert {
+    display: inline-flex; align-items: center; gap: 3px;
+    font-size: 11px; font-weight: 500;
+  }
+  .tool .row-cert.high { color: var(--certified); }
+  .tool .row-cert.medium { color: var(--declared); }
+
+  /* === DIRECTION E: HYBRIDE (RECOMMENDED) === */
+  .hybrid-public .listing-card {
+    display: grid; grid-template-columns: 200px 1fr; gap: 0;
+    border: 1px solid var(--border); border-radius: 8px; overflow: hidden;
+    transition: box-shadow 0.2s;
+  }
+  .hybrid-public .listing-card:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  }
+  .hybrid-public .card-photo {
+    width: 200px; min-height: 180px;
+    background: linear-gradient(135deg, #E2E8F0, #CBD5E1);
+    position: relative;
+  }
+  .hybrid-public .card-photo .market-badge {
+    position: absolute; top: 8px; left: 8px;
+    background: var(--certified); color: white;
+    font-size: 10px; font-weight: 700; padding: 3px 7px; border-radius: 4px;
+  }
+  .hybrid-public .card-body {
+    padding: 16px; display: flex; flex-direction: column; gap: 8px;
+  }
+  .hybrid-public .card-header {
+    display: flex; justify-content: space-between; align-items: flex-start;
+  }
+  .hybrid-public .card-title { font-size: 15px; font-weight: 600; color: var(--foreground); }
+  .hybrid-public .card-price { font-size: 18px; font-weight: 700; color: var(--foreground); }
+  .hybrid-public .card-specs {
+    display: flex; gap: 6px; flex-wrap: wrap;
+  }
+  .hybrid-public .spec-badge {
+    display: inline-flex; align-items: center; gap: 3px;
+    font-size: 11px; padding: 3px 7px; border-radius: 4px;
+  }
+  .hybrid-public .spec-badge.certified {
+    background: var(--certified-subtle); color: var(--certified); font-weight: 500;
+  }
+  .hybrid-public .spec-badge.declared {
+    background: var(--declared-subtle); color: #92400E; font-weight: 500;
+  }
+  .hybrid-public .card-cert-summary {
+    display: flex; align-items: center; gap: 6px;
+    margin-top: auto; padding-top: 8px; border-top: 1px solid var(--border);
+    font-size: 12px; color: var(--muted);
+  }
+  .hybrid-public .cert-dot {
+    width: 8px; height: 8px; border-radius: 50%; background: var(--certified);
+  }
+  .hybrid-public .cert-text { font-weight: 500; color: var(--certified); }
+
+  /* === HYBRID COCKPIT (DARK) === */
+  .hybrid-cockpit {
+    background: #0F172A; color: #F8FAFC; padding: 20px;
+  }
+  .hybrid-cockpit .kpi-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px;
+  }
+  .hybrid-cockpit .kpi-card {
+    background: #1E293B; border-radius: 8px; padding: 14px;
+    border: 1px solid #334155;
+  }
+  .hybrid-cockpit .kpi-label { font-size: 11px; color: #94A3B8; margin-bottom: 4px; }
+  .hybrid-cockpit .kpi-value { font-size: 22px; font-weight: 700; }
+  .hybrid-cockpit .kpi-trend { font-size: 11px; margin-top: 2px; }
+  .hybrid-cockpit .kpi-trend.up { color: var(--certified); }
+  .hybrid-cockpit .kpi-trend.down { color: var(--destructive); }
+  .hybrid-cockpit .listing-table {
+    width: 100%; border-collapse: collapse; font-size: 13px;
+  }
+  .hybrid-cockpit .listing-table th {
+    text-align: left; padding: 8px 12px; font-size: 11px;
+    color: #64748B; border-bottom: 1px solid #334155;
+    text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  .hybrid-cockpit .listing-table td {
+    padding: 10px 12px; border-bottom: 1px solid rgba(51,65,85,0.5);
+  }
+  .hybrid-cockpit .status-badge {
+    display: inline-block; padding: 2px 8px; border-radius: 4px;
+    font-size: 11px; font-weight: 500;
+  }
+  .hybrid-cockpit .status-badge.active { background: rgba(48,164,108,0.15); color: #34D399; }
+  .hybrid-cockpit .status-badge.draft { background: rgba(148,163,184,0.15); color: #94A3B8; }
+
+  /* === DIRECTION F: MOBILE CARD === */
+  .mobile-card { max-width: 375px; margin: 0 auto; background: var(--background); }
+  .mobile-card .card {
+    margin: 8px; border-radius: 12px; overflow: hidden;
+    background: white; box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .mobile-card .card-img {
+    width: 100%; aspect-ratio: 16/10;
+    background: linear-gradient(135deg, #E2E8F0, #CBD5E1);
+    position: relative;
+  }
+  .mobile-card .card-img .fav {
+    position: absolute; top: 8px; right: 8px;
+    width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.9);
+    display: flex; align-items: center; justify-content: center; font-size: 14px;
+  }
+  .mobile-card .card-img .cert-pill {
+    position: absolute; bottom: 8px; left: 8px;
+    background: rgba(0,0,0,0.7); color: white; padding: 4px 8px;
+    border-radius: 6px; font-size: 10px; font-weight: 600;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .mobile-card .card-img .cert-pill .dot {
+    width: 6px; height: 6px; border-radius: 50%; background: var(--certified);
+  }
+  .mobile-card .card-details { padding: 12px; }
+  .mobile-card .card-details h4 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+  .mobile-card .card-details .price { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+  .mobile-card .card-details .meta {
+    font-size: 12px; color: var(--muted); display: flex; gap: 12px;
+  }
+  .mobile-card .bottom-nav {
+    display: flex; justify-content: space-around; padding: 10px 0;
+    border-top: 1px solid var(--border); background: white;
+    font-size: 10px; color: var(--muted);
+  }
+  .mobile-card .bottom-nav .tab { text-align: center; }
+  .mobile-card .bottom-nav .tab.active { color: var(--primary); }
+  .mobile-card .bottom-nav .tab-icon { font-size: 18px; margin-bottom: 2px; }
+
+  /* === AUTO-FILL SHOWCASE === */
+  .autofill-demo { padding: 32px; background: white; }
+  .autofill-demo .hero-input {
+    max-width: 480px; margin: 0 auto 32px; text-align: center;
+  }
+  .autofill-demo .hero-input label {
+    display: block; font-size: 18px; font-weight: 600; color: var(--foreground);
+    margin-bottom: 4px;
+  }
+  .autofill-demo .hero-input .sublabel {
+    font-size: 13px; color: var(--muted); margin-bottom: 12px;
+  }
+  .autofill-demo .input-wrapper {
+    position: relative; display: flex; align-items: center;
+  }
+  .autofill-demo .input-field {
+    width: 100%; padding: 14px 16px; font-size: 18px; font-weight: 500;
+    border: 2px solid var(--border); border-radius: 8px; text-align: center;
+    font-family: 'Courier New', monospace; letter-spacing: 0.1em;
+    color: var(--foreground); background: white;
+    transition: border-color 0.2s;
+  }
+  .autofill-demo .input-field:focus {
+    outline: none; border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+  }
+  .autofill-demo .detection-label {
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    margin-top: 8px; font-size: 13px; font-weight: 500; color: var(--certified);
+  }
+  .autofill-demo .api-status {
+    display: flex; justify-content: center; gap: 16px; margin-bottom: 24px;
+    font-size: 12px; color: var(--muted);
+  }
+  .autofill-demo .api-status .api {
+    display: flex; align-items: center; gap: 4px;
+  }
+  .autofill-demo .api-status .api.done { color: var(--certified); }
+  .autofill-demo .api-status .api.loading { color: var(--declared); }
+  .autofill-demo .fields-cascade {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    max-width: 560px; margin: 0 auto;
+  }
+  .autofill-demo .field {
+    padding: 12px; border: 1px solid var(--border); border-radius: 8px;
+    background: white; transition: all 0.3s;
+  }
+  .autofill-demo .field.filled-certified {
+    border-color: var(--certified); background: var(--certified-subtle);
+  }
+  .autofill-demo .field.filled-declared {
+    border-color: var(--declared); background: var(--declared-subtle);
+  }
+  .autofill-demo .field.empty { opacity: 0.5; }
+  .autofill-demo .field-label {
+    font-size: 10px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.05em; color: var(--muted); margin-bottom: 4px;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .autofill-demo .field-label .badge-icon { font-size: 10px; }
+  .autofill-demo .field-label .badge-icon.certified { color: var(--certified); }
+  .autofill-demo .field-label .badge-icon.declared { color: var(--declared); }
+  .autofill-demo .field-value {
+    font-size: 14px; font-weight: 500; color: var(--foreground);
+  }
+  .autofill-demo .visibility-score {
+    max-width: 560px; margin: 24px auto 0;
+    padding: 16px; background: var(--secondary-bg); border-radius: 8px;
+    text-align: center;
+  }
+  .autofill-demo .score-bar {
+    width: 100%; height: 8px; background: var(--border); border-radius: 4px;
+    margin: 8px 0; overflow: hidden;
+  }
+  .autofill-demo .score-fill {
+    height: 100%; background: var(--certified); border-radius: 4px;
+    width: 72%; transition: width 1s ease;
+  }
+  .autofill-demo .score-label {
+    font-size: 14px; font-weight: 600; color: var(--certified);
+  }
+
+  /* === LISTING DETAIL === */
+  .listing-detail { background: white; }
+  .listing-detail .gallery {
+    width: 100%; aspect-ratio: 16/9; background: linear-gradient(135deg, #334155, #1E293B);
+    position: relative;
+  }
+  .listing-detail .gallery .back-btn {
+    position: absolute; top: 12px; left: 12px;
+    background: rgba(255,255,255,0.9); border-radius: 50%;
+    width: 36px; height: 36px; display: flex; align-items: center;
+    justify-content: center; font-size: 14px;
+  }
+  .listing-detail .gallery .photo-count {
+    position: absolute; bottom: 12px; right: 12px;
+    background: rgba(0,0,0,0.6); color: white; padding: 4px 10px;
+    border-radius: 6px; font-size: 12px;
+  }
+  .listing-detail .detail-body { padding: 20px; }
+  .listing-detail .detail-header {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 12px;
+  }
+  .listing-detail .detail-title { font-size: 22px; font-weight: 700; color: var(--foreground); }
+  .listing-detail .detail-price { font-size: 24px; font-weight: 700; color: var(--foreground); }
+  .listing-detail .market-indicator {
+    display: flex; align-items: center; gap: 4px;
+    font-size: 13px; font-weight: 500; color: var(--certified);
+    margin-bottom: 16px;
+  }
+  .listing-detail .cert-summary-bar {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 14px; background: var(--certified-subtle);
+    border: 1px solid rgba(48,164,108,0.2);
+    border-radius: 8px; margin-bottom: 16px;
+  }
+  .listing-detail .cert-summary-bar .icon { font-size: 16px; }
+  .listing-detail .cert-summary-bar .text {
+    font-size: 13px; font-weight: 500; color: var(--certified);
+  }
+  .listing-detail .cert-summary-bar .count {
+    margin-left: auto; font-size: 12px; color: var(--muted);
+  }
+  .listing-detail .specs-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  }
+  .listing-detail .spec-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px; border-radius: 6px; background: var(--secondary-bg);
+  }
+  .listing-detail .spec-item .spec-icon { font-size: 10px; }
+  .listing-detail .spec-item .spec-icon.c { color: var(--certified); }
+  .listing-detail .spec-item .spec-icon.d { color: var(--declared); }
+  .listing-detail .spec-item .spec-label { font-size: 11px; color: var(--muted); }
+  .listing-detail .spec-item .spec-value { font-size: 13px; font-weight: 500; color: var(--foreground); }
+  .listing-detail .contact-bar {
+    position: sticky; bottom: 0; padding: 12px 20px;
+    background: white; border-top: 1px solid var(--border);
+    display: flex; gap: 12px; align-items: center;
+  }
+  .listing-detail .contact-bar .btn-contact {
+    flex: 1; padding: 12px; border-radius: 8px;
+    background: var(--primary); color: white;
+    font-size: 14px; font-weight: 600; text-align: center;
+    border: none; cursor: pointer;
+  }
+  .listing-detail .contact-bar .btn-fav {
+    width: 44px; height: 44px; border-radius: 8px;
+    border: 1px solid var(--border); background: white;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; cursor: pointer;
+  }
+
+  /* === COMPARISON === */
+  .comparison {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 32px;
+  }
+  .comparison-card {
+    background: #1E293B; border-radius: 12px; overflow: hidden;
+    border: 1px solid #334155;
+  }
+  .comparison-card .comp-header {
+    padding: 16px; border-bottom: 1px solid #334155;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .comparison-card .comp-header h3 { font-size: 16px; font-weight: 600; }
+  .comparison-card .comp-header .tag {
+    font-size: 10px; padding: 2px 8px; border-radius: 3px;
+    font-weight: 700;
+  }
+  .comparison-card .comp-body { padding: 16px; }
+  .comparison-card .comp-row {
+    display: flex; justify-content: space-between; padding: 8px 0;
+    border-bottom: 1px solid rgba(51,65,85,0.3);
+    font-size: 13px;
+  }
+  .comparison-card .comp-row .label { color: #94A3B8; }
+  .comparison-card .comp-row .value { font-weight: 500; }
+
+  @media (max-width: 768px) {
+    .comparison { grid-template-columns: 1fr; }
+    .hybrid-cockpit .kpi-grid { grid-template-columns: 1fr 1fr; }
+    .autofill-demo .fields-cascade { grid-template-columns: 1fr; }
+    .listing-detail .specs-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <span class="nav-title">auto — Design Directions</span>
+  <button class="nav-btn active" onclick="show('overview')">Vue d'ensemble</button>
+  <button class="nav-btn" onclick="show('dir-a')">A. Aéré</button>
+  <button class="nav-btn" onclick="show('dir-b')">B. Certifié d'abord</button>
+  <button class="nav-btn" onclick="show('dir-c')">C. Magazine</button>
+  <button class="nav-btn" onclick="show('dir-d')">D. Outil</button>
+  <button class="nav-btn" onclick="show('dir-e')">E. Hybride ★</button>
+  <button class="nav-btn" onclick="show('dir-f')">F. Mobile Card</button>
+  <button class="nav-btn" onclick="show('autofill')">Auto-Fill</button>
+  <button class="nav-btn" onclick="show('detail')">Fiche Annonce</button>
+</nav>
+
+<!-- OVERVIEW -->
+<section id="overview" class="section active">
+  <div class="section-header">
+    <h1>6 Directions de Design Explorées</h1>
+    <p>Chaque direction explore une approche visuelle différente pour les annonces, cockpits et interactions clés d'auto. La direction E (Hybride) est recommandée.</p>
+  </div>
+  <div class="comparison" style="grid-template-columns: repeat(3, 1fr); gap: 16px;">
+    <div class="comparison-card" onclick="show('dir-a')" style="cursor:pointer">
+      <div class="comp-header"><h3>A. Aéré</h3><span class="tag" style="background:rgba(255,255,255,0.1); color: #94A3B8">Exploré</span></div>
+      <div class="comp-body">
+        <div class="comp-row"><span class="label">Densité</span><span class="value">Basse</span></div>
+        <div class="comp-row"><span class="label">Photos</span><span class="value">Héro 16:10</span></div>
+        <div class="comp-row"><span class="label">Badges</span><span class="value">Subtils</span></div>
+        <div class="comp-row"><span class="label">Pour</span><span class="value">Vitrine premium</span></div>
+      </div>
+    </div>
+    <div class="comparison-card" onclick="show('dir-b')" style="cursor:pointer">
+      <div class="comp-header"><h3>B. Certifié d'abord</h3><span class="tag" style="background:rgba(255,255,255,0.1); color: #94A3B8">Exploré</span></div>
+      <div class="comp-body">
+        <div class="comp-row"><span class="label">Densité</span><span class="value">Moyenne</span></div>
+        <div class="comp-row"><span class="label">Photos</span><span class="value">Vignette</span></div>
+        <div class="comp-row"><span class="label">Badges</span><span class="value">Proéminents</span></div>
+        <div class="comp-row"><span class="label">Pour</span><span class="value">Confiance max</span></div>
+      </div>
+    </div>
+    <div class="comparison-card" onclick="show('dir-c')" style="cursor:pointer">
+      <div class="comp-header"><h3>C. Magazine</h3><span class="tag" style="background:rgba(255,255,255,0.1); color: #94A3B8">Exploré</span></div>
+      <div class="comp-body">
+        <div class="comp-row"><span class="label">Densité</span><span class="value">Basse</span></div>
+        <div class="comp-row"><span class="label">Photos</span><span class="value">Full-bleed</span></div>
+        <div class="comp-row"><span class="label">Badges</span><span class="value">Label discret</span></div>
+        <div class="comp-row"><span class="label">Pour</span><span class="value">Émotion visuelle</span></div>
+      </div>
+    </div>
+    <div class="comparison-card" onclick="show('dir-d')" style="cursor:pointer">
+      <div class="comp-header"><h3>D. Outil</h3><span class="tag" style="background:rgba(255,255,255,0.1); color: #94A3B8">Exploré</span></div>
+      <div class="comp-body">
+        <div class="comp-row"><span class="label">Densité</span><span class="value">Haute</span></div>
+        <div class="comp-row"><span class="label">Photos</span><span class="value">Miniature</span></div>
+        <div class="comp-row"><span class="label">Badges</span><span class="value">Inline texte</span></div>
+        <div class="comp-row"><span class="label">Pour</span><span class="value">Power users</span></div>
+      </div>
+    </div>
+    <div class="comparison-card" onclick="show('dir-e')" style="cursor:pointer; border-color: var(--certified);">
+      <div class="comp-header"><h3>E. Hybride ★</h3><span class="tag" style="background:var(--certified); color: white">Recommandé</span></div>
+      <div class="comp-body">
+        <div class="comp-row"><span class="label">Public</span><span class="value">Aéré + Cert</span></div>
+        <div class="comp-row"><span class="label">Cockpit</span><span class="value">Dense + Dark</span></div>
+        <div class="comp-row"><span class="label">Badges</span><span class="value">Équilibrés</span></div>
+        <div class="comp-row"><span class="label">Pour</span><span class="value">Tous personas</span></div>
+      </div>
+    </div>
+    <div class="comparison-card" onclick="show('dir-f')" style="cursor:pointer">
+      <div class="comp-header"><h3>F. Mobile Card</h3><span class="tag" style="background:rgba(255,255,255,0.1); color: #94A3B8">Exploré</span></div>
+      <div class="comp-body">
+        <div class="comp-row"><span class="label">Densité</span><span class="value">Mobile-native</span></div>
+        <div class="comp-row"><span class="label">Photos</span><span class="value">Card pleine</span></div>
+        <div class="comp-row"><span class="label">Badges</span><span class="value">Pill overlay</span></div>
+        <div class="comp-row"><span class="label">Pour</span><span class="value">Touch-first</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIRECTION A -->
+<section id="dir-a" class="section">
+  <div class="section-header">
+    <span class="badge badge-explored">Exploré</span>
+    <h1>Direction A — Aéré</h1>
+    <p>Maximum d'espace blanc, photos héro, badges subtils. Approche Apple-like — le calme comme identité. Risque : pas assez de données visibles au premier regard.</p>
+  </div>
+  <div class="mockup-grid cols-2">
+    <div class="mockup">
+      <div class="mockup-label">Card annonce — Style aéré</div>
+      <div class="mockup-content airy">
+        <div class="listing-card">
+          <div class="card-photo"></div>
+          <div class="card-info">
+            <div class="card-title">Peugeot 3008 GT Line — 2021</div>
+            <div class="card-price">€24 900</div>
+            <div class="card-meta">
+              <span>45 000 km</span>
+              <span>Diesel</span>
+              <span>Marseille (13)</span>
+            </div>
+            <div class="card-cert">🛡️ Très documenté — 14/18 vérifiés</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mockup">
+      <div class="mockup-label">Card annonce 2 — Style aéré</div>
+      <div class="mockup-content airy">
+        <div class="listing-card">
+          <div class="card-photo" style="background: linear-gradient(135deg, #CBD5E1, #94A3B8);"></div>
+          <div class="card-info">
+            <div class="card-title">Renault Kangoo Express — 2019</div>
+            <div class="card-price">€12 500</div>
+            <div class="card-meta">
+              <span>98 000 km</span>
+              <span>Diesel</span>
+              <span>Lyon (69)</span>
+            </div>
+            <div class="card-cert" style="color: #92400E; background: var(--declared-subtle);">✏️ Bien documenté — 10/18 vérifiés</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIRECTION B -->
+<section id="dir-b" class="section">
+  <div class="section-header">
+    <span class="badge badge-explored">Exploré</span>
+    <h1>Direction B — Certifié d'abord</h1>
+    <p>Les badges de certification sont proéminents. Chaque spec affiche son statut. La confiance est la première chose que l'oeil voit. Risque : peut sembler trop dense ou technique.</p>
+  </div>
+  <div class="mockup-grid cols-1">
+    <div class="mockup">
+      <div class="mockup-label">Cards annonces — Certification forward</div>
+      <div class="mockup-content cert-forward" style="padding: 16px; display: flex; flex-direction: column; gap: 12px;">
+        <div class="listing-card">
+          <div class="card-photo"></div>
+          <div class="card-body">
+            <div class="cert-banner"><span class="shield">🛡️</span> Très documenté — 14 données vérifiées</div>
+            <div class="card-title">Peugeot 3008 GT Line — 2021</div>
+            <div class="card-price">€24 900</div>
+            <div class="card-specs">
+              <span class="spec certified">45 000 km</span>
+              <span class="spec certified">Diesel</span>
+              <span class="spec certified">130 CV</span>
+              <span class="spec certified">CO₂ 118 g/km</span>
+              <span class="spec declared">CT OK 06/2026</span>
+              <span class="spec certified">1ère main</span>
+            </div>
+          </div>
+        </div>
+        <div class="listing-card">
+          <div class="card-photo" style="background: linear-gradient(135deg, #CBD5E1, #94A3B8);"></div>
+          <div class="card-body">
+            <div class="cert-banner" style="border-color: var(--declared); background: var(--declared-subtle); color: #92400E;"><span class="shield">✏️</span> Bien documenté — 10 données vérifiées</div>
+            <div class="card-title">Renault Kangoo Express — 2019</div>
+            <div class="card-price">€12 500</div>
+            <div class="card-specs">
+              <span class="spec certified">98 000 km</span>
+              <span class="spec certified">Diesel</span>
+              <span class="spec declared">90 CV</span>
+              <span class="spec certified">CO₂ 142 g/km</span>
+              <span class="spec declared">CT OK 03/2026</span>
+              <span class="spec declared">2 propriétaires</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIRECTION C -->
+<section id="dir-c" class="section">
+  <div class="section-header">
+    <span class="badge badge-explored">Exploré</span>
+    <h1>Direction C — Magazine</h1>
+    <p>Photos full-bleed, typographie serif, approche éditoriale. Les véhicules sont mis en scène comme dans un magazine auto. Risque : les badges perdent en visibilité.</p>
+  </div>
+  <div class="mockup-grid cols-2">
+    <div class="mockup">
+      <div class="mockup-label">Card magazine — Full bleed photo</div>
+      <div class="mockup-content magazine">
+        <div class="listing-card">
+          <div class="card-photo">
+            <div class="overlay">
+              <h3>Peugeot 3008 GT Line</h3>
+              <div class="price">€24 900</div>
+            </div>
+          </div>
+          <div class="card-bottom">
+            <div class="meta">2021 · 45 000 km · Diesel · Marseille</div>
+            <div class="cert-label">🛡️ Très documenté</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mockup">
+      <div class="mockup-label">Card magazine 2</div>
+      <div class="mockup-content magazine">
+        <div class="listing-card">
+          <div class="card-photo" style="background: linear-gradient(135deg, #475569, #334155);">
+            <div class="overlay">
+              <h3>Renault Kangoo Express</h3>
+              <div class="price">€12 500</div>
+            </div>
+          </div>
+          <div class="card-bottom">
+            <div class="meta">2019 · 98 000 km · Diesel · Lyon</div>
+            <div class="cert-label" style="background: var(--declared); ">✏️ Bien documenté</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIRECTION D -->
+<section id="dir-d" class="section">
+  <div class="section-header">
+    <span class="badge badge-explored">Exploré</span>
+    <h1>Direction D — Outil</h1>
+    <p>Dense, tabulaire, Stripe-like. Optimisé pour scanner rapidement 20+ annonces. Parfait pour le cockpit vendeur, mais trop froid pour les pages publiques acheteur.</p>
+  </div>
+  <div class="mockup-grid cols-1">
+    <div class="mockup">
+      <div class="mockup-label">Vue liste — Mode outil</div>
+      <div class="mockup-content tool">
+        <div class="listing-row"><span>Photo</span><span>Véhicule</span><span>Prix</span><span>Km</span><span>Certification</span><span>Localisation</span></div>
+        <div class="listing-row">
+          <div class="row-photo"></div>
+          <span class="row-title">Peugeot 3008 GT Line 2021</span>
+          <span class="row-price">€24 900</span>
+          <span class="row-km">45 000 km</span>
+          <span class="row-cert high">🛡️ 14/18 vérifiés</span>
+          <span>Marseille (13)</span>
+        </div>
+        <div class="listing-row">
+          <div class="row-photo" style="background: #CBD5E1;"></div>
+          <span class="row-title">Renault Kangoo Express 2019</span>
+          <span class="row-price">€12 500</span>
+          <span class="row-km">98 000 km</span>
+          <span class="row-cert medium">✏️ 10/18 vérifiés</span>
+          <span>Lyon (69)</span>
+        </div>
+        <div class="listing-row">
+          <div class="row-photo" style="background: #94A3B8;"></div>
+          <span class="row-title">Citroën C3 Feel 2020</span>
+          <span class="row-price">€11 200</span>
+          <span class="row-km">62 000 km</span>
+          <span class="row-cert high">🛡️ 15/18 vérifiés</span>
+          <span>Paris (75)</span>
+        </div>
+        <div class="listing-row">
+          <div class="row-photo" style="background: #64748B;"></div>
+          <span class="row-title">BMW 320d M Sport 2018</span>
+          <span class="row-price">€22 800</span>
+          <span class="row-km">110 000 km</span>
+          <span class="row-cert high">🛡️ 13/18 vérifiés</span>
+          <span>Toulouse (31)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIRECTION E (RECOMMENDED) -->
+<section id="dir-e" class="section">
+  <div class="section-header">
+    <span class="badge badge-recommended">★ Recommandé</span>
+    <h1>Direction E — Hybride</h1>
+    <p>Deux philosophies UX sur un même site. Pages publiques = aéré + certifié (confiance). Cockpits = dense + dark (efficacité). Le meilleur des deux mondes, aligné sur nos personas et nos objectifs émotionnels.</p>
+  </div>
+  <div class="mockup-grid cols-1">
+    <div class="mockup">
+      <div class="mockup-label">Pages publiques — Cards annonces (light, aéré, certification visible) <span class="tag">Public</span></div>
+      <div class="mockup-content hybrid-public" style="padding: 20px; display: flex; flex-direction: column; gap: 12px;">
+        <div class="listing-card">
+          <div class="card-photo">
+            <div class="market-badge">↓ 8% sous le marché</div>
+          </div>
+          <div class="card-body">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Peugeot 3008 GT Line</div>
+                <div style="font-size: 12px; color: var(--muted);">2021 · Diesel · Automatique</div>
+              </div>
+              <div class="card-price">€24 900</div>
+            </div>
+            <div class="card-specs">
+              <span class="spec-badge certified">🛡️ 45 000 km</span>
+              <span class="spec-badge certified">🛡️ 130 CV</span>
+              <span class="spec-badge certified">🛡️ CO₂ 118 g</span>
+              <span class="spec-badge declared">✏️ CT OK</span>
+            </div>
+            <div class="card-cert-summary">
+              <div class="cert-dot"></div>
+              <span class="cert-text">Très documenté</span>
+              <span style="color: var(--muted);">— 14/18 données vérifiées</span>
+              <span style="margin-left: auto; color: var(--muted); font-size: 11px;">Marseille (13)</span>
+            </div>
+          </div>
+        </div>
+        <div class="listing-card">
+          <div class="card-photo" style="background: linear-gradient(135deg, #CBD5E1, #94A3B8);"></div>
+          <div class="card-body">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Renault Kangoo Express</div>
+                <div style="font-size: 12px; color: var(--muted);">2019 · Diesel · Manuelle</div>
+              </div>
+              <div class="card-price">€12 500</div>
+            </div>
+            <div class="card-specs">
+              <span class="spec-badge certified">🛡️ 98 000 km</span>
+              <span class="spec-badge certified">🛡️ 90 CV</span>
+              <span class="spec-badge declared">✏️ CT OK</span>
+              <span class="spec-badge declared">✏️ 2 propr.</span>
+            </div>
+            <div class="card-cert-summary">
+              <div class="cert-dot" style="background: var(--declared);"></div>
+              <span class="cert-text" style="color: var(--declared);">Bien documenté</span>
+              <span style="color: var(--muted);">— 10/18 données vérifiées</span>
+              <span style="margin-left: auto; color: var(--muted); font-size: 11px;">Lyon (69)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mockup">
+      <div class="mockup-label">Cockpit vendeur — Dashboard (dark, dense, KPIs actionnables) <span class="tag">Dashboard</span></div>
+      <div class="mockup-content hybrid-cockpit">
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-label">Vues totales</div>
+            <div class="kpi-value">2 847</div>
+            <div class="kpi-trend up">↑ 12% vs sem. dern.</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Contacts reçus</div>
+            <div class="kpi-value">34</div>
+            <div class="kpi-trend up">↑ 8% vs sem. dern.</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Taux certification moy.</div>
+            <div class="kpi-value" style="color: var(--certified);">78%</div>
+            <div class="kpi-trend up">↑ 3% ce mois</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Durée moy. en ligne</div>
+            <div class="kpi-value">18j</div>
+            <div class="kpi-trend down">↓ 2j vs mois dern.</div>
+          </div>
+        </div>
+        <table class="listing-table">
+          <thead>
+            <tr><th>Véhicule</th><th>Prix</th><th>Vues</th><th>Contacts</th><th>Certification</th><th>Statut</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Peugeot 3008 GT Line 2021</td>
+              <td style="font-weight:600;">€24 900</td>
+              <td>342</td>
+              <td>8</td>
+              <td style="color: #34D399;">🛡️ 14/18</td>
+              <td><span class="status-badge active">En ligne</span></td>
+            </tr>
+            <tr>
+              <td>Renault Kangoo Express 2019</td>
+              <td style="font-weight:600;">€12 500</td>
+              <td>187</td>
+              <td>3</td>
+              <td style="color: #FBBF24;">✏️ 10/18</td>
+              <td><span class="status-badge active">En ligne</span></td>
+            </tr>
+            <tr>
+              <td>Citroën C3 Feel 2020</td>
+              <td style="font-weight:600;">€11 200</td>
+              <td>—</td>
+              <td>—</td>
+              <td style="color: #94A3B8;">— 0/18</td>
+              <td><span class="status-badge draft">Brouillon</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIRECTION F -->
+<section id="dir-f" class="section">
+  <div class="section-header">
+    <span class="badge badge-explored">Exploré</span>
+    <h1>Direction F — Mobile Card</h1>
+    <p>Approche Vinted/Airbnb mobile-native. Cards pleine largeur, bottom navigation, touch-first. Intégré dans la direction Hybride pour le responsive mobile.</p>
+  </div>
+  <div class="mockup-grid cols-2">
+    <div class="mockup">
+      <div class="mockup-label">Mobile — Feed acheteur (375px)</div>
+      <div class="mockup-content mobile-card">
+        <div style="padding: 12px 12px 4px; font-size: 16px; font-weight: 700; color: var(--foreground);">Résultats</div>
+        <div style="padding: 0 12px 8px; font-size: 12px; color: var(--muted);">247 annonces · Île-de-France</div>
+        <div class="card">
+          <div class="card-img">
+            <div class="fav">♡</div>
+            <div class="cert-pill"><div class="dot"></div> Très documenté</div>
+          </div>
+          <div class="card-details">
+            <h4>Peugeot 3008 GT Line</h4>
+            <div class="price">€24 900</div>
+            <div class="meta">
+              <span>2021</span>
+              <span>45 000 km</span>
+              <span>Marseille</span>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-img" style="background: linear-gradient(135deg, #94A3B8, #64748B);">
+            <div class="fav">♡</div>
+            <div class="cert-pill"><div class="dot" style="background: var(--declared);"></div> Bien documenté</div>
+          </div>
+          <div class="card-details">
+            <h4>Renault Kangoo Express</h4>
+            <div class="price">€12 500</div>
+            <div class="meta">
+              <span>2019</span>
+              <span>98 000 km</span>
+              <span>Lyon</span>
+            </div>
+          </div>
+        </div>
+        <div class="bottom-nav">
+          <div class="tab"><div class="tab-icon">🏠</div>Accueil</div>
+          <div class="tab active"><div class="tab-icon">🔍</div>Recherche</div>
+          <div class="tab"><div class="tab-icon">♡</div>Favoris</div>
+          <div class="tab"><div class="tab-icon">💬</div>Messages</div>
+          <div class="tab"><div class="tab-icon">👤</div>Profil</div>
+        </div>
+      </div>
+    </div>
+    <div class="mockup">
+      <div class="mockup-label">Mobile — Filtres actifs (chips Google Maps)</div>
+      <div class="mockup-content mobile-card">
+        <div style="padding: 12px; display: flex; gap: 6px; flex-wrap: wrap; border-bottom: 1px solid var(--border);">
+          <span style="display: inline-flex; align-items: center; gap: 4px; padding: 6px 10px; border-radius: 20px; background: var(--primary); color: white; font-size: 12px; font-weight: 500;">Budget < €25k ✕</span>
+          <span style="display: inline-flex; align-items: center; gap: 4px; padding: 6px 10px; border-radius: 20px; background: var(--certified); color: white; font-size: 12px; font-weight: 500;">Très documenté ✕</span>
+          <span style="display: inline-flex; align-items: center; gap: 4px; padding: 6px 10px; border-radius: 20px; background: var(--secondary-bg); color: var(--foreground); font-size: 12px; font-weight: 500;">Diesel ✕</span>
+          <span style="display: inline-flex; align-items: center; gap: 4px; padding: 6px 10px; border-radius: 20px; border: 1px dashed var(--border); color: var(--muted); font-size: 12px;">+ Ajouter filtre</span>
+        </div>
+        <div class="card">
+          <div class="card-img">
+            <div class="fav">♡</div>
+            <div class="cert-pill"><div class="dot"></div> Très documenté</div>
+          </div>
+          <div class="card-details">
+            <h4>Peugeot 3008 GT Line</h4>
+            <div class="price">€24 900 <span style="font-size: 12px; font-weight: 400; color: var(--certified);">↓ 8% marché</span></div>
+            <div class="meta">
+              <span>2021</span>
+              <span>45 000 km</span>
+              <span>Marseille</span>
+            </div>
+          </div>
+        </div>
+        <div class="bottom-nav">
+          <div class="tab"><div class="tab-icon">🏠</div>Accueil</div>
+          <div class="tab active"><div class="tab-icon">🔍</div>Recherche</div>
+          <div class="tab"><div class="tab-icon">♡</div>Favoris</div>
+          <div class="tab"><div class="tab-icon">💬</div>Messages</div>
+          <div class="tab"><div class="tab-icon">👤</div>Profil</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AUTO-FILL -->
+<section id="autofill" class="section">
+  <div class="section-header">
+    <span class="badge badge-recommended">★ Expérience Définitoire</span>
+    <h1>Auto-Fill Cascade — Le Champ Intelligent</h1>
+    <p>Le champ unique "Identifiez votre véhicule" détecte automatiquement plaque ou VIN. La cascade remplit les champs progressivement avec statut API visible.</p>
+  </div>
+  <div class="mockup-grid cols-1">
+    <div class="mockup">
+      <div class="mockup-label">Formulaire création annonce — Auto-fill cascade complété <span class="tag">Seller</span></div>
+      <div class="mockup-content autofill-demo">
+        <div class="hero-input">
+          <label>Identifiez votre véhicule</label>
+          <div class="sublabel">Saisissez la plaque ou le numéro de série — les données officielles se remplissent automatiquement</div>
+          <div class="input-wrapper">
+            <input type="text" class="input-field" value="AB-123-CD" readonly>
+          </div>
+          <div class="detection-label">✓ Plaque détectée — Recherche terminée</div>
+        </div>
+        <div class="api-status">
+          <span class="api done">✓ SIV</span>
+          <span class="api done">✓ ADEME</span>
+          <span class="api done">✓ ANTS</span>
+        </div>
+        <div class="fields-cascade">
+          <div class="field filled-certified">
+            <div class="field-label"><span class="badge-icon certified">🛡️</span> Marque</div>
+            <div class="field-value">Peugeot</div>
+          </div>
+          <div class="field filled-certified">
+            <div class="field-label"><span class="badge-icon certified">🛡️</span> Modèle</div>
+            <div class="field-value">3008 GT Line</div>
+          </div>
+          <div class="field filled-certified">
+            <div class="field-label"><span class="badge-icon certified">🛡️</span> Année</div>
+            <div class="field-value">2021</div>
+          </div>
+          <div class="field filled-certified">
+            <div class="field-label"><span class="badge-icon certified">🛡️</span> Énergie</div>
+            <div class="field-value">Diesel</div>
+          </div>
+          <div class="field filled-certified">
+            <div class="field-label"><span class="badge-icon certified">🛡️</span> Puissance</div>
+            <div class="field-value">130 CV (96 kW)</div>
+          </div>
+          <div class="field filled-certified">
+            <div class="field-label"><span class="badge-icon certified">🛡️</span> CO₂</div>
+            <div class="field-value">118 g/km</div>
+          </div>
+          <div class="field filled-certified">
+            <div class="field-label"><span class="badge-icon certified">🛡️</span> Kilométrage</div>
+            <div class="field-value">45 234 km</div>
+          </div>
+          <div class="field filled-certified">
+            <div class="field-label"><span class="badge-icon certified">🛡️</span> Propriétaires</div>
+            <div class="field-value">1ère main</div>
+          </div>
+          <div class="field filled-declared">
+            <div class="field-label"><span class="badge-icon declared">✏️</span> Prix</div>
+            <div class="field-value">€24 900</div>
+          </div>
+          <div class="field filled-declared">
+            <div class="field-label"><span class="badge-icon declared">✏️</span> CT valide jusqu'au</div>
+            <div class="field-value">06/2026</div>
+          </div>
+          <div class="field empty">
+            <div class="field-label">Description</div>
+            <div class="field-value" style="color: var(--muted); font-style: italic;">À compléter...</div>
+          </div>
+          <div class="field empty">
+            <div class="field-label">Photos</div>
+            <div class="field-value" style="color: var(--muted); font-style: italic;">0/20 ajoutées</div>
+          </div>
+        </div>
+        <div class="visibility-score">
+          <div style="font-size: 13px; color: var(--muted);">Score de visibilité</div>
+          <div class="score-bar"><div class="score-fill"></div></div>
+          <div class="score-label">72% — Bien documenté</div>
+          <div style="font-size: 11px; color: var(--muted); margin-top: 4px;">Ajoutez des photos et une description pour atteindre "Très documenté"</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LISTING DETAIL -->
+<section id="detail" class="section">
+  <div class="section-header">
+    <span class="badge badge-recommended">★ Page Phare</span>
+    <h1>Fiche Annonce Détaillée — Le Produit Phare</h1>
+    <p>La fiche annonce est la landing page la plus importante. Chaque badge, chaque donnée, chaque pixel sert la certitude de Karim.</p>
+  </div>
+  <div class="mockup-grid cols-2">
+    <div class="mockup">
+      <div class="mockup-label">Fiche annonce — Mobile (375px) <span class="tag">Public</span></div>
+      <div class="mockup-content listing-detail" style="max-width: 375px; margin: 0 auto;">
+        <div class="gallery">
+          <div class="back-btn">←</div>
+          <div class="photo-count">📸 1/12</div>
+        </div>
+        <div class="detail-body">
+          <div class="detail-header">
+            <div>
+              <div class="detail-title">Peugeot 3008 GT Line</div>
+              <div style="font-size: 13px; color: var(--muted);">2021 · Diesel · Automatique · Marseille (13)</div>
+            </div>
+          </div>
+          <div class="detail-price" style="margin-bottom: 8px;">€24 900</div>
+          <div class="market-indicator">↓ 8% en dessous du marché — Bonne affaire</div>
+          <div class="cert-summary-bar">
+            <span class="icon">🛡️</span>
+            <span class="text">Très documenté</span>
+            <span class="count">14/18 données vérifiées</span>
+          </div>
+          <div class="specs-grid">
+            <div class="spec-item">
+              <span class="spec-icon c">🛡️</span>
+              <div>
+                <div class="spec-label">Kilométrage</div>
+                <div class="spec-value">45 234 km</div>
+              </div>
+            </div>
+            <div class="spec-item">
+              <span class="spec-icon c">🛡️</span>
+              <div>
+                <div class="spec-label">Puissance</div>
+                <div class="spec-value">130 CV</div>
+              </div>
+            </div>
+            <div class="spec-item">
+              <span class="spec-icon c">🛡️</span>
+              <div>
+                <div class="spec-label">Énergie</div>
+                <div class="spec-value">Diesel</div>
+              </div>
+            </div>
+            <div class="spec-item">
+              <span class="spec-icon d">✏️</span>
+              <div>
+                <div class="spec-label">Contrôle technique</div>
+                <div class="spec-value">OK — 06/2026</div>
+              </div>
+            </div>
+            <div class="spec-item">
+              <span class="spec-icon c">🛡️</span>
+              <div>
+                <div class="spec-label">Propriétaires</div>
+                <div class="spec-value">1ère main</div>
+              </div>
+            </div>
+            <div class="spec-item">
+              <span class="spec-icon c">🛡️</span>
+              <div>
+                <div class="spec-label">CO₂</div>
+                <div class="spec-value">118 g/km</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="contact-bar">
+          <button class="btn-fav">♡</button>
+          <button class="btn-contact">💬 Contacter le vendeur</button>
+        </div>
+      </div>
+    </div>
+    <div class="mockup">
+      <div class="mockup-label">Fiche annonce — Mur d'inscription (teasing) <span class="tag">Public</span></div>
+      <div class="mockup-content listing-detail" style="max-width: 375px; margin: 0 auto;">
+        <div class="gallery" style="aspect-ratio: 16/10;">
+          <div class="back-btn">←</div>
+          <div class="photo-count">📸 1/12</div>
+        </div>
+        <div class="detail-body">
+          <div class="detail-title" style="margin-bottom: 4px;">Peugeot 3008 GT Line</div>
+          <div class="detail-price" style="margin-bottom: 12px;">€24 900</div>
+          <div class="cert-summary-bar">
+            <span class="icon">🛡️</span>
+            <span class="text">Très documenté</span>
+            <span class="count">14/18 vérifiées</span>
+          </div>
+          <div style="margin-top: 16px; padding: 20px; background: var(--secondary-bg); border-radius: 10px; text-align: center;">
+            <div style="font-size: 32px; margin-bottom: 8px;">🔒</div>
+            <div style="font-size: 15px; font-weight: 600; color: var(--foreground); margin-bottom: 4px;">Rapport historique disponible</div>
+            <div style="font-size: 13px; color: var(--muted); margin-bottom: 4px;">3 propriétaires · 0 sinistre · Historique CT complet</div>
+            <div style="font-size: 12px; color: var(--muted); margin-bottom: 16px; font-style: italic;">Créez un compte gratuit pour accéder au rapport complet</div>
+            <div style="padding: 12px; background: var(--primary); color: white; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer;">Créer un compte — Gratuit</div>
+            <div style="margin-top: 8px; font-size: 12px; color: var(--muted);">Déjà inscrit ? <span style="color: var(--primary); cursor: pointer;">Se connecter</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+  window.scrollTo(0, 0);
+}
+</script>
+</body>
+</html>
