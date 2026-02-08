@@ -60,7 +60,10 @@
       "Bash(test:*)",
       "Bash(npm init:*)",
       "Bash(npx husky:*)",
-      "Bash(npx commitlint:*)"
+      "Bash(npx commitlint:*)",
+      "Bash(find:*)",
+      "Bash(xargs:*)",
+      "Bash(chmod:*)"
     ]
   }
 }
