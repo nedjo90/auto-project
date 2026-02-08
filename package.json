@@ -1,0 +1,19 @@
+{
+  "name": "auto-project",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Auto Platform - French certified used vehicle marketplace",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nedjo90/auto-project.git"
+  },
+  "scripts": {
+    "prepare": "husky"
+  },
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@commitlint/cli": "^20.4.1",
+    "@commitlint/config-conventional": "^20.4.1",
+    "husky": "^9.1.7"
+  }
+}
