@@ -12,6 +12,119 @@ inputDocuments:
 
 This document provides the complete epic and story breakdown for auto, decomposing the requirements from the PRD, UX Design, and Architecture into implementable stories.
 
+## Diagrammes
+
+### Dépendances entre Epics
+
+```mermaid
+graph TD
+    E1["🔐 Epic 1<br/>Auth & Comptes<br/>7 stories · FR21-FR29"]
+    E2["⚙️ Epic 2<br/>Config Zero-Hardcode<br/>8 stories · FR43-FR54"]
+    E3["📝 Epic 3<br/>Annonces Certifiées<br/>11 stories · FR1-FR12, FR55-FR60"]
+    E4["🔍 Epic 4<br/>Marketplace<br/>5 stories · FR13-FR20"]
+    E5["💬 Epic 5<br/>Chat & Notifications<br/>2 stories · FR30-FR32"]
+    E6["📊 Epic 6<br/>Cockpit Vendeur<br/>4 stories · FR33-FR36"]
+    E7["🛡️ Epic 7<br/>Modération<br/>4 stories · FR37-FR42"]
+
+    E1 -->|"auth + RBAC"| E2
+    E1 -->|"auth + RBAC"| E3
+    E2 -->|"config + adapters"| E3
+    E3 -->|"annonces publiées"| E4
+    E3 -->|"annonces + vendeurs"| E5
+    E3 -->|"annonces + KPIs"| E6
+    E4 -->|"marketplace actif"| E7
+    E5 -->|"système de comm"| E7
+
+    style E1 fill:#10b981,stroke:#10b981,color:#fff
+    style E2 fill:#f59e0b,stroke:#f59e0b,color:#fff
+    style E3 fill:#f59e0b,stroke:#f59e0b,color:#fff
+    style E4 fill:#6b7280,stroke:#6b7280,color:#fff
+    style E5 fill:#6b7280,stroke:#6b7280,color:#fff
+    style E6 fill:#6b7280,stroke:#6b7280,color:#fff
+    style E7 fill:#6b7280,stroke:#6b7280,color:#fff
+```
+
+_Légende : 🟢 en cours · 🟡 prochaine priorité · ⚪ à venir_
+
+### Couverture des Functional Requirements par Epic
+
+```mermaid
+pie title Répartition des 60 FRs par Epic
+    "Epic 1 — Auth & Comptes" : 9
+    "Epic 2 — Config & Admin" : 12
+    "Epic 3 — Annonces & Paiement" : 18
+    "Epic 4 — Marketplace" : 8
+    "Epic 5 — Chat & Notifs" : 3
+    "Epic 6 — Cockpit Vendeur" : 4
+    "Epic 7 — Modération" : 6
+```
+
+### Séquence d'implémentation (stories)
+
+```mermaid
+gantt
+    title Séquence d'implémentation par Epic
+    dateFormat X
+    axisFormat %s
+
+    section Epic 1 — Auth
+    1.1 Project Bootstrap           :done, e1s1, 0, 1
+    1.2 User Registration           :done, e1s2, 1, 2
+    1.3 Consent RGPD                :done, e1s3, 2, 3
+    1.4 Authentication              :active, e1s4, 3, 4
+    1.5 RBAC                        :e1s5, 4, 5
+    1.6 User Profile                :e1s6, 5, 6
+    1.7 Anonymization & Export      :e1s7, 6, 7
+
+    section Epic 2 — Config
+    2.1 Config Engine               :e2s1, 7, 8
+    2.2 Platform Config UI          :e2s2, 8, 9
+    2.3 API Provider Management     :e2s3, 9, 10
+    2.4 Admin Dashboard KPIs        :e2s4, 10, 11
+    2.5 Configurable Alerts         :e2s5, 11, 12
+    2.6 SEO Templates               :e2s6, 12, 13
+    2.7 Legal Texts                 :e2s7, 13, 14
+    2.8 Audit Trail                 :e2s8, 14, 15
+
+    section Epic 3 — Annonces
+    3.1 Adapter Pattern             :e3s1, 15, 16
+    3.2 Vehicle Auto-Fill           :e3s2, 16, 17
+    3.3 Listing Form                :e3s3, 17, 18
+    3.4 Photo Management            :e3s4, 18, 19
+    3.5 Visibility Score            :e3s5, 19, 20
+    3.6 Draft Management            :e3s6, 20, 21
+    3.7 Declaration of Honor        :e3s7, 21, 22
+    3.8 Vehicle History Report      :e3s8, 22, 23
+    3.9 Batch Publish & Payment     :e3s9, 23, 24
+    3.10 Listing Lifecycle          :e3s10, 24, 25
+    3.11 API Resilience             :e3s11, 25, 26
+
+    section Epic 4 — Marketplace
+    4.1 Public Listing Cards        :e4s1, 26, 27
+    4.2 Search & Filters            :e4s2, 27, 28
+    4.3 Certification Filters       :e4s3, 28, 29
+    4.4 Favorites & Watchlist       :e4s4, 29, 30
+    4.5 SEO & Structured Data       :e4s5, 30, 31
+
+    section Epic 5 — Chat
+    5.1 Real-Time Chat              :e5s1, 31, 32
+    5.2 Notifications & Push        :e5s2, 32, 33
+
+    section Epic 6 — Cockpit
+    6.1 Seller Dashboard KPIs       :e6s1, 33, 34
+    6.2 Market Price Positioning    :e6s2, 34, 35
+    6.3 Market Watch                :e6s3, 35, 36
+    6.4 Empty State Onboarding      :e6s4, 36, 37
+
+    section Epic 7 — Modération
+    7.1 Abuse Reporting             :e7s1, 37, 38
+    7.2 Moderation Cockpit          :e7s2, 38, 39
+    7.3 Moderation Actions          :e7s3, 39, 40
+    7.4 Seller History              :e7s4, 40, 41
+```
+
+---
+
 ## Requirements Inventory
 
 ### Functional Requirements

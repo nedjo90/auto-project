@@ -30,6 +30,105 @@ project_name: auto
 **Author:** Nhan
 **Date:** 2026-02-08
 
+## Diagrammes
+
+### Concept produit
+
+```mermaid
+graph TB
+    subgraph Vendeur["🚗 Vendeur"]
+        V1["Saisit plaque / VIN"]
+        V2["Complète champs déclarés"]
+        V3["Publie + Paie (15€)"]
+    end
+
+    subgraph Platform["⚡ Auto Platform"]
+        AF["Auto-Fill certifié<br/>APIs officielles"]
+        CERT["Certification par champ<br/>🟢 Certifié · 🟡 Déclaré"]
+        SCORE["Score de visibilité<br/>temps réel"]
+        REPORT["Rapport historique<br/>véhicule inclus"]
+    end
+
+    subgraph Acheteur["👤 Acheteur"]
+        A1["Recherche + Filtres"]
+        A2["Voit la certification<br/>champ par champ"]
+        A3["Contacte vendeur<br/>Chat temps réel"]
+    end
+
+    V1 --> AF
+    AF --> CERT
+    V2 --> CERT
+    CERT --> SCORE
+    V3 --> REPORT
+
+    REPORT --> A1
+    A1 --> A2
+    A2 --> A3
+
+    style Vendeur fill:#1e293b,stroke:#10b981,color:#f8fafc
+    style Platform fill:#1e293b,stroke:#6366f1,color:#f8fafc
+    style Acheteur fill:#1e293b,stroke:#3b82f6,color:#f8fafc
+```
+
+### Rôles utilisateur (RBAC)
+
+```mermaid
+graph LR
+    subgraph Roles["Hiérarchie des rôles"]
+        ANON["👁️ Visiteur anonyme<br/>Parcourir · Rechercher"]
+        BUYER["👤 Acheteur inscrit<br/>Favoris · Chat · Signaler"]
+        SELLER["🚗 Vendeur<br/>Cockpit · Annonces · KPIs"]
+        MOD["🛡️ Modérateur<br/>File signalements · Actions"]
+        ADMIN["⚙️ Administrateur<br/>Config · Dashboard · Tous rôles"]
+    end
+
+    ANON -->|"inscription"| BUYER
+    BUYER -->|"promotion"| SELLER
+    BUYER -->|"promotion"| MOD
+    MOD -->|"promotion"| ADMIN
+    SELLER -->|"promotion"| ADMIN
+
+    style ANON fill:#6b7280,stroke:#6b7280,color:#fff
+    style BUYER fill:#3b82f6,stroke:#3b82f6,color:#fff
+    style SELLER fill:#10b981,stroke:#10b981,color:#fff
+    style MOD fill:#f59e0b,stroke:#f59e0b,color:#fff
+    style ADMIN fill:#8b5cf6,stroke:#8b5cf6,color:#fff
+```
+
+### Modèle économique
+
+```mermaid
+graph LR
+    SELLER["🚗 Vendeur"] -->|"15€ / annonce"| PLATFORM["Auto Platform"]
+    PLATFORM -->|"coût API<br/>(variable)"| APIS["APIs Externes<br/>SIV · CarVertical · ADEME..."]
+    PLATFORM -->|"~3% frais"| STRIPE["Stripe"]
+    PLATFORM -->|"marge nette<br/>15€ - coûts API - frais"| REVENUE["💰 Revenu"]
+
+    style SELLER fill:#10b981,stroke:#10b981,color:#fff
+    style PLATFORM fill:#6366f1,stroke:#6366f1,color:#fff
+    style APIS fill:#f59e0b,stroke:#f59e0b,color:#fff
+    style STRIPE fill:#3b82f6,stroke:#3b82f6,color:#fff
+    style REVENUE fill:#10b981,stroke:#10b981,color:#fff
+```
+
+### Stratégie de lancement
+
+```mermaid
+graph LR
+    J1["J1 — Lancement<br/>3 000 véhicules<br/>Client ancre"]
+    M3["1-3 mois<br/>Réseau du client ancre<br/>Pros indépendants"]
+    M6["6+ mois<br/>Particuliers vendeurs<br/>Multi-pays"]
+
+    J1 -->|"croissance organique"| M3
+    M3 -->|"ouverture"| M6
+
+    style J1 fill:#10b981,stroke:#10b981,color:#fff
+    style M3 fill:#3b82f6,stroke:#3b82f6,color:#fff
+    style M6 fill:#8b5cf6,stroke:#8b5cf6,color:#fff
+```
+
+---
+
 ## Résumé Exécutif
 
 **auto** est une plateforme française de petites annonces véhicules d'occasion fondée sur la transparence certifiée et les données officielles.

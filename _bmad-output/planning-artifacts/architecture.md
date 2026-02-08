@@ -21,6 +21,278 @@ date: '2026-02-08'
 
 _This document builds collaboratively through step-by-step discovery. Sections are appended as we work through each architectural decision together._
 
+## Diagrammes d'architecture
+
+### Vue d'ensemble système
+
+```mermaid
+graph TB
+    subgraph Client["🌐 Client (Navigateur / PWA)"]
+        FE["Next.js 16<br/>React 19 · SSR + SPA"]
+        MSAL["MSAL.js<br/>Auth Azure AD B2C"]
+        SR_C["SignalR Client<br/>Chat · Notifications · Live Score"]
+        ZUS["Zustand Stores<br/>State cockpits SPA"]
+    end
+
+    subgraph Backend["⚙️ Backend (SAP CAP 8 · Node.js · TypeScript)"]
+        MW["Middleware Layer<br/>Auth JWT · Audit Trail · Rate Limit · API Logger"]
+        SRV_PUB["CatalogService<br/>OData v4 · Annonces · Recherche"]
+        SRV_ADM["AdminService<br/>Config · KPIs · Fournisseurs API"]
+        SRV_MOD["ModerationService<br/>Signalements · Actions"]
+        ADP["Adapter Factory<br/>8 interfaces · Résolution dynamique<br/>depuis ConfigApiProvider"]
+        LIB["Lib métier<br/>Certification · Visibility Score<br/>Crit'Air · Config Cache"]
+    end
+
+    subgraph Data["💾 Données"]
+        PG["PostgreSQL<br/>Entités domaine · Config zero-hardcode<br/>Cache API 48h · Audit trail"]
+        BLOB["Azure Blob Storage<br/>Photos · Déclarations PDF"]
+        CDN["Azure CDN<br/>Images optimisées"]
+    end
+
+    subgraph APIs["🔌 APIs Externes (via Adapter Pattern)"]
+        FREE["APIs gratuites V1<br/>ADEME · RappelConso · Crit'Air · NHTSA"]
+        PAID["APIs payantes (mock V1)<br/>SIV · SIVin · CarVertical · Autobiz"]
+        STRIPE["Stripe<br/>Paiement SEPA · PSD2/SCA"]
+    end
+
+    subgraph Azure["☁️ Services Azure"]
+        ADB2C["Azure AD B2C<br/>Identité · OAuth 2.0 PKCE · 2FA"]
+        SIG["Azure SignalR Service<br/>/chat · /notifications<br/>/live-score · /admin"]
+        MON["Azure Monitor<br/>Application Insights"]
+    end
+
+    FE -->|"OData v4 / REST custom"| MW
+    MSAL -->|"Authorization Code + PKCE"| ADB2C
+    SR_C -->|"WebSocket"| SIG
+
+    MW --> SRV_PUB
+    MW --> SRV_ADM
+    MW --> SRV_MOD
+
+    SRV_PUB --> ADP
+    SRV_PUB --> LIB
+    SRV_ADM --> LIB
+    ADP --> FREE
+    ADP --> PAID
+    ADP --> STRIPE
+
+    SRV_PUB --> PG
+    SRV_ADM --> PG
+    SRV_MOD --> PG
+    SRV_PUB --> BLOB
+    BLOB --> CDN
+
+    SIG --> SRV_PUB
+    MON -.->|"logs · métriques"| Backend
+
+    style Client fill:#1e293b,stroke:#3b82f6,color:#f8fafc
+    style Backend fill:#1e293b,stroke:#10b981,color:#f8fafc
+    style Data fill:#1e293b,stroke:#a855f7,color:#f8fafc
+    style APIs fill:#1e293b,stroke:#f59e0b,color:#f8fafc
+    style Azure fill:#1e293b,stroke:#6366f1,color:#f8fafc
+```
+
+### Modèle de données (entités CDS principales)
+
+```mermaid
+erDiagram
+    User ||--o{ UserRole : "a des rôles"
+    User ||--o{ Consent : "donne consentement"
+    User ||--o{ Listing : "vend"
+    User ||--o{ ChatMessage : "envoie"
+    User ||--o{ AuditTrailEntry : "déclenche"
+
+    Listing ||--|{ CertifiedField : "champs certifiés"
+    Listing ||--o| Declaration : "déclaration sur l'honneur"
+    Listing ||--o{ Photo : "photos"
+    Listing }|--|| Vehicle : "concerne"
+    Listing ||--o{ Report : "signalements"
+    Listing ||--o{ ChatMessage : "messages liés"
+
+    Vehicle ||--o{ ApiCachedData : "données API cachées"
+
+    ConfigParameter ||--o{ ConfigText : "traductions"
+    ConfigApiProvider ||--o{ ApiCallLog : "appels loggés"
+
+    User {
+        UUID ID PK
+        string email
+        string displayName
+        string phone
+        enum status
+    }
+
+    Listing {
+        UUID ID PK
+        enum status "Draft Published Sold Archived"
+        decimal price
+        integer visibilityScore
+        timestamp publishedAt
+    }
+
+    Vehicle {
+        UUID ID PK
+        string licensePlate
+        string vin
+        string brand
+        string model
+        date firstRegistration
+    }
+
+    CertifiedField {
+        UUID ID PK
+        string fieldName
+        string value
+        enum source "Certified Declared Pending"
+        string apiProvider
+        timestamp certifiedAt
+    }
+
+    ConfigParameter {
+        UUID ID PK
+        string key
+        string value
+        string category
+    }
+
+    ConfigApiProvider {
+        UUID ID PK
+        string name
+        boolean active
+        decimal costPerCall
+    }
+```
+
+### Adapter Pattern — Intégrations API
+
+```mermaid
+graph TB
+    FACTORY["AdapterFactory<br/>Résout l'implémentation active<br/>depuis ConfigApiProvider"]
+
+    subgraph Interfaces["Interfaces TypeScript"]
+        I1["IVehicleLookupAdapter"]
+        I2["IEmissionAdapter"]
+        I3["IRecallAdapter"]
+        I4["ICritAirCalculator"]
+        I5["IVINTechnicalAdapter"]
+        I6["IHistoryAdapter"]
+        I7["IValuationAdapter"]
+        I8["IPaymentAdapter"]
+    end
+
+    subgraph ImplV1["Implémentations V1"]
+        M1["MockVehicleLookup<br/><i>apiplaqueimmatriculation mock</i>"]
+        R2["AdemeEmissionAdapter<br/><i>API gratuite</i>"]
+        R3["RappelConsoAdapter<br/><i>API gratuite</i>"]
+        L4["LocalCritAirCalculator<br/><i>calcul local</i>"]
+        M5["MockVINAdapter<br/><i>NHTSA vPIC gratuit</i>"]
+        M6["MockHistoryAdapter<br/><i>CarVertical mock</i>"]
+        M7["MockValuationAdapter<br/><i>Autobiz mock</i>"]
+        S8["StripePaymentAdapter<br/><i>actif V1</i>"]
+    end
+
+    FACTORY --> I1
+    FACTORY --> I2
+    FACTORY --> I3
+    FACTORY --> I4
+    FACTORY --> I5
+    FACTORY --> I6
+    FACTORY --> I7
+    FACTORY --> I8
+
+    I1 -.-> M1
+    I2 -.-> R2
+    I3 -.-> R3
+    I4 -.-> L4
+    I5 -.-> M5
+    I6 -.-> M6
+    I7 -.-> M7
+    I8 -.-> S8
+
+    style FACTORY fill:#6366f1,stroke:#6366f1,color:#fff
+    style Interfaces fill:#1e293b,stroke:#3b82f6,color:#f8fafc
+    style ImplV1 fill:#1e293b,stroke:#10b981,color:#f8fafc
+```
+
+### Infrastructure & Déploiement
+
+```mermaid
+graph TB
+    subgraph Dev["💻 Dev local"]
+        D_FE["next dev :3000"]
+        D_BE["cds watch :4004"]
+        D_DB["SQLite in-memory"]
+        D_SH["npm link @auto/shared"]
+    end
+
+    subgraph CI["🔄 Azure Pipelines"]
+        LINT["lint"]
+        TC["type-check"]
+        TEST["test"]
+        BUILD["build"]
+        COV["coverage ≥90%"]
+        LINT --> TC --> TEST --> BUILD --> COV
+    end
+
+    subgraph Staging["🧪 Staging"]
+        S_FE["App Service Slot<br/>Frontend"]
+        S_BE["App Service Slot<br/>Backend"]
+        S_DB["PostgreSQL Azure"]
+    end
+
+    subgraph Prod["🚀 Production"]
+        P_FE["App Service<br/>Frontend SSR<br/>~30-50€/mois"]
+        P_BE["App Service<br/>Backend CAP<br/>~30-50€/mois"]
+        P_DB["PostgreSQL Azure"]
+        P_BLOB["Blob Storage + CDN<br/>~5-10€/mois"]
+        P_SIG["Azure SignalR"]
+        P_B2C["Azure AD B2C<br/>50K auth/mois gratuit"]
+        P_MON["Azure Monitor<br/>Application Insights"]
+    end
+
+    Dev -->|"git push"| CI
+    CI -->|"deploy slot"| Staging
+    Staging -->|"swap to prod"| Prod
+
+    style Dev fill:#1e293b,stroke:#3b82f6,color:#f8fafc
+    style CI fill:#1e293b,stroke:#8b5cf6,color:#f8fafc
+    style Staging fill:#1e293b,stroke:#f59e0b,color:#f8fafc
+    style Prod fill:#1e293b,stroke:#10b981,color:#f8fafc
+```
+
+### Frontière SSR / SPA (Next.js App Router)
+
+```mermaid
+graph LR
+    subgraph Public["(public)/ — SSR · SEO"]
+        HP["/ Homepage"]
+        LS["/listing/[slug] Fiche annonce"]
+        SR["/search Recherche + Filtres"]
+        LP["Landing Pages"]
+    end
+
+    subgraph Auth["(auth)/"]
+        LG["/login"]
+        RG["/register"]
+        CB["/callback"]
+    end
+
+    subgraph Dashboard["(dashboard)/ — SPA · Auth requise"]
+        SE["Vendeur<br/>Cockpit · KPIs · Stock"]
+        MO["Modérateur<br/>File signalements · Actions"]
+        AD["Admin<br/>Config · Dashboard · APIs"]
+    end
+
+    Public -->|"mur d'inscription"| Auth
+    Auth -->|"après login"| Dashboard
+
+    style Public fill:#1e293b,stroke:#3b82f6,color:#f8fafc
+    style Auth fill:#1e293b,stroke:#f59e0b,color:#f8fafc
+    style Dashboard fill:#1e293b,stroke:#10b981,color:#f8fafc
+```
+
+---
+
 ## Project Context Analysis
 
 ### Requirements Overview
