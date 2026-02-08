@@ -45,8 +45,8 @@ development_status:
   1-1-project-bootstrap: done
   1-2-user-registration: done
   1-3-consent-rgpd: done
-  1-4-authentication: in-progress
-  1-5-rbac: ready-for-dev
+  1-4-authentication: review
+  1-5-rbac: review
   1-6-user-profile: ready-for-dev
   1-7-anonymization-export: ready-for-dev
   epic-1-retrospective: optional
