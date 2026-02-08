@@ -259,6 +259,11 @@ Claude Opus 4.6
 - 2026-02-08: Task 5 — Admin user management page, role assignment dialog
 - 2026-02-08: Task 6 — Shared RBAC types, updated Role type and constants
 - 2026-02-08: Task 7 — All 390 unit tests green, backend role assertion fix
+- 2026-02-08: Code Review Fixes — Adversarial review found 12 HIGH, 12 MEDIUM, 3 LOW issues. All HIGH/MEDIUM fixed:
+  - Shared: `PermissionCode` literal union type, typed `IPermission.code`/`IConfigFeature.requiredRole_code`, `Role`→`RoleCode` alias, `ROLE_CODES`→`ROLES` alias, `Readonly<Record>` for `ROLE_HIERARCHY`
+  - Backend: extracted `rbac-utils.ts` (DRY `resolveUserPermissions`/`extractIpAddress`), `removeRole` race condition fix (delete-then-verify), null `buyerRole` check, RFC 7807 Content-Type on all error responses, CDS entity exposure in `rbac-service.cds`
+  - Frontend: RoleGuard spinner fallback (flash fix), `safeReturnUrl()` open redirect protection, AbortController for fetch cleanup, sortable admin table columns, `useFeatureConfig` error state, registration wall accessibility (`role="dialog"`, `aria-modal`, auto-focus), implemented Task 5.3 audit log display (`AuditLogTable`), deleted local `config-feature.ts` (uses `@auto/shared`)
+  - Tests: 82 shared + 154 backend + 160 frontend = 396 total passing
 
 ### File List
 - auto-backend/db/schema/rbac.cds (new)
@@ -291,7 +296,7 @@ Claude Opus 4.6
 - auto-frontend/src/app/(dashboard)/moderator/page.tsx (new)
 - auto-frontend/tests/components/auth/role-guard.test.tsx (new)
 - auto-frontend/tests/app/dashboard/unauthorized-page.test.tsx (new)
-- auto-frontend/src/types/config-feature.ts (new)
+- auto-frontend/src/types/config-feature.ts (deleted — uses @auto/shared)
 - auto-frontend/src/stores/feature-config-store.ts (new)
 - auto-frontend/src/hooks/use-feature-config.ts (new)
 - auto-frontend/src/components/auth/registration-wall.tsx (new)
@@ -311,4 +316,7 @@ Claude Opus 4.6
 - auto-shared/src/constants/index.ts (modified — new RBAC constant exports)
 - auto-shared/tests/rbac-types.test.ts (new)
 - auto-shared/tests/constants.test.ts (modified — updated role assertions)
+- auto-backend/srv/lib/rbac-utils.ts (new — shared resolveUserPermissions/extractIpAddress)
 - auto-backend/test/setup.test.ts (modified — updated role assertion)
+- auto-frontend/src/components/admin/audit-log-table.tsx (new — audit log display)
+- auto-frontend/tests/components/admin/audit-log-table.test.tsx (new)

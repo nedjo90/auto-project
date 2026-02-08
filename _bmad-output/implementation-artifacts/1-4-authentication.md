@@ -1,6 +1,6 @@
 # Story 1.4: User Authentication (Login, Logout, Session, 2FA)
 
-Status: in-progress
+Status: review
 
 ## Story
 
@@ -154,45 +154,45 @@ so that my account is protected and I can access role-specific features.
 ### Review Follow-ups (AI) — Code Review 2026-02-08
 
 #### HIGH — Must Fix
-- [ ] [AI-Review][HIGH] H1: `req.user?.attr?.roles` reads non-existent path — should be `req.user?.roles`. Toggle 2FA always returns 403. [auto-backend/srv/handlers/security-handler.ts:19]
-- [ ] [AI-Review][HIGH] H2: Open redirect in callback — `response.state` not validated as relative/same-origin URL. [auto-frontend/src/app/(auth)/callback/page.tsx:17-18]
-- [ ] [AI-Review][HIGH] H3: `acquireTokenSilent()` and `isAuthenticated()` don't await `msalInitPromise` — race condition on early page load. [auto-frontend/src/lib/auth/auth-utils.ts:24,56]
-- [ ] [AI-Review][HIGH] H4: Shared types dead code — `IDecodedToken`, `IUserContext`, `IAuthState`, `IAuthUser` not imported by backend or frontend. Local duplicates exist. [auto-shared/src/types/auth.ts, auto-backend/srv/lib/jwt-validator.ts:10, auto-frontend/src/stores/auth-store.ts:3]
-- [ ] [AI-Review][HIGH] H5: Backend env vars (`AZURE_AD_B2C_*`) fallback to `""` silently — should fail fast in production. [auto-backend/srv/lib/jwt-validator.ts:17-20]
-- [ ] [AI-Review][HIGH] H6: `apiClient` returns 401 response AND triggers redirect — caller receives garbage response. [auto-frontend/src/lib/auth/api-client.ts:27-31]
-- [ ] [AI-Review][HIGH] H7: CDS role lookup errors silently swallowed (`catch {}`) — DB down = all users lose roles. [auto-backend/srv/middleware/auth-middleware.ts:78-81]
-- [ ] [AI-Review][HIGH] H8: No `algorithms` restriction in `jwtVerify()` — should pin `["RS256"]` per RFC 8725. [auto-backend/srv/lib/jwt-validator.ts:43]
-- [ ] [AI-Review][HIGH] H9: Same `CLIENT_ID` env var used for JWT audience AND Graph API daemon — these are different app registrations. [auto-backend/srv/handlers/security-handler.ts:72]
+- [x] [AI-Review][HIGH] H1: `req.user?.attr?.roles` reads non-existent path — should be `req.user?.roles`. Toggle 2FA always returns 403. [auto-backend/srv/handlers/security-handler.ts:19]
+- [x] [AI-Review][HIGH] H2: Open redirect in callback — `response.state` not validated as relative/same-origin URL. [auto-frontend/src/app/(auth)/callback/page.tsx:17-18]
+- [x] [AI-Review][HIGH] H3: `acquireTokenSilent()` and `isAuthenticated()` don't await `msalInitPromise` — race condition on early page load. [auto-frontend/src/lib/auth/auth-utils.ts:24,56]
+- [x] [AI-Review][HIGH] H4: Shared types dead code — `IDecodedToken`, `IUserContext`, `IAuthState`, `IAuthUser` not imported by backend or frontend. Local duplicates exist. [auto-shared/src/types/auth.ts, auto-backend/srv/lib/jwt-validator.ts:10, auto-frontend/src/stores/auth-store.ts:3]
+- [x] [AI-Review][HIGH] H5: Backend env vars (`AZURE_AD_B2C_*`) fallback to `""` silently — should fail fast in production. [auto-backend/srv/lib/jwt-validator.ts:17-20]
+- [x] [AI-Review][HIGH] H6: `apiClient` returns 401 response AND triggers redirect — caller receives garbage response. [auto-frontend/src/lib/auth/api-client.ts:27-31]
+- [x] [AI-Review][HIGH] H7: CDS role lookup errors silently swallowed (`catch {}`) — DB down = all users lose roles. [auto-backend/srv/middleware/auth-middleware.ts:78-81]
+- [x] [AI-Review][HIGH] H8: No `algorithms` restriction in `jwtVerify()` — should pin `["RS256"]` per RFC 8725. [auto-backend/srv/lib/jwt-validator.ts:43]
+- [x] [AI-Review][HIGH] H9: Same `CLIENT_ID` env var used for JWT audience AND Graph API daemon — these are different app registrations. [auto-backend/srv/handlers/security-handler.ts:72]
 
 #### MEDIUM — Should Fix
-- [ ] [AI-Review][MEDIUM] M1: `mousemove` event listener without throttle — dozens of Zustand updates/sec. [auto-frontend/src/hooks/use-inactivity-timeout.ts:28]
-- [ ] [AI-Review][MEDIUM] M2: `useInactivityTimeout` JSDoc return type doesn't match actual return. [auto-frontend/src/hooks/use-inactivity-timeout.ts:55]
-- [ ] [AI-Review][MEDIUM] M3: `setTimeout` in callback page useEffect not cleaned up on unmount. [auto-frontend/src/app/(auth)/callback/page.tsx:28]
-- [ ] [AI-Review][MEDIUM] M4: `logoutRedirect()` called without await/catch in SessionTimeoutWarning. [auto-frontend/src/components/auth/session-timeout-warning.tsx:41,86]
-- [ ] [AI-Review][MEDIUM] M5: Duplicate timeout logic between hook and component — double `logoutRedirect` possible. [auto-frontend/src/hooks/use-inactivity-timeout.ts + session-timeout-warning.tsx]
-- [ ] [AI-Review][MEDIUM] M6: `options.headers as Record<string,string>` drops Headers objects silently. [auto-frontend/src/lib/auth/api-client.ts:15]
-- [ ] [AI-Review][MEDIUM] M7: Frontend msal-config env vars fallback to `""` without error. [auto-frontend/src/lib/auth/msal-config.ts:5-8]
-- [ ] [AI-Review][MEDIUM] M8: RFC 7807 missing `Content-Type: application/problem+json` header. [auto-backend/srv/middleware/auth-middleware.ts:14-21]
-- [ ] [AI-Review][MEDIUM] M9: `GraphClient` recreated on every toggle2FA call — no caching. [auto-backend/srv/handlers/security-handler.ts:69-88]
-- [ ] [AI-Review][MEDIUM] M10: `roles: string[]` in shared types should be `roles: Role[]`. [auto-shared/src/types/auth.ts:23,32]
-- [ ] [AI-Review][MEDIUM] M11: `IAuthState` JSDoc says "Zustand store shape" but missing action methods. [auto-shared/src/types/auth.ts:29-35]
+- [x] [AI-Review][MEDIUM] M1: `mousemove` event listener without throttle — dozens of Zustand updates/sec. [auto-frontend/src/hooks/use-inactivity-timeout.ts:28]
+- [x] [AI-Review][MEDIUM] M2: `useInactivityTimeout` JSDoc return type doesn't match actual return. [auto-frontend/src/hooks/use-inactivity-timeout.ts:55]
+- [x] [AI-Review][MEDIUM] M3: `setTimeout` in callback page useEffect not cleaned up on unmount. [auto-frontend/src/app/(auth)/callback/page.tsx:28]
+- [x] [AI-Review][MEDIUM] M4: `logoutRedirect()` called without await/catch in SessionTimeoutWarning. [auto-frontend/src/components/auth/session-timeout-warning.tsx:41,86]
+- [x] [AI-Review][MEDIUM] M5: Duplicate timeout logic between hook and component — double `logoutRedirect` possible. [auto-frontend/src/hooks/use-inactivity-timeout.ts + session-timeout-warning.tsx]
+- [x] [AI-Review][MEDIUM] M6: `options.headers as Record<string,string>` drops Headers objects silently. [auto-frontend/src/lib/auth/api-client.ts:15]
+- [x] [AI-Review][MEDIUM] M7: Frontend msal-config env vars fallback to `""` without error. [auto-frontend/src/lib/auth/msal-config.ts:5-8]
+- [x] [AI-Review][MEDIUM] M8: RFC 7807 missing `Content-Type: application/problem+json` header. [auto-backend/srv/middleware/auth-middleware.ts:14-21]
+- [x] [AI-Review][MEDIUM] M9: `GraphClient` recreated on every toggle2FA call — no caching. [auto-backend/srv/handlers/security-handler.ts:69-88]
+- [x] [AI-Review][MEDIUM] M10: `roles: string[]` in shared types should be `roles: Role[]`. [auto-shared/src/types/auth.ts:23,32]
+- [x] [AI-Review][MEDIUM] M11: `IAuthState` JSDoc says "Zustand store shape" but missing action methods. [auto-shared/src/types/auth.ts:29-35]
 
 #### LOW — Nice to Fix
-- [ ] [AI-Review][LOW] L1: `isLoading` in auth-store never set to `true` — dead state. [auto-frontend/src/stores/auth-store.ts]
-- [ ] [AI-Review][LOW] L2: TopBar has "Dashboard" in English — should be French. [auto-frontend/src/components/layout/top-bar.tsx:9]
-- [ ] [AI-Review][LOW] L3: Unused `cds` import in config-service.ts. [auto-backend/srv/config-service.ts:1]
-- [ ] [AI-Review][LOW] L4: `IDecodedToken` index signature `[key: string]: unknown` too permissive. [auto-shared/src/types/auth.ts:13]
-- [ ] [AI-Review][LOW] L5: `SecurityService.cds` missing `@restrict` on action (defense-in-depth). [auto-backend/srv/security-service.cds]
-- [ ] [AI-Review][LOW] L6: `(req as any).user` — no Express type augmentation. [auto-backend/srv/middleware/auth-middleware.ts:83]
+- [ ] [AI-Review][LOW] L1: `isLoading` in auth-store never set to `true` — dead state. [auto-frontend/src/stores/auth-store.ts] *(deferred — will be used in future stories)*
+- [x] [AI-Review][LOW] L2: TopBar has "Dashboard" in English — should be French. [auto-frontend/src/components/layout/top-bar.tsx:9]
+- [x] [AI-Review][LOW] L3: Unused `cds` import in config-service.ts. [auto-backend/srv/config-service.ts:1]
+- [x] [AI-Review][LOW] L4: `IDecodedToken` index signature `[key: string]: unknown` too permissive. [auto-shared/src/types/auth.ts:13]
+- [x] [AI-Review][LOW] L5: `SecurityService.cds` missing `@restrict` on action (defense-in-depth). [auto-backend/srv/security-service.cds]
+- [x] [AI-Review][LOW] L6: `(req as any).user` — no Express type augmentation. [auto-backend/srv/middleware/auth-middleware.ts:83]
 
-#### TEST — Quality Issues
+#### TEST — Quality Issues *(deferred to next sprint — test improvements)*
 - [ ] [AI-Review][TEST-HIGH] T1: `config-service.test.ts` reads files, doesn't test service behavior. [auto-backend/test/srv/config-service.test.ts]
 - [ ] [AI-Review][TEST-HIGH] T2: `jwt-validator.test.ts` has no happy-path test (valid token). [auto-backend/test/srv/lib/jwt-validator.test.ts]
 - [ ] [AI-Review][TEST-HIGH] T3: `auth-middleware.test.ts` role query test tests the empty catch, not actual roles. [auto-backend/test/srv/middleware/auth-middleware.test.ts]
 - [ ] [AI-Review][TEST-HIGH] T4: No test file for callback page (open redirect untested). [missing: tests/app/auth/callback-page.test.tsx]
 - [ ] [AI-Review][TEST-HIGH] T5: `security-page.test.tsx` has no toggle 2FA interaction test. [auto-frontend/tests/app/dashboard/security-page.test.tsx]
 - [ ] [AI-Review][TEST-HIGH] T6: `session-timeout-warning.test.tsx` 3rd test is smoke-only. [auto-frontend/tests/components/auth/session-timeout-warning.test.tsx]
-- [ ] [AI-Review][TEST-MEDIUM] T7: `security-handler.test.ts` mock CDS doesn't match real API — passes by accident. [auto-backend/test/srv/handlers/security-handler.test.ts]
+- [x] [AI-Review][TEST-MEDIUM] T7: `security-handler.test.ts` mock CDS doesn't match real API — passes by accident. [auto-backend/test/srv/handlers/security-handler.test.ts] *(fixed — added cds mock with entities())*
 - [ ] [AI-Review][TEST-MEDIUM] T8: `msal-config.test.ts` tautological — `isDefined` on `""`. [auto-frontend/tests/lib/auth/msal-config.test.ts]
 - [ ] [AI-Review][TEST-MEDIUM] T9: `auth-types.test.ts` pure compile checks, no constraints. [auto-shared/tests/auth-types.test.ts]
 - [ ] [AI-Review][TEST-MEDIUM] T10: `login-page.test.tsx` missing error/loading state tests. [auto-frontend/tests/app/auth/login-page.test.tsx]
@@ -285,6 +285,15 @@ Claude Opus 4.6
 - 2026-02-08: Task 1 complete — MSAL config, auth utilities, authenticated HTTP client
 - 2026-02-08: Tasks 2-8 complete — Full auth implementation, 280 tests green, story moved to review
 - 2026-02-08: Code review — 9 HIGH, 11 MEDIUM, 6 LOW, 10 TEST issues found. Action items created. Story moved back to in-progress
+- 2026-02-08: Review fixes applied — 9/9 HIGH, 11/11 MEDIUM, 5/6 LOW, 1/10 TEST fixed. 280 tests green (71+113+96). L1 deferred (isLoading used in future). TEST items deferred to next sprint. Story moved to review
+- 2026-02-08: Second adversarial review — 4 HIGH (stale role codes from Story 1-5 changes), 12 MEDIUM issues. All fixed:
+  - H1-H4: Fixed SELLER_ROLES to ["seller"], security page hasRole("seller"), test "admin"→"administrator"
+  - M1: Graph client env var validation. M2: B2C MFA design TODO. M3: jwt-validator cleanup
+  - M4: UserMenu logoutRedirect catch. M5: response.ok before json(). M6: SessionTimeoutWarning wired into layout
+  - M7: Real behavioral tests for SessionTimeoutWarning. M8: Callback page test with isSafeReturnUrl
+  - M9: Remove dead checkSessionTimeout. M10: RoleCode replaces deprecated Role in auth.ts
+  - M11: Meaningful auth-types tests. M12: Role code validation at auth-middleware boundary
+  - 407 tests green (85 shared + 154 backend + 168 frontend)
 
 ### File List
 - auto-frontend/src/lib/auth/msal-config.ts (modified)
@@ -333,3 +342,5 @@ Claude Opus 4.6
 - auto-shared/src/types/auth.ts (new)
 - auto-shared/src/types/index.ts (modified - added auth type exports, removed phantom ConsentStatus)
 - auto-shared/tests/auth-types.test.ts (new)
+- auto-frontend/tests/app/auth/callback-page.test.tsx (new - second review)
+- auto-frontend/src/app/(dashboard)/layout.tsx (modified - second review, wired SessionTimeoutWarning)
