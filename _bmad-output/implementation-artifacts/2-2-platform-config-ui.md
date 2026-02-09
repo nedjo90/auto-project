@@ -1,6 +1,6 @@
 # Story 2.2: Platform Configuration UI (Prices, Texts, Rules, Features)
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
