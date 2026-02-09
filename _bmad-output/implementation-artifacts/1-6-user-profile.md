@@ -1,6 +1,6 @@
 # Story 1.6: User Profile & Seller Rating Contribution
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
