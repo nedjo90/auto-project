@@ -55,7 +55,7 @@ development_status:
   epic-2: in-progress
   2-1-config-engine: done
   2-2-platform-config-ui: done
-  2-3-api-provider-management: review
+  2-3-api-provider-management: done
   2-4-admin-dashboard-kpis: ready-for-dev
   2-5-configurable-alerts: ready-for-dev
   2-6-seo-templates: ready-for-dev
