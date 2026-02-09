@@ -1,6 +1,6 @@
 # Story 1.7: Account Anonymization & Personal Data Export
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 

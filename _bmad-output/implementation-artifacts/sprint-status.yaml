@@ -41,14 +41,14 @@ story_location: _bmad-output/implementation-artifacts
 
 development_status:
   # Epic 1: Authentification & Gestion des Comptes (7 stories)
-  epic-1: in-progress
+  epic-1: done
   1-1-project-bootstrap: done
   1-2-user-registration: done
   1-3-consent-rgpd: done
-  1-4-authentication: review
-  1-5-rbac: review
+  1-4-authentication: done
+  1-5-rbac: done
   1-6-user-profile: done
-  1-7-anonymization-export: ready-for-dev
+  1-7-anonymization-export: done
   epic-1-retrospective: optional
 
   # Epic 2: Configuration Zero-Hardcode & Administration (8 stories)
