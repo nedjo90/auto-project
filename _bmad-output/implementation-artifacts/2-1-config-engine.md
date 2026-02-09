@@ -1,6 +1,6 @@
 # Story 2.1: Zero-Hardcode Configuration Engine
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
