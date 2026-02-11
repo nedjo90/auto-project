@@ -1,6 +1,6 @@
 # Story 2.4: Admin Dashboard & Real-Time KPIs
 
-Status: review
+Status: done
 
 ## Story
 
@@ -165,6 +165,27 @@ Claude Opus 4.6
 - Task 4: Added KPI drill-down page, backend endpoint, and tests (2026-02-09)
 - Task 5: Added admin super-role hierarchy expansion and UI role indicator (2026-02-09)
 - Task 6: Added loading skeletons and 30s TTL client-side cache for dashboard APIs (2026-02-09)
+- Code Review: Fixed 6 issues (1C, 3H, 2M) — proper JWT for SignalR, DRY aggregation handlers, cache invalidation on live updates, explicit hierarchy lookup, documentation fixes (2026-02-11)
+
+### Senior Developer Review (AI)
+
+**Reviewer:** Claude Opus 4.6 on 2026-02-11
+**Outcome:** Approved with fixes applied
+
+**Issues Found & Fixed:**
+- **[C1] emitKpiUpdate dead code**: Made public + documented as infrastructure for future entity AFTER handlers
+- **[H1] Invalid SignalR JWT**: Replaced Base64 stub with proper HS256-signed JWT using Node.js crypto
+- **[H2] Code duplication**: Extracted `aggregateMetricByDate()` shared by getDashboardTrend and getKpiDrillDown
+- **[H3] Cache/SignalR disconnect**: `useLiveKpis` now calls `clearDashboardCache()` on kpiUpdate events
+- **[M1] Dual role expansion**: Added clarifying comments (backend for API auth, frontend for MSAL raw roles)
+- **[M3] Fragile role ordering**: AdminRoleIndicator now uses explicit ROLE_HIERARCHY lookup
+
+**Known Gaps (deferred):**
+- Task 3.4 (CDS AFTER handler SignalR emission): Infrastructure only — entities (Listing, Contact, Sale) not yet in schema
+- Traffic sources (AC1): Returns empty array — awaiting analytics integration
+- French strings hardcoded in UI (anti-pattern L1): Should migrate to i18n in future
+
+**Test Results Post-Fix:** 158 shared + 333 backend + 345 frontend = 836 tests green
 
 ### File List
 - auto-shared/src/types/dashboard.ts (new)
