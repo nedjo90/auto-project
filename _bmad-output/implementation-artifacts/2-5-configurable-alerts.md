@@ -1,6 +1,6 @@
 # Story 2.5: Configurable Alerts & Thresholds
 
-Status: review
+Status: done
 
 ## Story
 
@@ -159,6 +159,38 @@ Claude Opus 4.6
 - Task 5: Created alert notification delivery (SignalR in-app + email placeholder), wired into evaluation cycle and server startup (2026-02-11)
 - Task 6: Created alert banner component on admin dashboard with real-time updates and acknowledge flow (2026-02-11)
 - Task 7: Added API provider consecutive failure tracking and auto-alert in api-logger (2026-02-11)
+
+### Senior Developer Review
+
+**Review Date:** 2026-02-11
+**Findings:** 14 total (2 critical, 4 high, 6 medium, 2 low)
+**Fixed:** 11 | **Deferred:** 3 (low-priority)
+
+#### Fixed Findings
+
+| # | Severity | Description | Fix |
+|---|----------|-------------|-----|
+| F1 | Critical | `isThresholdBreached` `equals` used strict equality (`===`) — fails for floating-point (0.1+0.2≠0.3) | Changed to epsilon-based comparison (`Math.abs(a-b) < 1e-6`) |
+| F2 | High | `getActiveAlerts` unbounded SELECT could return thousands of rows | Added `.orderBy("createdAt desc").limit(50)` |
+| F3 | High | No Zod validation on ConfigAlert CRUD — invalid data could bypass frontend | Added `configAlertInputSchema` validation in BEFORE handler |
+| F4 | High | `failureCounters` Map unbounded — could grow indefinitely with many providers | Added `MAX_TRACKED_PROVIDERS=1000` cap with FIFO eviction |
+| F5 | High | `createAlertEvent` UPDATE on `lastTriggeredAt` fails for synthetic auto-alert IDs | Skip UPDATE when `alert.ID.startsWith("auto-")` |
+| F6 | Medium | `evaluateMetric` loaded full tables into memory for counting | Changed to aggregate queries (`SELECT.one ... count(*) as cnt`) |
+| F7 | Medium | Alert message duplicated between `createAlertEvent` and `runEvaluationCycle` | Changed `createAlertEvent` to return `{ id, message }`, DRY message construction |
+| F8 | Medium | `AlertEvent.alertId` is loose String, not Association — unclear why | Added CDS comment explaining synthetic auto-alert IDs |
+| F9 | Medium | `thresholdValue` from cache could be string, not number | Added `Number()` normalization in `runEvaluationCycle` |
+| F11 | Medium | No cleanup of periodic evaluation interval on shutdown | Added `cds.on("shutdown")` handler calling `stopPeriodicEvaluation()` |
+| F12 | Medium | Missing server-side validation (covered by F3) | Resolved via F3 Zod validation |
+
+#### Deferred Findings (Low Priority)
+
+| # | Severity | Description | Reason |
+|---|----------|-------------|--------|
+| F10 | Low | No delete UI for alerts — only create/edit/toggle | Non-critical; admin can disable alerts instead |
+| F13 | Low | No polling fallback if SignalR connection drops | Out of scope; existing SignalR reconnect handles it |
+| F14 | Low | ConfigAlert `@assert.unique` on name — could cause label collision UX issues | Edge case; Zod + DB constraint provide sufficient protection |
+
+**Post-fix test results:** 189 shared + 383 backend + 376 frontend = **948 tests green**
 
 ### File List
 - auto-shared/src/types/config.ts (modified - added alert types)

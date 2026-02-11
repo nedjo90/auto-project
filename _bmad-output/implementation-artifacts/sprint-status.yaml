@@ -57,7 +57,7 @@ development_status:
   2-2-platform-config-ui: done
   2-3-api-provider-management: done
   2-4-admin-dashboard-kpis: done
-  2-5-configurable-alerts: review
+  2-5-configurable-alerts: done
   2-6-seo-templates: ready-for-dev
   2-7-legal-texts: ready-for-dev
   2-8-audit-trail: ready-for-dev
