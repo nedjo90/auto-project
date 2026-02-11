@@ -219,8 +219,8 @@ graph TB
 ```mermaid
 graph TB
     subgraph Dev["💻 Dev local"]
-        D_FE["next dev :3000"]
-        D_BE["cds watch :4004"]
+        D_FE["next dev :3000<br/>Rewrites proxy /api/* → :4004"]
+        D_BE["cds-tsx serve :4004<br/>CDS mock auth (admin:)"]
         D_DB["SQLite in-memory"]
         D_SH["npm link @auto/shared"]
     end
@@ -259,6 +259,70 @@ graph TB
     style Staging fill:#1e293b,stroke:#f59e0b,color:#f8fafc
     style Prod fill:#1e293b,stroke:#10b981,color:#f8fafc
 ```
+
+### Architecture Développement Local (Dev Mode)
+
+En développement local, Azure AD B2C n'est pas configuré. L'architecture utilise un mode dégradé automatique qui permet de tester le frontend et le backend ensemble sans dépendance Azure.
+
+```mermaid
+graph TB
+    subgraph Frontend["🌐 Frontend (Next.js :3000)"]
+        FE_DEV["next dev :3000"]
+        PROXY["Rewrites Proxy<br/>/api/* → localhost:4004/api/*"]
+        MSAL_COND["MsalProvider conditionnel<br/>Azure: MsalReactProvider<br/>Dev: DevAuthHydrator"]
+        AUTH_STORE["Zustand authStore<br/>Dev: admin auto-login<br/>Prod: MSAL sync"]
+        API_CLIENT["apiClient<br/>Dev: Basic auth (admin:)<br/>Prod: Bearer JWT"]
+    end
+
+    subgraph Backend["⚙️ Backend (CAP :4004)"]
+        MW_AUTH["Auth Middleware<br/>Dev: passthrough → CDS mock<br/>Prod: JWT validation"]
+        CDS_MOCK["CDS Mock Auth<br/>admin → administrator role<br/>user → authenticated-user"]
+        SRV["CAP Services<br/>AdminService · ConfigService<br/>ConsentService · RegistrationService"]
+        DB_SQLITE["SQLite in-memory<br/>Seed data CSV"]
+    end
+
+    FE_DEV -->|"/api/*"| PROXY
+    PROXY -->|"Basic admin:"| MW_AUTH
+    MSAL_COND --> AUTH_STORE
+    AUTH_STORE --> API_CLIENT
+    API_CLIENT --> PROXY
+    MW_AUTH -->|"passthrough"| CDS_MOCK
+    CDS_MOCK --> SRV
+    SRV --> DB_SQLITE
+
+    style Frontend fill:#1e293b,stroke:#3b82f6,color:#f8fafc
+    style Backend fill:#1e293b,stroke:#10b981,color:#f8fafc
+```
+
+**Détails du mode dev:**
+
+| Composant | Mode Dev (pas d'Azure) | Mode Prod (Azure AD B2C) |
+|---|---|---|
+| **Frontend auth** | `DevAuthHydrator` hydrate authStore avec admin user | `MsalReactProvider` gère tokens MSAL |
+| **API calls** | `Basic admin:` (CDS mock auth) | `Bearer <JWT>` via MSAL |
+| **Auth middleware** | Passthrough vers CDS mock auth | Validation JWT + lookup rôles BDD |
+| **RoleGuard** | Passe via authStore hydraté (administrator) | Vérifie rôles expandus depuis authStore |
+| **MSAL init** | `initialize()` appelé mais silencieux sur erreur | Init complète avec account setup |
+| **Proxy API** | Next.js rewrites `/api/*` → `localhost:4004` | Proxy Azure ou URL directe backend |
+
+**Configuration CDS mock auth** (`auto-backend/package.json`):
+```json
+{
+  "cds": {
+    "requires": {
+      "auth": {
+        "kind": "mocked",
+        "users": {
+          "admin": { "password": "", "roles": ["administrator", "authenticated-user"] },
+          "user": { "password": "", "roles": ["authenticated-user"] }
+        }
+      }
+    }
+  }
+}
+```
+
+**Détection automatique:** Le mode dev s'active quand `NEXT_PUBLIC_AZURE_AD_B2C_CLIENT_ID` n'est pas défini (frontend) et `AZURE_AD_B2C_TENANT_NAME` n'est pas défini (backend).
 
 ### Frontière SSR / SPA (Next.js App Router)
 
@@ -524,6 +588,7 @@ auto-shared/            # Package npm privé
 | **RBAC** | Hybride : AD B2C identité + PostgreSQL permissions | N/A | AD B2C gère l'authentification (qui es-tu). Table `user_roles` en BDD gère l'autorisation (que peux-tu faire). Cohérent avec zero-hardcode : les permissions sont configurables admin. |
 | **2FA** | Azure AD B2C MFA natif | N/A | Activé pour comptes professionnels. Configurable via policies AD B2C. |
 | **Session** | JWT stateless + refresh token | N/A | Access token courte durée (~1h), refresh token longue durée. Expiration configurable via `config_parameters`. |
+| **Dev-mode auth** | CDS mock auth + auto-login admin | N/A | En dev local (pas d'Azure AD B2C), le middleware backend passe au CDS mock auth (Basic auth), le frontend auto-hydrate authStore avec admin user, et apiClient utilise Basic auth au lieu de Bearer JWT. Détection via absence de `NEXT_PUBLIC_AZURE_AD_B2C_CLIENT_ID` (frontend) et `AZURE_AD_B2C_TENANT_NAME` (backend). |
 | **Chiffrement au repos** | Azure Transparent Data Encryption (TDE) | N/A | PostgreSQL managé Azure = TDE activé par défaut. Chiffrement additionnel applicatif pour données sensibles (SIRET, coordonnées) via `pgcrypto`. |
 
 ### API & Communication Patterns
@@ -623,6 +688,11 @@ type UserRole : String enum { Buyer; Seller; Moderator; Administrator; }
 ```
 
 PostgreSQL output: CDS compiles to snake_case automatically (`first_registration_date`). Agents MUST NEVER touch DDL directly.
+
+**CDS Reserved Word Escaping (CAP 8.9+ / CDS compiler 5.9.16+):**
+- `key` is a reserved word — use `![key]` in entity element definitions and where clauses
+- `@assert.unique` uses array syntax: `@assert.unique: {name: [field]}` (not `{field}`)
+- Function return types cannot reference external namespace entities — use service-local projections
 
 **API / OData:**
 
@@ -1204,7 +1274,7 @@ auto-backend/
 │   │   └── payment/
 │   │       └── stripe-payment.adapter.ts           # V1: Stripe
 │   ├── middleware/
-│   │   ├── auth.ts                        # Azure AD B2C JWT validation + req.user injection
+│   │   ├── auth-middleware.ts             # Azure AD B2C JWT validation + req.user injection + dev-mode bypass
 │   │   ├── audit-trail.ts                 # Systematic operation logging
 │   │   ├── api-logger.ts                  # API call logging (provider, cost, status, time)
 │   │   └── rate-limiter.ts                # Configurable rate limiting per role/endpoint
@@ -1746,7 +1816,7 @@ No contradictions detected. All versions are mutually compatible.
 | # | Gap | Recommendation |
 |---|---|---|
 | 1 | ~~No detailed testing strategy~~ | **RESOLVED** — Comprehensive testing strategy added with 8 test types, coverage thresholds, and CI pipeline |
-| 2 | No detailed CORS/proxy configuration | Standard CAP + Next.js rewrite configuration — documented in respective CLIs |
+| 2 | ~~No detailed CORS/proxy configuration~~ | **RESOLVED** — Next.js rewrites proxy (`/api/*` → `localhost:4004/api/*`) implemented in `next.config.ts`. Dev-mode auth architecture documented above. |
 | 3 | No detailed database migration strategy beyond CDS schema evolution | CDS schema evolution handles deltas automatically — sufficient for V1 |
 
 **Nice-to-Have Gaps:**
