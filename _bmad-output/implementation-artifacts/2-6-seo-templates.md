@@ -1,6 +1,6 @@
 # Story 2.6: SEO Templates Management
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -160,6 +160,59 @@ so that I can optimize organic search acquisition without developer intervention
 ## Dev Agent Record
 
 ### Agent Model Used
+Claude Opus 4.6
+
 ### Completion Notes List
+- All 7 tasks implemented and tested
+- 1075 total tests green (225 shared + 415 backend + 435 frontend)
+- Adversarial code review completed with 3 parallel agents
+- Fixed all HIGH/MEDIUM findings: XSS in JSON-LD, renderTemplate consolidation to shared, canonicalUrlPattern URL validation, URL-decoded route params, param collision prevention in getSeoMeta
+- Backend SEO resolver is dead code intentionally - no public API endpoint yet (deferred to Epic 3 when listing data exists). Frontend gracefully falls back to null.
+
 ### Change Log
+- auto-shared: feat(config) + fix(config) - SEO types, constants, validators, renderSeoTemplate
+- auto-backend: feat(config) + fix(config) - CDS entity, seed data, admin service, resolver, cache
+- auto-frontend: feat(config) + fix(config) - Admin page, preview, SSR pages, JSON-LD, get-seo-meta
+
 ### File List
+**auto-shared:**
+- src/types/config.ts (modified - SeoPageType, IConfigSeoTemplate)
+- src/types/index.ts (modified - exports)
+- src/constants/seo.ts (created - SEO_PAGE_TYPES, SEO_PLACEHOLDERS, SEO_SAMPLE_DATA, SEO_CHAR_LIMITS, renderSeoTemplate)
+- src/constants/index.ts (modified - exports)
+- src/validators/seo.validator.ts (created - seoPageTypeSchema, configSeoTemplateInputSchema)
+- src/validators/index.ts (modified - exports)
+- tests/seo-constants.test.ts (created - 15 tests)
+- tests/seo-validator.test.ts (created - 19 tests)
+- tests/config-types.test.ts (modified - SeoPageType + IConfigSeoTemplate type tests)
+
+**auto-backend:**
+- db/schema/config.cds (modified - ConfigSeoTemplate entity)
+- db/data/auto-ConfigSeoTemplate.csv (created - seed data 6 page types)
+- srv/admin-service.cds (modified - ConfigSeoTemplates projection)
+- srv/admin-service.ts (modified - ENTITY_TABLE_MAP, validation handler)
+- srv/lib/config-cache.ts (modified - CONFIG_TABLES, KEY_FIELD_MAP)
+- srv/lib/seo-template-resolver.ts (created - resolve, resolveWithFallback)
+- test/db/schema.test.ts (modified - entity + seed data tests)
+- test/srv/admin-service.test.ts (modified - entity list + validation tests)
+- test/srv/lib/config-cache.test.ts (modified - table count + composite key tests)
+- test/srv/lib/seo-template-resolver.test.ts (created - 16 tests)
+
+**auto-frontend:**
+- src/lib/api/config-api.ts (modified - VALID_ENTITIES)
+- src/app/(dashboard)/admin/seo/page.tsx (created - SEO admin CRUD page)
+- src/components/admin/seo-preview.tsx (created - SERP preview component)
+- src/components/admin/seo-template-form-dialog.tsx (created - edit form dialog)
+- src/lib/seo/get-seo-meta.ts (created - SEO meta fetch utility)
+- src/lib/seo/structured-data.ts (created - Schema.org JSON-LD generators)
+- src/app/(public)/listings/[id]/page.tsx (created - SSR with generateMetadata + JSON-LD)
+- src/app/(public)/search/page.tsx (created - SSR with generateMetadata)
+- src/app/(public)/brands/[brand]/page.tsx (created - SSR with generateMetadata)
+- src/app/(public)/brands/[brand]/[model]/page.tsx (created - SSR with generateMetadata)
+- src/app/(public)/cities/[city]/page.tsx (created - SSR with generateMetadata)
+- tests/app/dashboard/admin/seo/seo-page.test.tsx (created - 10 tests)
+- tests/components/admin/seo-preview.test.tsx (created - 7 tests)
+- tests/components/admin/seo-template-form-dialog.test.tsx (created - 9 tests)
+- tests/app/public/seo-pages.test.tsx (created - 7 tests)
+- tests/lib/seo/get-seo-meta.test.ts (created - 14 tests)
+- tests/lib/seo/structured-data.test.ts (created - 12 tests)
