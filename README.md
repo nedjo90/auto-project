@@ -205,8 +205,8 @@ graph LR
     E5 -->|"chat requis"| E7
 
     style E1 fill:#10b981,stroke:#10b981,color:#fff
-    style E2 fill:#1e293b,stroke:#f59e0b,color:#f8fafc
-    style E3 fill:#1e293b,stroke:#f59e0b,color:#f8fafc
+    style E2 fill:#f59e0b,stroke:#f59e0b,color:#fff
+    style E3 fill:#1e293b,stroke:#6b7280,color:#f8fafc
     style E4 fill:#1e293b,stroke:#6b7280,color:#f8fafc
     style E5 fill:#1e293b,stroke:#6b7280,color:#f8fafc
     style E6 fill:#1e293b,stroke:#6b7280,color:#f8fafc
@@ -215,8 +215,8 @@ graph LR
 
 | Epic | Nom | Stories | Avancement |
 |------|-----|---------|------------|
-| 1 | Authentification & Gestion des Comptes | 7 | 🟢 4/7 done — auth en review |
-| 2 | Configuration Zero-Hardcode & Administration | 8 | ⚪ ready-for-dev |
+| 1 | Authentification & Gestion des Comptes | 7 | 🟢 7/7 done |
+| 2 | Configuration Zero-Hardcode & Administration | 8 | 🟡 7/8 done — audit-trail restant |
 | 3 | Création d'Annonces Certifiées & Paiement | 11 | ⚪ ready-for-dev |
 | 4 | Marketplace, Recherche & Découverte | 5 | ⚪ ready-for-dev |
 | 5 | Communication Temps Réel & Notifications | 2 | ⚪ ready-for-dev |
@@ -277,9 +277,9 @@ cd auto-frontend && npm run dev
 ### Tests
 
 ```bash
-cd auto-shared && npm test      # Vitest — 71 tests
-cd auto-backend && npm test     # Jest — 96 tests
-cd auto-frontend && npm test    # Vitest — 113 tests
+cd auto-shared && npm test      # Vitest — 248 tests
+cd auto-backend && npm test     # Jest — 458 tests
+cd auto-frontend && npm test    # Vitest — 460 tests
 ```
 
 ## Convention de commits
