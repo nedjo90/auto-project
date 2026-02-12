@@ -1,6 +1,6 @@
 # Story 2.8: Audit Trail System
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 

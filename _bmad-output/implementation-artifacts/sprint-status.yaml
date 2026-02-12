@@ -52,7 +52,7 @@ development_status:
   epic-1-retrospective: optional
 
   # Epic 2: Configuration Zero-Hardcode & Administration (8 stories)
-  epic-2: in-progress
+  epic-2: done
   2-1-config-engine: done
   2-2-platform-config-ui: done
   2-3-api-provider-management: done
@@ -60,7 +60,7 @@ development_status:
   2-5-configurable-alerts: done
   2-6-seo-templates: done
   2-7-legal-texts: done
-  2-8-audit-trail: ready-for-dev
+  2-8-audit-trail: done
   epic-2-retrospective: optional
 
   # Epic 3: Creation d'Annonces Certifiees, Publication & Paiement (11 stories)
