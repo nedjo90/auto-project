@@ -1,6 +1,6 @@
 # Story 2.7: Legal Texts Versioning & Re-acceptance
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -195,6 +195,54 @@ so that users always accept the current version and the platform stays legally c
 ## Dev Agent Record
 
 ### Agent Model Used
+Claude Opus 4.6
+
 ### Completion Notes List
+- Used textarea editor instead of rich text (TipTap/Lexical) since content is placeholder text during development phase
+- Re-acceptance check implemented as a LegalService function (`checkLegalAcceptance`) rather than middleware to follow existing consent-check pattern
+- Created separate `legal-service.cds` for public/authenticated legal endpoints (instead of extending existing services)
+- Adversarial code review found and fixed: race condition (unique constraint), N+1 query (batch optimization), OData injection, infinite render loop, stale state, IP truncation
+- 1166 tests total: 248 shared + 458 backend + 460 frontend
+
 ### Change Log
+- auto-shared: feat(config) + fix via review
+- auto-backend: feat(config) + fix(config) via review
+- auto-frontend: feat(config) + fix(config) via review
+- auto-project: docs update sprint-status + story file
+
 ### File List
+
+#### auto-shared
+- `src/types/legal.ts` - ILegalDocument, ILegalDocumentVersion, ILegalAcceptance, LegalDocumentKey
+- `src/constants/legal.ts` - LEGAL_DOCUMENT_KEYS, LEGAL_DOCUMENT_LABELS
+- `src/validators/legal.validator.ts` - publishLegalVersionInputSchema, acceptLegalDocumentInputSchema
+- `src/types/index.ts` - barrel export update
+- `src/constants/index.ts` - barrel export update
+- `src/validators/index.ts` - barrel export update
+- `tests/legal-constants.test.ts` - 5 tests
+- `tests/legal-validator.test.ts` - 13 tests
+
+#### auto-backend
+- `db/schema/legal.cds` - LegalDocument, LegalDocumentVersion (w/ unique constraint), LegalAcceptance
+- `db/schema.cds` - import legal schema
+- `db/data/auto-LegalDocument.csv` - 4 document seed records
+- `db/data/auto-LegalDocumentVersion.csv` - 4 placeholder version records
+- `srv/admin-service.cds` - LegalDocuments, LegalDocumentVersions projections + publishLegalVersion action + getLegalAcceptanceCount function
+- `srv/admin-service.ts` - publishLegalVersion + getLegalAcceptanceCount handlers
+- `srv/legal-service.cds` - public legal service with getCurrentVersion, acceptLegalDocument, checkLegalAcceptance
+- `srv/legal-service.ts` - delegates to handler
+- `srv/handlers/legal-handler.ts` - getCurrentVersion, acceptLegalDocument (w/ duplicate check + IP extraction), checkLegalAcceptance (batched queries)
+- `test/db/legal-schema.test.ts` - schema + seed data tests
+- `test/srv/handlers/legal-handler.test.ts` - handler tests
+- `test/srv/admin-service.test.ts` - updated with legal entity mocks + publish/count tests
+
+#### auto-frontend
+- `src/lib/api/legal-api.ts` - publishLegalVersion, getLegalAcceptanceCount, getCurrentLegalVersion, checkLegalAcceptance, acceptLegalDocument
+- `src/lib/api/config-api.ts` - added LegalDocuments/Versions/Acceptances to VALID_ENTITIES
+- `src/app/(dashboard)/admin/legal/page.tsx` - admin legal texts list page
+- `src/app/(dashboard)/admin/legal/[id]/edit/page.tsx` - legal document editor with version history
+- `src/app/(public)/legal/[key]/page.tsx` - public legal page (SSR w/ metadata)
+- `src/components/legal/legal-acceptance-modal.tsx` - step-through re-acceptance modal (w/ useEffect + AbortController)
+- `tests/app/dashboard/admin/legal/legal-page.test.tsx` - 8 tests
+- `tests/components/legal/legal-acceptance-modal.test.tsx` - 7 tests
+- `tests/lib/api/legal-api.test.ts` - 9 tests
