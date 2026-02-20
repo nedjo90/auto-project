@@ -1,6 +1,6 @@
 # Story 3.1: Adapter Pattern & API Integration Framework
 
-Status: review
+Status: done
 
 ## Story
 
@@ -148,6 +148,7 @@ Claude Opus 4.6
 
 ### Change Log
 - 2026-02-20: Story 3-1 implementation complete. All 6 tasks done, 1392 tests green (270 shared + 610 backend + 512 frontend), 0 regressions.
+- 2026-02-20: Code review fixes applied (7 issues fixed): H1 OData injection sanitization, H2 listingId from CDS context in api-logger, H3 live API integration tests added, M1 httpMethod default changed to GET, M2 delay() extracted to srv/lib/async-utils.ts, M3 parseEuroNorm regex captures multi-digit, M4 fetchWithRetry returns unknown.
 
 ### File List
 #### auto-shared
@@ -178,8 +179,11 @@ Claude Opus 4.6
 - `srv/adapters/local-critair.adapter.ts` (NEW)
 - `srv/adapters/nhtsa-vin.adapter.ts` (NEW)
 - `srv/adapters/factory/adapter-factory.ts` (MODIFIED) — Extended with 8 new adapters, mock fallback, typed accessors
+- `srv/lib/async-utils.ts` (NEW) — Shared delay() utility
+- `srv/lib/api-logger.ts` (MODIFIED) — Added httpMethod param, listingId from CDS context
 - `db/data/auto-ConfigApiProvider.csv` (MODIFIED) — Updated seed data: 10 providers aligned with 8 story interfaces
 - `test/srv/adapters/mock/mock-adapters.test.ts` (NEW) — 43 mock adapter tests
 - `test/srv/adapters/free-api-adapters.test.ts` (NEW) — 35 free API adapter tests
 - `test/srv/adapters/adapter-factory.test.ts` (MODIFIED) — Extended from 22 to 38 tests
 - `test/srv/adapters/adapter-integration.test.ts` (NEW) — 13 integration tests
+- `test/srv/adapters/live-api-adapters.integration.test.ts` (NEW) — 4 live API tests (skipped unless RUN_LIVE_API_TESTS=true)

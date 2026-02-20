@@ -65,7 +65,7 @@ development_status:
 
   # Epic 3: Creation d'Annonces Certifiees, Publication & Paiement (11 stories)
   epic-3: in-progress
-  3-1-adapter-pattern: review
+  3-1-adapter-pattern: done
   3-2-vehicle-autofill: ready-for-dev
   3-3-listing-form-declared-fields: ready-for-dev
   3-4-photo-management: ready-for-dev
