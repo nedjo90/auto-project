@@ -1,6 +1,6 @@
 # Story 3.2: Vehicle Auto-Fill via License Plate or VIN
 
-Status: ready-for-dev
+Status: review
 
 ## Story
 
@@ -140,6 +140,46 @@ Frontend: src/components/listing/ (auto-fill-trigger, certified-field, visibilit
 ## Dev Agent Record
 
 ### Agent Model Used
+Claude Opus 4.6
+
 ### Completion Notes List
+- All 6 tasks implemented and tested
+- 1,502 total tests green (279 shared + 661 backend + 562 frontend)
+- Code review completed with 3 parallel agents; all major findings fixed
+- Key review fixes: null guards in extract functions, case-insensitive validation, race condition protection, French accents, AutoFillResponse wire format type correction, PII removed from audit logs
+
 ### Change Log
+1. feat(types): add auto-fill shared types (CertifiedFieldResult, ApiSourceStatus, etc.)
+2. fix(types): correct AutoFillResponse wire format, add AutoFillResult
+3. feat(listing): add vehicle auto-fill service (backend)
+4. fix(listing): address review findings for auto-fill service
+5. feat(listing): add auto-fill UI components (frontend)
+6. fix(listing): address review findings for auto-fill UI
+
 ### File List
+**auto-shared:**
+- src/types/autofill.ts (NEW)
+- src/types/index.ts (MODIFIED)
+- tests/autofill-types.test.ts (NEW)
+
+**auto-backend:**
+- db/schema/listing.cds (NEW)
+- db/schema.cds (MODIFIED)
+- srv/seller-service.cds (NEW)
+- srv/seller-service.ts (NEW)
+- srv/lib/certification.ts (NEW)
+- srv/lib/api-cache.ts (NEW)
+- test/srv/handlers/seller-handler.test.ts (NEW)
+- test/srv/handlers/seller-integration.test.ts (NEW)
+- test/srv/lib/certification.test.ts (NEW)
+- test/srv/lib/api-cache.test.ts (NEW)
+
+**auto-frontend:**
+- src/components/listing/auto-fill-trigger.tsx (NEW)
+- src/components/listing/certified-field.tsx (NEW)
+- src/components/listing/source-status.tsx (NEW)
+- src/hooks/use-vehicle-lookup.ts (NEW)
+- tests/components/listing/auto-fill-trigger.test.tsx (NEW)
+- tests/components/listing/certified-field.test.tsx (NEW)
+- tests/components/listing/source-status.test.tsx (NEW)
+- tests/hooks/use-vehicle-lookup.test.ts (NEW)
