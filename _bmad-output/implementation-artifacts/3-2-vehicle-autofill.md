@@ -1,6 +1,6 @@
 # Story 3.2: Vehicle Auto-Fill via License Plate or VIN
 
-Status: review
+Status: done
 
 ## Story
 
@@ -144,9 +144,11 @@ Claude Opus 4.6
 
 ### Completion Notes List
 - All 6 tasks implemented and tested
-- 1,502 total tests green (279 shared + 661 backend + 562 frontend)
+- 1,720 total tests green (356 shared + 701 backend + 663 frontend)
 - Code review completed with 3 parallel agents; all major findings fixed
 - Key review fixes: null guards in extract functions, case-insensitive validation, race condition protection, French accents, AutoFillResponse wire format type correction, PII removed from audit logs
+- Second code review (adversarial): 22 findings (5 CRIT/HIGH, 12 MEDIUM, 5 LOW), all HIGH/MEDIUM fixed
+- Key adversarial review fixes: cache key normalization (B1), IDOR ownership check (B2), driveType field conflict (B4), orphaned CertifiedField removal (B6), managed aspect (B7), AbortController (F1), safe JSON.parse (F2), prefers-reduced-motion (F4), format detection (F5), dark mode (F7), French status labels (F8), aria-live regions (F8), shared Zod validators (S1/S3), field metadata gaps (S6)
 
 ### Change Log
 1. feat(types): add auto-fill shared types (CertifiedFieldResult, ApiSourceStatus, etc.)
@@ -155,31 +157,38 @@ Claude Opus 4.6
 4. fix(listing): address review findings for auto-fill service
 5. feat(listing): add auto-fill UI components (frontend)
 6. fix(listing): address review findings for auto-fill UI
+7. fix(types): add autofill validators, fix field metadata gaps from code review
+8. fix(listing): address code review findings for Story 3-2 (backend)
+9. fix(listing): address code review findings for Story 3-2 (frontend)
 
 ### File List
 **auto-shared:**
 - src/types/autofill.ts (NEW)
 - src/types/index.ts (MODIFIED)
-- tests/autofill-types.test.ts (NEW)
+- src/validators/autofill.validator.ts (NEW)
+- src/validators/index.ts (MODIFIED)
+- src/constants/listing.ts (MODIFIED)
+- tests/autofill-types.test.ts (MODIFIED)
 
 **auto-backend:**
-- db/schema/listing.cds (NEW)
+- db/schema/listing.cds (MODIFIED)
 - db/schema.cds (MODIFIED)
 - srv/seller-service.cds (NEW)
-- srv/seller-service.ts (NEW)
-- srv/lib/certification.ts (NEW)
+- srv/seller-service.ts (MODIFIED)
+- srv/lib/certification.ts (MODIFIED)
 - srv/lib/api-cache.ts (NEW)
-- test/srv/handlers/seller-handler.test.ts (NEW)
-- test/srv/handlers/seller-integration.test.ts (NEW)
-- test/srv/lib/certification.test.ts (NEW)
+- test/srv/handlers/seller-handler.test.ts (MODIFIED)
+- test/srv/handlers/seller-integration.test.ts (MODIFIED)
+- test/srv/lib/certification.test.ts (MODIFIED)
 - test/srv/lib/api-cache.test.ts (NEW)
 
 **auto-frontend:**
-- src/components/listing/auto-fill-trigger.tsx (NEW)
-- src/components/listing/certified-field.tsx (NEW)
-- src/components/listing/source-status.tsx (NEW)
-- src/hooks/use-vehicle-lookup.ts (NEW)
-- tests/components/listing/auto-fill-trigger.test.tsx (NEW)
+- src/components/listing/auto-fill-trigger.tsx (MODIFIED)
+- src/components/listing/certified-field.tsx (MODIFIED)
+- src/components/listing/source-status.tsx (MODIFIED)
+- src/hooks/use-vehicle-lookup.ts (MODIFIED)
+- src/hooks/use-reduced-motion.ts (NEW)
+- tests/components/listing/auto-fill-trigger.test.tsx (MODIFIED)
 - tests/components/listing/certified-field.test.tsx (NEW)
-- tests/components/listing/source-status.test.tsx (NEW)
-- tests/hooks/use-vehicle-lookup.test.ts (NEW)
+- tests/components/listing/source-status.test.tsx (MODIFIED)
+- tests/hooks/use-vehicle-lookup.test.ts (MODIFIED)
