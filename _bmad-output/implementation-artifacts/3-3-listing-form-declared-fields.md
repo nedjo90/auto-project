@@ -1,6 +1,6 @@
 # Story 3.3: Listing Form & Declared Fields
 
-Status: review
+Status: done
 
 ## Story
 
@@ -146,9 +146,13 @@ Claude Opus 4.6
 - **Task 5:** Created `use-listing-field` hook with 300ms debounce for backend sync, optimistic UI updates, and `listing-store.ts` (Zustand) for form state management.
 - **Task 6:** Created `override-confirm-dialog.tsx` with warning message, certified value display, confirm/cancel flow. Override button on certified fields triggers dialog.
 - **Task 7:** 18 accessibility tests covering WCAG 2.1 AA — labels/inputs association, error messages with aria-describedby/role=alert, badge aria-labels, section landmarks, keyboard navigation, focus indicators, color independence.
+- 1,725 total tests green (356 shared + 703 backend + 666 frontend)
+- Code review completed with 3 parallel agents; all major findings fixed
+- Key review fixes: field name injection whitelist (B1 CRIT), debounce timer cleanup (F1 CRIT), duplicate CertifiedField removal (B2), value===0 visibility bug (B3), 9 missing FIELD_WEIGHTS (B4), OverrideConfirmDialog integration (F2), stale listingId ref (F3), optimistic rollback (F4), React.memo (F6), initializeFields merge (F7), WCAG readOnly fix (F9), Number("") coercion (S1), required field validation (S3), options JSON validation (S7)
 
 ### Change Log
 - 2026-02-23: Story 3.3 implemented — 199 new tests (345 shared + 695 backend + 661 frontend = 1701 total)
+- 2026-02-23: Code review fixes — 1725 total tests (356 shared + 703 backend + 666 frontend)
 
 ### File List
 **auto-shared:**
