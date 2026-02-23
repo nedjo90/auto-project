@@ -1,6 +1,6 @@
 # Story 3.4: Photo Management
 
-Status: review
+Status: done
 
 ## Story
 
@@ -133,6 +133,17 @@ Claude Opus 4.6 (claude-opus-4-6)
 - HEIC→JPEG conversion implemented in photo-compression.ts for cross-browser compatibility.
 - CDS mock pattern: `__esModule: true` + `MockApplicationService` class + global CQL builders (SELECT/INSERT/UPDATE/DELETE) required for Jest tests.
 - Photo count contributes to visibility score via `PHOTO_VISIBILITY_WEIGHT = 10`.
+
+### Code Review Fixes Applied
+- Added audit logging (`logAudit`) for all 3 photo operations (upload, reorder, delete)
+- Added visibility score recalculation after photo upload and delete
+- Added 401 authentication check before 403 authorization in all handlers
+- Added width/height parameter validation (range 1-50000, defaults to 0)
+- Added blob cleanup on DB INSERT failure (transaction safety)
+- Added reorder count validation (photoIds.length must match existing photo count)
+- Fixed Object URL memory leak on upload error in usePhotoUpload hook
+- Fixed OData injection in fetchListingPhotos (escape single quotes in listingId)
+- Changed error message to French in upload error handler
 
 ### Change Log
 - **auto-shared**: Added `IListingPhoto`, `UploadPhotoResult`, `ReorderPhotosInput` types; `PHOTO_ALLOWED_MIME_TYPES`, `PHOTO_DEFAULT_MAX`, `PHOTO_DEFAULT_MAX_SIZE_BYTES`, `PHOTO_VISIBILITY_WEIGHT` constants; `photoMimeTypeSchema`, `reorderPhotosInputSchema` validators
