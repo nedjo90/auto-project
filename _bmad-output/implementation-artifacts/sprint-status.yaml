@@ -64,7 +64,7 @@ development_status:
   epic-2-retrospective: optional
 
   # Epic 3: Creation d'Annonces Certifiees, Publication & Paiement (11 stories)
-  epic-3: in-progress
+  epic-3: done
   3-1-adapter-pattern: done
   3-2-vehicle-autofill: done
   3-3-listing-form-declared-fields: done
@@ -75,7 +75,7 @@ development_status:
   3-8-vehicle-history-report: done
   3-9-batch-publication-payment: done
   3-10-listing-lifecycle: done
-  3-11-api-resilience: ready-for-dev
+  3-11-api-resilience: done
   epic-3-retrospective: optional
 
   # Epic 4: Marketplace, Recherche & Decouverte (5 stories)

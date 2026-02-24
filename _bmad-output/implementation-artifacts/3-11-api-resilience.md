@@ -1,6 +1,6 @@
 # Story 3.11: API Resilience & Degraded Mode
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
