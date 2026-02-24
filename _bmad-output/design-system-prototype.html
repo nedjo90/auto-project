@@ -209,14 +209,149 @@ tr:hover td { background: var(--accent); }
 .alert-warning { background: color-mix(in srgb, var(--declared) 10%, transparent); }
 .alert-critical { background: color-mix(in srgb, var(--destructive) 10%, transparent); }
 
+/* ===== RESPONSIVE ===== */
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .sidebar { width: 180px; }
+  .main { margin-left: 180px; padding: 24px; }
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
+  .grid-6 { grid-template-columns: repeat(3, 1fr); }
+  .mock-hero h1 { font-size: 22px; }
+  .mock-search { flex-direction: column; }
+  .mock-search .input, .mock-search .btn { width: 100%; }
+  .trust-bar { flex-wrap: wrap; gap: 16px; }
+}
+
+/* Mobile */
 @media (max-width: 768px) {
-  .sidebar { display: none; }
+  /* Sidebar becomes top bar toggle */
+  .sidebar { position: fixed; left: -260px; width: 240px; z-index: 200; transition: left .3s; box-shadow: var(--shadow-lg); }
+  .sidebar.open { left: 0; }
   .main { margin-left: 0; padding: 16px; }
+  .section-title { font-size: 22px; }
+
+  /* Mobile nav toggle button */
+  .mobile-nav-toggle { display: flex !important; }
+
+  /* Grids */
   .grid-2, .grid-3, .grid-4, .grid-6 { grid-template-columns: 1fr; }
+
+  /* Overlay for sidebar */
+  .sidebar-overlay { display: block !important; }
+  .sidebar-overlay.active { position: fixed; inset: 0; background: rgba(0,0,0,.4); z-index: 150; }
+
+  /* Typography */
+  .type-specimen div:first-child + div { font-size: 22px !important; }
+
+  /* Frame mockups */
+  .frame-body { min-height: auto !important; }
+  .frame-url { font-size: 10px; }
+
+  /* Mockup internals: stack sidebars */
+  .frame-body > div[style*="display:flex"][style*="min-height"] { flex-direction: column !important; }
+  .mock-sidebar { width: 100% !important; border-right: none !important; border-bottom: 1px solid var(--border); padding: 12px 0 !important; }
+  .mock-sidebar > div[style*="padding:0 12px"] a, .mock-sidebar a { padding: 6px 16px !important; }
+
+  /* Homepage mockup */
+  .mock-hero { padding: 32px 16px; }
+  .mock-hero h1 { font-size: 20px; }
+  .mock-hero p { font-size: 13px; }
+  .mock-section { padding: 16px; }
+  .mock-section .grid-4 { grid-template-columns: repeat(2, 1fr) !important; }
+  .mock-nav { padding: 10px 16px; }
+
+  /* Trust bar */
+  .trust-bar { flex-direction: column; gap: 8px; align-items: flex-start; padding: 16px; }
+
+  /* Search page: stack filters */
+  .frame-body > div[style*="display:flex"][style*="min-height:400px"] { flex-direction: column !important; }
+  .frame-body > div[style*="display:flex"][style*="min-height:400px"] > div[style*="width:220px"] { width: 100% !important; border-right: none !important; border-bottom: 1px solid var(--border); }
+
+  /* Listing detail: stack photo + info */
+  .frame-body div[style*="display:flex;gap:24px"] { flex-direction: column !important; }
+  .frame-body div[style*="display:flex;gap:24px"] > div[style*="flex:1.2"] { width: 100%; }
+
+  /* Listing detail: specs grid 2 cols */
+  .frame-body div[style*="grid-template-columns:1fr 1fr;gap:8px"] { grid-template-columns: 1fr 1fr !important; }
+  .frame-body div[style*="grid-template-columns:repeat(4,1fr)"] { grid-template-columns: repeat(2, 1fr) !important; }
+
+  /* Form: stack form + score sidebar */
+  .frame-body div[style*="display:flex;flex:1;overflow:auto"] { flex-direction: column !important; }
+  .frame-body div[style*="width:200px;border-left"] { width: 100% !important; border-left: none !important; border-top: 1px solid var(--border); }
+
+  /* Form grid: single column on mobile */
+  .form-grid { grid-template-columns: 1fr !important; padding: 16px; }
+  .form-section-nav { padding: 10px 16px; gap: 4px; }
+  .form-section-btn { font-size: 11px; padding: 5px 10px; }
+
+  /* Dashboard KPIs */
+  .frame-body .grid-3 { grid-template-columns: 1fr !important; }
+
+  /* Chart + alerts: stack */
+  .frame-body div[style*="grid-template-columns:1.5fr 1fr"] { grid-template-columns: 1fr !important; }
+
+  /* Drafts grid */
+  .frame-body .grid-3 { grid-template-columns: 1fr !important; }
+
+  /* Nav page: stack mobile frames */
+  div[style*="display:flex;gap:24px;margin-bottom:24px"] { flex-direction: column !important; }
+  div[style*="display:flex;gap:24px;margin-bottom:24px"] .frame { width: 100% !important; }
+
+  /* Footer 4-col → 2-col */
+  .frame-body div[style*="grid-template-columns:1.5fr 1fr 1fr 1fr"] { grid-template-columns: 1fr 1fr !important; gap: 16px !important; }
+
+  /* Admin config tabs: scroll */
+  .frame-body div[style*="display:flex;gap:0;overflow-x:auto"] { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+  /* Listing cards in search results */
+  .frame-body div[style*="border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;display:flex;background:var(--card)"] { flex-direction: column !important; }
+  .frame-body div[style*="border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;display:flex;background:var(--card)"] > div[style*="width:200px"] { width: 100% !important; height: 160px !important; }
+
+  /* Pagination */
+  .frame-body div[style*="margin-top:20px"] { flex-direction: column !important; gap: 12px; align-items: flex-start !important; }
+  .frame-body div[style*="margin-top:20px"] .flex { flex-wrap: wrap; }
+
+  /* Dark mode toggle */
+  .dm-toggle { top: 10px; right: 10px; padding: 6px 10px; font-size: 12px; }
+}
+
+/* Small mobile */
+@media (max-width: 480px) {
+  .main { padding: 12px; }
+  .section { margin-bottom: 40px; }
+  .section-title { font-size: 20px; }
+  .section-sub { font-size: 13px; }
+
+  .mock-section .grid-4 { grid-template-columns: 1fr !important; }
+  .mock-hero h1 { font-size: 18px; }
+
+  /* Listing detail specs: single col */
+  .frame-body div[style*="grid-template-columns:1fr 1fr;gap:8px"] { grid-template-columns: 1fr !important; }
+
+  /* Footer: single col */
+  .frame-body div[style*="grid-template-columns:1.5fr 1fr 1fr 1fr"] { grid-template-columns: 1fr !important; }
+
+  /* Swatch grids */
+  .grid-6 { grid-template-columns: repeat(2, 1fr); }
+
+  /* Buttons wrap */
+  .flex[style*="flex-wrap:wrap"] { gap: 6px !important; }
+
+  /* Table horizontal scroll */
+  .table-wrap { font-size: 13px; }
 }
 </style>
 </head>
 <body>
+
+<!-- Sidebar overlay (mobile) -->
+<div class="sidebar-overlay" style="display:none" onclick="document.querySelector('.sidebar').classList.remove('open');this.classList.remove('active');this.style.display='none'"></div>
+
+<!-- Mobile nav toggle -->
+<button class="mobile-nav-toggle" style="display:none;position:fixed;top:12px;left:12px;z-index:100;background:var(--card);border:1px solid var(--border);border-radius:var(--radius-md);padding:8px;cursor:pointer;box-shadow:var(--shadow-sm);align-items:center;justify-content:center" onclick="document.querySelector('.sidebar').classList.toggle('open');var o=document.querySelector('.sidebar-overlay');o.style.display='block';setTimeout(function(){o.classList.toggle('active')},10)">
+  <i data-lucide="menu" style="width:18px;height:18px;color:var(--fg)"></i>
+</button>
 
 <!-- Sidebar Navigation -->
 <nav class="sidebar">
@@ -1423,6 +1558,18 @@ tr:hover td { background: var(--accent); }
 <script>
   // Initialize Lucide icons
   lucide.createIcons();
+
+  // Close sidebar on mobile when clicking a link
+  document.querySelectorAll('.sidebar a').forEach(function(a) {
+    a.addEventListener('click', function() {
+      if (window.innerWidth <= 768) {
+        document.querySelector('.sidebar').classList.remove('open');
+        var o = document.querySelector('.sidebar-overlay');
+        o.classList.remove('active');
+        setTimeout(function() { o.style.display = 'none'; }, 300);
+      }
+    });
+  });
 </script>
 </body>
 </html>
