@@ -72,7 +72,7 @@ development_status:
   3-5-visibility-score: done
   3-6-draft-management: done
   3-7-declaration-of-honor: done
-  3-8-vehicle-history-report: review
+  3-8-vehicle-history-report: done
   3-9-batch-publication-payment: ready-for-dev
   3-10-listing-lifecycle: ready-for-dev
   3-11-api-resilience: ready-for-dev

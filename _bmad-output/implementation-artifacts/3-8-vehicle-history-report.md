@@ -1,6 +1,6 @@
 # Story 3.8: Vehicle History Report
 
-Status: review
+Status: done
 
 ## Story
 
@@ -182,3 +182,22 @@ Claude Opus 4.6
 - auto-frontend/tests/lib/api/history-api.test.ts (new - 5 tests)
 - auto-frontend/tests/components/listing/history-report.test.tsx (new - 19 tests)
 - auto-frontend/tests/components/listing/seller-history-section.test.tsx (new - 10 tests)
+
+### Senior Developer Review (AI)
+
+**Reviewer:** Claude Opus 4.6 | **Date:** 2026-02-24
+
+**Verdict: APPROVED**
+
+**AC Verification:**
+- AC1 (Seller flow): IMPLEMENTED - fetchHistoryReport action fetches via IHistoryAdapter, caches in ApiCachedData, logged via api-logger (adapter-factory wraps all calls with withApiLogging) + audit trail.
+- AC2 (Buyer view): IMPLEMENTED - HistoryReport component displays 5 sections inline with CertifiedBadge on each. BuyerService gates access: 401 for anonymous, 403 for non-published, 404 for missing report.
+- AC3 (Mock mode): IMPLEMENTED - MockHistoryAdapter has 6 realistic vehicles. isMockData flag propagated to frontend. Dashed amber indicator banner. Architecture ready for swap via ConfigApiProvider.
+
+**Issues Found:** 0 High, 0 Medium, 2 Low
+
+**LOW Issues (non-blocking):**
+1. `formatDate()` uses `new Date(dateStr)` with date-only strings (e.g., "2018-06-01") which JS parses as UTC midnight. In extreme negative UTC offsets this could show previous day. Not a concern for France (UTC+1/+2) but worth noting for future i18n.
+2. `seller-history-section.tsx` Task 5.2 mentions "Show report cost information if applicable" — no cost field displayed. Acceptable since this is explicitly "for future paid providers" and no cost data exists in V1 mock mode.
+
+**Test Coverage:** 87 new tests across 7 test files. All 2351 tests green (367 shared + 984 backend + 1000 frontend). Pre-existing api-logger.test.ts TS2451 failure unrelated to this story.
