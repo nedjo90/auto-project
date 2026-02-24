@@ -160,7 +160,8 @@ Claude Opus 4.6
 ### Change Log
 - 2026-02-24: Task 1 complete - HistoryReport entity, fetchHistoryReport action, tests
 - 2026-02-24: Tasks 2-3 complete - Mock adapter enhanced, BuyerService created
-- 2026-02-24: Tasks 4-7 complete - Frontend components, integration tests, all 2351 tests green
+- 2026-02-24: Tasks 4-7 complete - Frontend components, integration tests
+- 2026-02-24: Code review - 3 HIGH + 4 MEDIUM issues found and fixed, all 2370 tests green
 
 ### File List
 - auto-shared/src/types/adapters.ts (modified - added HistoryRegistration, registrationHistory, outstandingFinance)
@@ -187,17 +188,29 @@ Claude Opus 4.6
 
 **Reviewer:** Claude Opus 4.6 | **Date:** 2026-02-24
 
-**Verdict: APPROVED**
+**Verdict: APPROVED (after fixes)**
 
 **AC Verification:**
 - AC1 (Seller flow): IMPLEMENTED - fetchHistoryReport action fetches via IHistoryAdapter, caches in ApiCachedData, logged via api-logger (adapter-factory wraps all calls with withApiLogging) + audit trail.
 - AC2 (Buyer view): IMPLEMENTED - HistoryReport component displays 5 sections inline with CertifiedBadge on each. BuyerService gates access: 401 for anonymous, 403 for non-published, 404 for missing report.
 - AC3 (Mock mode): IMPLEMENTED - MockHistoryAdapter has 6 realistic vehicles. isMockData flag propagated to frontend. Dashed amber indicator banner. Architecture ready for swap via ConfigApiProvider.
 
-**Issues Found:** 0 High, 0 Medium, 2 Low
+**Issues Found:** 3 High, 4 Medium, 3 Low — **all HIGH and MEDIUM fixed**
 
-**LOW Issues (non-blocking):**
-1. `formatDate()` uses `new Date(dateStr)` with date-only strings (e.g., "2018-06-01") which JS parses as UTC midnight. In extreme negative UTC offsets this could show previous day. Not a concern for France (UTC+1/+2) but worth noting for future i18n.
-2. `seller-history-section.tsx` Task 5.2 mentions "Show report cost information if applicable" — no cost field displayed. Acceptable since this is explicitly "for future paid providers" and no cost data exists in V1 mock mode.
+**HIGH (fixed):**
+1. HistoryReports entity exposed via OData with no row-level `@restrict` → removed entity projections from both services (access only via actions)
+2. Race condition on INSERT with no constraint-violation handling → added try-catch, re-fetches concurrent report
+3. Adapter failure completely unhandled → added try-catch, returns 502 with French error message
 
-**Test Coverage:** 87 new tests across 7 test files. All 2351 tests green (367 shared + 984 backend + 1000 frontend). Pre-existing api-logger.test.ts TS2451 failure unrelated to this story.
+**MEDIUM (fixed):**
+4. Unsafe cast `(req.user as { id: string }).id` → changed to `req.user?.id`
+5. Shallow copy of `provider` object in mock adapter → added `provider: { ...data.provider }`
+6. `JSON.parse` of reportData with no try-catch → extracted `parseReportData()` helper with error handling
+7. No test for adapter failure → added 502 and race condition test cases
+
+**LOW (non-blocking, accepted):**
+8. `formatDate()` UTC parsing — not a concern for France (UTC+1/+2)
+9. No refresh button in seller history section — intentional for V1
+10. No double-click guard on fetch button — mitigated by `disabled={isLoading}` and server-side race handling
+
+**Test Coverage:** 90 new tests across 7 test files. All 2370 tests green (367 shared + 1002 backend + 1001 frontend). Pre-existing api-logger.test.ts TS2451 skip unrelated to this story.
