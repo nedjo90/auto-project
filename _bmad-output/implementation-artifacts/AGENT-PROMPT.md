@@ -133,6 +133,19 @@ Les stories en `done` ou `review` sont deja faites. Toujours prendre la PREMIERE
 35. **7-3-moderation-actions** - Actions de moderation
 36. **7-4-seller-history** - Historique vendeur
 
+## REGLE ABSOLUE N°3 - Responsive Validation (OBLIGATOIRE)
+
+Chaque story avec des composants UI DOIT respecter ces criteres de responsive :
+- **Mobile (375px)** : Tout le contenu accessible, touch-friendly (44px min pour les cibles tactiles), layout adapte (colonne unique, bottom sheets, listes de cartes)
+- **Tablet (768px)** : Layout hybride fonctionnel, pas de debordement horizontal
+- **Desktop (1280px)** : Layout complet, toutes les fonctionnalites accessibles
+- Utiliser `ResponsiveDialog` au lieu de `Dialog` brut pour tous les modales
+- Utiliser une echelle typographique responsive (text-xl sm:text-2xl lg:text-3xl pour les titres)
+- Utiliser un espacement responsive (p-4 sm:p-6 lg:p-8)
+- Navigation accessible a tous les breakpoints
+
+Ne JAMAIS livrer du code UI sans validation responsive. Si un composant n'est pas responsive, le corriger AVANT de passer a la suite.
+
 ## Contexte technique
 
 - **Repos** : `C:\Users\nhan\projects\auto\` contient auto-shared, auto-backend, auto-frontend, et auto-project (root)

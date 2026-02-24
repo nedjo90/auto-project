@@ -102,7 +102,25 @@ Review the complete epic and story breakdown to ensure EVERY FR is covered:
 - **Not have forward dependencies** (can only depend on PREVIOUS stories)
 - Be implementable without waiting for future stories
 
-### 4. Epic Structure Validation
+### 4. Responsive Validation (MANDATORY)
+
+**Every story with UI components must include Responsive Validation AC:**
+
+- [ ] **Mobile (375px)**: All content accessible, touch-friendly (44px min targets), adapted layout (single column, bottom sheets, card lists)
+- [ ] **Tablet (768px)**: Hybrid layout works, no horizontal overflow
+- [ ] **Desktop (1280px)**: Full layout, all features accessible
+- [ ] Uses `ResponsiveDialog` instead of raw `Dialog` for all modals
+- [ ] Uses responsive typography scale (text-xl sm:text-2xl lg:text-3xl for titles)
+- [ ] Uses responsive spacing (p-4 sm:p-6 lg:p-8)
+- [ ] Navigation accessible at all breakpoints
+
+**Check that:**
+
+- All UI stories have responsive acceptance criteria
+- No story ships UI without mobile/tablet/desktop validation
+- Responsive patterns are consistent across the entire epic
+
+### 5. Epic Structure Validation
 
 **Check that:**
 
@@ -111,7 +129,7 @@ Review the complete epic and story breakdown to ensure EVERY FR is covered:
 - Foundation stories only setup what's needed
 - No big upfront technical work
 
-### 5. Dependency Validation (CRITICAL)
+### 6. Dependency Validation (CRITICAL)
 
 **Epic Independence Check:**
 
@@ -131,7 +149,7 @@ For each epic, review stories in order:
 - ❌ WRONG: Story references features not yet implemented
 - ✅ RIGHT: Each story builds only on previous stories
 
-### 6. Complete and Save
+### 7. Complete and Save
 
 If all validations pass:
 

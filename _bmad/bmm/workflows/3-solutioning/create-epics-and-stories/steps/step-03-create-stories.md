@@ -169,6 +169,14 @@ For each story in the epic:
 - Each AC should be independently testable
 - Include edge cases and error conditions
 - Reference specific requirements when applicable
+- **MANDATORY: Include Responsive Validation AC for any story with UI:**
+  - **Mobile (375px)**: All content accessible, touch-friendly (44px min targets), adapted layout (single column, bottom sheets, card lists)
+  - **Tablet (768px)**: Hybrid layout works, no horizontal overflow
+  - **Desktop (1280px)**: Full layout, all features accessible
+  - Uses `ResponsiveDialog` instead of raw `Dialog` for all modals
+  - Uses responsive typography scale (text-xl sm:text-2xl lg:text-3xl for titles)
+  - Uses responsive spacing (p-4 sm:p-6 lg:p-8)
+  - Navigation accessible at all breakpoints
 
 #### D. Collaborative Review
 

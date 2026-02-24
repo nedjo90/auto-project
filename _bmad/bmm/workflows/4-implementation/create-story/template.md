@@ -14,6 +14,15 @@ so that {{benefit}}.
 
 1. [Add acceptance criteria from epics/PRD]
 
+### Responsive Validation (MANDATORY)
+- [ ] **Mobile (375px)**: All content accessible, touch-friendly (44px min targets), adapted layout (single column, bottom sheets, card lists)
+- [ ] **Tablet (768px)**: Hybrid layout works, no horizontal overflow
+- [ ] **Desktop (1280px)**: Full layout, all features accessible
+- [ ] Uses `ResponsiveDialog` instead of raw `Dialog` for all modals
+- [ ] Uses responsive typography scale (text-xl sm:text-2xl lg:text-3xl for titles)
+- [ ] Uses responsive spacing (p-4 sm:p-6 lg:p-8)
+- [ ] Navigation accessible at all breakpoints
+
 ## Tasks / Subtasks
 
 - [ ] Task 1 (AC: #)
