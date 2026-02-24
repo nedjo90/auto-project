@@ -1,6 +1,6 @@
 # Story 3.7: Declaration of Honor & Archival
 
-Status: ready-for-dev
+Status: review
 
 ## Story
 
@@ -29,7 +29,7 @@ so that I formally attest to the accuracy of my declared data, and this attestat
 ## Tasks / Subtasks
 
 ### Task 1: Backend - Declaration Data Model (AC1, AC2)
-1.1. Define CDS entity `Declaration`:
+- [x] 1.1. Define CDS entity `Declaration`:
   - id (UUID)
   - listingId (association to Listing)
   - sellerId (association to User)
@@ -39,7 +39,7 @@ so that I formally attest to the accuracy of my declared data, and this attestat
   - signedAt (Timestamp, ISO 8601)
   - createdAt (Timestamp)
   - Annotate entity as immutable: `@readonly` after creation, no update/delete operations
-1.2. Define CDS entity `ConfigDeclarationTemplate`:
+- [x] 1.2. Define CDS entity `ConfigDeclarationTemplate`:
   - id (UUID)
   - version (String, e.g., "v1.0")
   - isActive (Boolean)
@@ -47,19 +47,19 @@ so that I formally attest to the accuracy of my declared data, and this attestat
   - introText (String - preamble text)
   - legalNotice (String - footer legal text)
   - createdAt, updatedAt
-1.3. Seed initial declaration template with attestation points:
+- [x] 1.3. Seed initial declaration template with attestation points:
   - "J'atteste que les informations declarees sont exactes"
   - "J'atteste etre le proprietaire ou mandataire autorise"
   - "J'atteste que le vehicule n'a pas de gage ni d'opposition"
   - "J'accepte les conditions generales de vente"
   - (All text from config, not hardcoded)
-1.4. Write unit tests for entity creation and immutability constraint
+- [x] 1.4. Write unit tests for entity creation and immutability constraint
 
 ### Task 2: Backend - Declaration Service Actions (AC1, AC2)
-2.1. Create CAP action `getDeclarationTemplate()`:
+- [x] 2.1. Create CAP action `getDeclarationTemplate()`:
   - Returns the active `ConfigDeclarationTemplate` (version, checkboxItems, introText, legalNotice)
   - Validates that exactly one active template exists
-2.2. Create CAP action `submitDeclaration(listingId, checkboxStates)`:
+- [x] 2.2. Create CAP action `submitDeclaration(listingId, checkboxStates)`:
   - Validate all checkboxes are checked (reject if any unchecked)
   - Validate listing exists and belongs to current seller
   - Validate listing status is `Draft` (cannot re-declare a published listing)
@@ -68,58 +68,58 @@ so that I formally attest to the accuracy of my declared data, and this attestat
   - Create audit trail entry: "Declaration submitted for listing {id} by seller {id}"
   - Update listing to mark declaration as complete (add `declarationId` to Listing entity)
   - Return declaration confirmation with timestamp
-2.3. Implement immutability enforcement: reject any UPDATE or DELETE on Declaration entity at the CDS handler level
-2.4. Write unit tests for submission, validation, and immutability
+- [x] 2.3. Implement immutability enforcement: reject any UPDATE or DELETE on Declaration entity at the CDS handler level
+- [x] 2.4. Write unit tests for submission, validation, and immutability
 
 ### Task 3: Backend - Declaration Verification Query (AC3)
-3.1. Create CAP query handler for declaration retrieval: `GET /odata/v4/admin/Declarations({id})?$expand=listing,seller`
+- [x] 3.1. Create CAP query handler for declaration retrieval: `GET /odata/v4/admin/Declarations({id})?$expand=listing,seller`
   - Available to admin/moderation roles only
   - Returns full declaration details including all checkbox states and timestamps
-3.2. Add declaration summary to listing detail endpoint for buyer view:
+- [x] 3.2. Add declaration summary to listing detail endpoint for buyer view:
   - "Declaration du vendeur le [date]" with version reference
   - Do NOT expose checkbox details to buyers (only confirmation that declaration was made)
-3.3. Write unit tests for authorization (admin can view, buyer sees summary only, other sellers cannot view)
+- [x] 3.3. Write unit tests for authorization (admin can view, buyer sees summary only, other sellers cannot view)
 
 ### Task 4: Frontend - Declaration Form Component (AC1)
-4.1. Create `src/components/listing/declaration-form.tsx`:
+- [x] 4.1. Create `src/components/listing/declaration-form.tsx`:
   - Load active declaration template from backend
   - Display intro text at top
   - Render structured checkboxes from template data (dynamic, not hardcoded)
   - Each checkbox has clear, readable label text
   - Legal notice text at bottom
-4.2. Implement validation: "Signer et continuer" button disabled until all checkboxes are checked
+- [x] 4.2. Implement validation: "Signer et continuer" button disabled until all checkboxes are checked
   - Visual progress: "3/4 attestations cochees" counter
   - Unchecked items highlighted when user attempts to proceed
-4.3. Implement accessible form:
+- [x] 4.3. Implement accessible form:
   - Each checkbox has proper `<label>` association
   - Error state announced to screen readers
   - Focus management on validation failure
-4.4. Write unit tests for checkbox rendering, validation, and button state
+- [x] 4.4. Write unit tests for checkbox rendering, validation, and button state
 
 ### Task 5: Frontend - Digital Signature and Submission (AC2)
-5.1. On "Signer et continuer" click:
+- [x] 5.1. On "Signer et continuer" click:
   - Show confirmation modal: "En signant, vous attestez solennellement de l'exactitude des informations. Cette declaration est archivee."
   - On confirm, call backend `submitDeclaration` action
   - Show success state: "Declaration signee le [date] a [time]" with checkmark
   - Disable further modification of the declaration (read-only view)
-5.2. After successful declaration, enable the "Publier" / "Payer et publier" action (transition to Story 3.9)
-5.3. Handle submission errors: display clear error message, allow retry
-5.4. Write unit tests for submission flow, confirmation modal, and success state
+- [x] 5.2. After successful declaration, enable the "Publier" / "Payer et publier" action (transition to Story 3.9)
+- [x] 5.3. Handle submission errors: display clear error message, allow retry
+- [x] 5.4. Write unit tests for submission flow, confirmation modal, and success state
 
 ### Task 6: Frontend - Declaration View in Listing Detail (AC3)
-6.1. In the listing detail view (seller dashboard), show declaration status:
+- [x] 6.1. In the listing detail view (seller dashboard), show declaration status:
   - If declared: "Declaration signee le [date]" with view details link
   - If not declared: "Declaration requise avant publication" with CTA
-6.2. In the moderation/admin view, show full declaration details: all checkbox states, timestamp, IP, version
-6.3. Write unit tests for declaration status display in different contexts
+- [x] 6.2. In the moderation/admin view, show full declaration details: all checkbox states, timestamp, IP, version
+- [x] 6.3. Write unit tests for declaration status display in different contexts
 
 ### Task 7: Integration Tests
-7.1. Full flow: complete listing -> access declaration -> check all boxes -> sign -> verify Declaration record in DB with all fields
-7.2. Test immutability: attempt to update/delete a declaration -> verify rejection
-7.3. Test incomplete declaration: uncheck one box -> attempt submission -> verify rejection
-7.4. Test admin view: verify full declaration details accessible to admin role
-7.5. Test buyer view: verify only summary visible, not checkbox details
-7.6. Test template configurability: change active template -> verify new checkboxes appear in form
+- [x] 7.1. Full flow: complete listing -> access declaration -> check all boxes -> sign -> verify Declaration record in DB with all fields
+- [x] 7.2. Test immutability: attempt to update/delete a declaration -> verify rejection
+- [x] 7.3. Test incomplete declaration: uncheck one box -> attempt submission -> verify rejection
+- [x] 7.4. Test admin view: verify full declaration details accessible to admin role
+- [x] 7.5. Test buyer view: verify only summary visible, not checkbox details
+- [x] 7.6. Test template configurability: change active template -> verify new checkboxes appear in form
 
 ## Dev Notes
 
@@ -164,6 +164,47 @@ Frontend: src/components/listing/ (auto-fill-trigger, certified-field, visibilit
 ## Dev Agent Record
 
 ### Agent Model Used
+Claude Opus 4.6
+
 ### Completion Notes List
+- **Task 1 complete**: Declaration and ConfigDeclarationTemplate CDS entities defined in db/schema/declaration.cds. Declaration uses cuid (no managed - immutable, no updatedAt). ConfigDeclarationTemplate uses cuid + managed with unique version constraint. Listing entity extended with declarationId field. Seed data CSV with v1.0 template and 4 attestation points. 19 schema tests.
+- **Task 2 complete**: getDeclarationTemplate action returns active template (404 if none). submitDeclaration validates ownership, draft status, all-checked, captures IP, creates Declaration record, updates listing.declarationId, logs audit. Immutability enforced via before handlers rejecting UPDATE/DELETE on Declarations entity. Fixed existing integration test mocks to include before() method. 19 handler tests.
+- **Task 3 complete**: Admin service exposes Declarations as @readonly projection and ConfigDeclarationTemplates for management. getDeclarationSummary action returns hasDeclared/signedAt/version without exposing checkbox details or IP. 5 additional tests (24 total in handler test file).
+- **Task 4 complete**: Declaration API client (getDeclarationTemplate, submitDeclaration, getDeclarationSummary) with JSON parsing. DeclarationForm component loads template dynamically, renders checkboxes with Radix Checkbox + labels, progress counter, validation, disabled/loading/error states. Accessible with proper label associations and aria attributes. 23 frontend tests (9 API + 14 component).
+- **Task 5 complete**: useDeclarationSubmit hook manages submission state (isSubmitting, isSubmitted, declarationId, signedAt, error) with toast notifications. DeclarationStep component wraps form + confirmation dialog + success state with date/time formatting. 14 tests (7 hook + 7 component).
+- **Task 6 complete**: DeclarationStatus component with seller view (signed date or "required" CTA) and admin view (full details: checkboxes, IP, version, timestamp). 8 tests.
+- **Task 7 complete**: 8 backend integration tests (full flow, immutability x2, incomplete rejection, summary privacy, cross-seller prevention, non-draft rejection, template version). 4 frontend integration tests (complete flow, error-retry-success, no-listingId guard, submit-reset cycle). 367 shared + 904 backend + 922 frontend = **2,193 total tests green**.
+
 ### Change Log
+- 2026-02-24: Task 1 - Declaration and ConfigDeclarationTemplate CDS entities, seed data, 19 tests
+- 2026-02-24: Task 2 - getDeclarationTemplate, submitDeclaration actions, immutability, 19 tests
+- 2026-02-24: Task 3 - Admin declaration access, buyer summary, 5 tests
+- 2026-02-24: Task 4 - Declaration API client, DeclarationForm component, 23 tests
+- 2026-02-24: Task 5 - useDeclarationSubmit hook, DeclarationStep component, 14 tests
+- 2026-02-24: Task 6 - DeclarationStatus component, 8 tests
+- 2026-02-24: Task 7 - Integration tests, 12 tests (8 backend + 4 frontend)
+
 ### File List
+- auto-backend/db/schema/declaration.cds (new - Declaration + ConfigDeclarationTemplate entities)
+- auto-backend/db/schema/listing.cds (modified - added declarationId field)
+- auto-backend/db/schema.cds (modified - added declaration schema import)
+- auto-backend/db/data/auto-ConfigDeclarationTemplate.csv (new - seed data v1.0 template)
+- auto-backend/srv/seller-service.cds (modified - getDeclarationTemplate, submitDeclaration, getDeclarationSummary, Declarations entity)
+- auto-backend/srv/seller-service.ts (modified - declaration handlers + immutability enforcement)
+- auto-backend/srv/admin-service.cds (modified - Declarations readonly + ConfigDeclarationTemplates)
+- auto-backend/test/db/declaration-schema.test.ts (new - 19 tests)
+- auto-backend/test/srv/handlers/seller-declaration.test.ts (new - 24 tests)
+- auto-backend/test/srv/handlers/declaration-integration.test.ts (new - 8 tests)
+- auto-backend/test/srv/handlers/seller-integration.test.ts (modified - added before() to mock)
+- auto-backend/test/srv/handlers/visibility-score-integration.test.ts (modified - added before() to mock)
+- auto-frontend/src/lib/api/declaration-api.ts (new - declaration API client)
+- auto-frontend/src/components/listing/declaration-form.tsx (new - declaration form component)
+- auto-frontend/src/components/listing/declaration-step.tsx (new - declaration step with confirmation modal)
+- auto-frontend/src/components/listing/declaration-status.tsx (new - declaration status display)
+- auto-frontend/src/hooks/use-declaration-submit.ts (new - declaration submission hook)
+- auto-frontend/tests/lib/api/declaration-api.test.ts (new - 9 tests)
+- auto-frontend/tests/components/listing/declaration-form.test.tsx (new - 14 tests)
+- auto-frontend/tests/components/listing/declaration-step.test.tsx (new - 7 tests)
+- auto-frontend/tests/components/listing/declaration-status.test.tsx (new - 8 tests)
+- auto-frontend/tests/hooks/use-declaration-submit.test.ts (new - 7 tests)
+- auto-frontend/tests/integration/declaration-lifecycle.test.ts (new - 4 tests)
