@@ -248,10 +248,18 @@ tr:hover td { background: var(--accent); }
   .frame-body { min-height: auto !important; }
   .frame-url { font-size: 10px; }
 
-  /* Mockup internals: stack sidebars */
-  .frame-body > div[style*="display:flex"][style*="min-height"] { flex-direction: column !important; }
-  .mock-sidebar { width: 100% !important; border-right: none !important; border-bottom: 1px solid var(--border); padding: 12px 0 !important; }
-  .mock-sidebar > div[style*="padding:0 12px"] a, .mock-sidebar a { padding: 6px 16px !important; }
+  /* CORE: stack any .resp-stack flex container to column */
+  .resp-stack { flex-direction: column !important; min-height: auto !important; }
+
+  /* Sidebars: full width horizontal on mobile */
+  .mock-sidebar { width: 100% !important; border-right: none !important; border-bottom: 1px solid var(--border); padding: 8px 0 !important; }
+  .mock-sidebar a { display: inline-flex !important; font-size: 12px !important; }
+
+  /* Visibility score sidebar: full width */
+  .resp-stack > div[style*="width:200px"] { width: 100% !important; border-left: none !important; border-top: 1px solid var(--border); }
+
+  /* Search filters sidebar: full width */
+  .resp-stack > div[style*="width:220px"] { width: 100% !important; border-right: none !important; border-bottom: 1px solid var(--border); }
 
   /* Homepage mockup */
   .mock-hero { padding: 32px 16px; }
@@ -264,52 +272,33 @@ tr:hover td { background: var(--accent); }
   /* Trust bar */
   .trust-bar { flex-direction: column; gap: 8px; align-items: flex-start; padding: 16px; }
 
-  /* Search page: stack filters */
-  .frame-body > div[style*="display:flex"][style*="min-height:400px"] { flex-direction: column !important; }
-  .frame-body > div[style*="display:flex"][style*="min-height:400px"] > div[style*="width:220px"] { width: 100% !important; border-right: none !important; border-bottom: 1px solid var(--border); }
+  /* Listing detail: photo full width */
+  .resp-stack > div[style*="flex:1.2"] { width: 100%; }
 
-  /* Listing detail: stack photo + info */
-  .frame-body div[style*="display:flex;gap:24px"] { flex-direction: column !important; }
-  .frame-body div[style*="display:flex;gap:24px"] > div[style*="flex:1.2"] { width: 100%; }
-
-  /* Listing detail: specs grid 2 cols */
-  .frame-body div[style*="grid-template-columns:1fr 1fr;gap:8px"] { grid-template-columns: 1fr 1fr !important; }
+  /* Listing detail grids: 2 cols */
   .frame-body div[style*="grid-template-columns:repeat(4,1fr)"] { grid-template-columns: repeat(2, 1fr) !important; }
-
-  /* Form: stack form + score sidebar */
-  .frame-body div[style*="display:flex;flex:1;overflow:auto"] { flex-direction: column !important; }
-  .frame-body div[style*="width:200px;border-left"] { width: 100% !important; border-left: none !important; border-top: 1px solid var(--border); }
 
   /* Form grid: single column on mobile */
   .form-grid { grid-template-columns: 1fr !important; padding: 16px; }
   .form-section-nav { padding: 10px 16px; gap: 4px; }
   .form-section-btn { font-size: 11px; padding: 5px 10px; }
 
-  /* Dashboard KPIs */
+  /* Dashboard KPIs & chart+alerts grid */
   .frame-body .grid-3 { grid-template-columns: 1fr !important; }
-
-  /* Chart + alerts: stack */
   .frame-body div[style*="grid-template-columns:1.5fr 1fr"] { grid-template-columns: 1fr !important; }
 
-  /* Drafts grid */
-  .frame-body .grid-3 { grid-template-columns: 1fr !important; }
-
-  /* Nav page: stack mobile frames */
-  div[style*="display:flex;gap:24px;margin-bottom:24px"] { flex-direction: column !important; }
-  div[style*="display:flex;gap:24px;margin-bottom:24px"] .frame { width: 100% !important; }
+  /* Nav page: mobile frames full width */
+  .resp-stack .frame { width: 100% !important; }
 
   /* Footer 4-col → 2-col */
   .frame-body div[style*="grid-template-columns:1.5fr 1fr 1fr 1fr"] { grid-template-columns: 1fr 1fr !important; gap: 16px !important; }
 
-  /* Admin config tabs: scroll */
-  .frame-body div[style*="display:flex;gap:0;overflow-x:auto"] { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-
-  /* Listing cards in search results */
-  .frame-body div[style*="border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;display:flex;background:var(--card)"] { flex-direction: column !important; }
-  .frame-body div[style*="border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;display:flex;background:var(--card)"] > div[style*="width:200px"] { width: 100% !important; height: 160px !important; }
+  /* Search result cards: stack */
+  .listing-result { flex-direction: column !important; }
+  .listing-result > div[style*="width:200px"] { width: 100% !important; height: 160px !important; }
 
   /* Pagination */
-  .frame-body div[style*="margin-top:20px"] { flex-direction: column !important; gap: 12px; align-items: flex-start !important; }
+  .frame-body div[style*="margin-top:20px"] { flex-direction: column !important; gap: 12px; }
   .frame-body div[style*="margin-top:20px"] .flex { flex-wrap: wrap; }
 
   /* Dark mode toggle */
@@ -779,7 +768,7 @@ tr:hover td { background: var(--accent); }
 
   <!-- Mobile Navigation -->
   <h3 style="font-size:14px;font-weight:600;margin-bottom:12px;color:var(--muted-fg);text-transform:uppercase;letter-spacing:1px">Navigation Mobile (responsive)</h3>
-  <div style="display:flex;gap:24px;margin-bottom:24px">
+  <div class="resp-stack" style="display:flex;gap:24px;margin-bottom:24px">
     <!-- Mobile: Public header -->
     <div class="frame" style="width:360px;flex-shrink:0">
       <div class="frame-header">
@@ -940,7 +929,7 @@ tr:hover td { background: var(--accent); }
         <button class="btn btn-primary"><i data-lucide="search" style="width:16px;height:16px"></i> Rechercher</button>
       </div>
       <!-- Content: Filters + Results -->
-      <div style="display:flex;min-height:400px">
+      <div class="resp-stack" style="display:flex;min-height:400px">
         <!-- Filters sidebar -->
         <div style="width:220px;padding:16px;border-right:1px solid var(--border);background:var(--card)">
           <div style="font-size:14px;font-weight:600;margin-bottom:12px">Filtres</div>
@@ -999,7 +988,7 @@ tr:hover td { background: var(--accent); }
           </div>
           <!-- Result cards - list view -->
           <div class="flex flex-col gap-3">
-            <div style="border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;display:flex;background:var(--card)">
+            <div class="listing-result" style="border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;display:flex;background:var(--card)">
               <div style="width:200px;height:130px;background:linear-gradient(135deg, var(--muted) 0%, var(--accent) 100%);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;position:relative">&#128663;<span class="badge badge-certified" style="font-size:9px;position:absolute;top:8px;left:8px"><i data-lucide="shield-check" style="width:10px;height:10px"></i></span></div>
               <div style="flex:1;padding:12px 16px;display:flex;flex-direction:column;justify-content:space-between">
                 <div>
@@ -1015,7 +1004,7 @@ tr:hover td { background: var(--accent); }
                 </div>
               </div>
             </div>
-            <div style="border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;display:flex;background:var(--card)">
+            <div class="listing-result" style="border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;display:flex;background:var(--card)">
               <div style="width:200px;height:130px;background:linear-gradient(135deg, var(--muted) 0%, var(--accent) 100%);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0">&#128663;</div>
               <div style="flex:1;padding:12px 16px;display:flex;flex-direction:column;justify-content:space-between">
                 <div>
@@ -1030,7 +1019,7 @@ tr:hover td { background: var(--accent); }
                 </div>
               </div>
             </div>
-            <div style="border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;display:flex;background:var(--card)">
+            <div class="listing-result" style="border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;display:flex;background:var(--card)">
               <div style="width:200px;height:130px;background:linear-gradient(135deg, var(--muted) 0%, var(--accent) 100%);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;position:relative">&#128663;<span class="badge badge-certified" style="font-size:9px;position:absolute;top:8px;left:8px"><i data-lucide="shield-check" style="width:10px;height:10px"></i></span></div>
               <div style="flex:1;padding:12px 16px;display:flex;flex-direction:column;justify-content:space-between">
                 <div>
@@ -1161,7 +1150,7 @@ tr:hover td { background: var(--accent); }
         </div>
       </div>
       <div style="padding:24px">
-        <div style="display:flex;gap:24px">
+        <div class="resp-stack" style="display:flex;gap:24px">
           <!-- Left: Photos -->
           <div style="flex:1.2">
             <div style="background:linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%);height:300px;border-radius:var(--radius-lg);display:flex;align-items:center;justify-content:center;font-size:48px;margin-bottom:8px;position:relative">
@@ -1269,7 +1258,7 @@ tr:hover td { background: var(--accent); }
       <div class="frame-dot" style="background:#ff5f57"></div><div class="frame-dot" style="background:#ffbd2e"></div><div class="frame-dot" style="background:#27c93f"></div>
       <div class="frame-url">auto-platform.fr/admin</div>
     </div>
-    <div class="frame-body" style="display:flex;min-height:600px">
+    <div class="frame-body resp-stack" style="display:flex;min-height:600px">
       <!-- Sidebar -->
       <div class="mock-sidebar">
         <div class="logo">Auto<span style="color:var(--chart-1)">.</span></div>
@@ -1373,7 +1362,7 @@ tr:hover td { background: var(--accent); }
       <div class="frame-dot" style="background:#ff5f57"></div><div class="frame-dot" style="background:#ffbd2e"></div><div class="frame-dot" style="background:#27c93f"></div>
       <div class="frame-url">auto-platform.fr/seller/listings/new</div>
     </div>
-    <div class="frame-body" style="display:flex;min-height:650px">
+    <div class="frame-body resp-stack" style="display:flex;min-height:650px">
       <div class="mock-sidebar">
         <div class="logo">Auto<span style="color:var(--chart-1)">.</span></div>
         <a><i data-lucide="layout-dashboard" style="width:14px;height:14px"></i> Dashboard</a>
@@ -1391,7 +1380,7 @@ tr:hover td { background: var(--accent); }
           <button class="form-section-btn">Photos</button>
           <button class="form-section-btn">Declaration</button>
         </div>
-        <div style="display:flex;flex:1;overflow:auto">
+        <div class="resp-stack" style="display:flex;flex:1;overflow:auto">
           <!-- Form -->
           <div style="flex:1;overflow:auto">
             <div style="padding:20px 24px;border-bottom:1px solid var(--border)">
@@ -1488,7 +1477,7 @@ tr:hover td { background: var(--accent); }
       <div class="frame-dot" style="background:#ff5f57"></div><div class="frame-dot" style="background:#ffbd2e"></div><div class="frame-dot" style="background:#27c93f"></div>
       <div class="frame-url">auto-platform.fr/seller/drafts</div>
     </div>
-    <div class="frame-body" style="display:flex;min-height:450px">
+    <div class="frame-body resp-stack" style="display:flex;min-height:450px">
       <div class="mock-sidebar">
         <div class="logo">Auto<span style="color:var(--chart-1)">.</span></div>
         <a><i data-lucide="layout-dashboard" style="width:14px;height:14px"></i> Dashboard</a>
