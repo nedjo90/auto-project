@@ -221,114 +221,114 @@ tr:hover td { background: var(--accent); }
   .mock-search { flex-direction: column; }
   .mock-search .input, .mock-search .btn { width: 100%; }
   .trust-bar { flex-wrap: wrap; gap: 16px; }
+  .chart-alerts-grid { grid-template-columns: 1fr !important; }
+  .footer-grid { grid-template-columns: 1fr 1fr !important; gap: 20px !important; }
+  .history-grid { grid-template-columns: repeat(2, 1fr) !important; }
 }
 
 /* Mobile */
-@media (max-width: 768px) {
-  /* Sidebar becomes top bar toggle */
+@media (max-width: 767px) {
+  /* === Design System shell === */
   .sidebar { position: fixed; left: -260px; width: 240px; z-index: 200; transition: left .3s; box-shadow: var(--shadow-lg); }
   .sidebar.open { left: 0; }
-  .main { margin-left: 0; padding: 16px; }
+  .main { margin-left: 0; padding: 52px 16px 16px; }
   .section-title { font-size: 22px; }
-
-  /* Mobile nav toggle button */
   .mobile-nav-toggle { display: flex !important; }
-
-  /* Grids */
-  .grid-2, .grid-3, .grid-4, .grid-6 { grid-template-columns: 1fr; }
-
-  /* Overlay for sidebar */
   .sidebar-overlay { display: block !important; }
   .sidebar-overlay.active { position: fixed; inset: 0; background: rgba(0,0,0,.4); z-index: 150; }
+  .dm-toggle { top: 10px; right: 10px; padding: 6px 10px; font-size: 12px; }
 
-  /* Typography */
-  .type-specimen div:first-child + div { font-size: 22px !important; }
+  /* === Design token grids === */
+  .grid-2, .grid-3, .grid-4, .grid-6 { grid-template-columns: 1fr !important; }
+  .type-specimen div[style*="font-size:32px"] { font-size: 22px !important; }
+  .type-specimen div[style*="font-size:28px"] { font-size: 20px !important; }
 
-  /* Frame mockups */
+  /* === Frame mockups: global === */
   .frame-body { min-height: auto !important; }
-  .frame-url { font-size: 10px; }
+  .frame-url { font-size: 10px; overflow: hidden; text-overflow: ellipsis; }
+  .frame { margin-bottom: 20px; }
 
-  /* CORE: stack any .resp-stack flex container to column */
+  /* === Mock headers in page mockups === */
+  .mock-header { height: auto !important; padding: 10px 12px !important; flex-wrap: wrap !important; gap: 8px !important; }
+  .desktop-links { display: none !important; }
+
+  /* === Sidebar layouts (nav section demos) === */
+  .sidebar-layout { flex-direction: column !important; }
+  .sidebar-panel-nav { width: 100% !important; border-right: none !important; border-bottom: 1px solid var(--border) !important; padding: 8px 12px !important; overflow-x: auto !important; }
+  .sidebar-panel-nav > div[style*="padding:0 12px"] { display: flex !important; flex-wrap: wrap !important; gap: 2px !important; }
+  .sidebar-panel-nav > div[style*="padding:0 12px"] > div[style*="font-size:10px"] { display: none !important; }
+  .sidebar-panel-nav > div[style*="padding:0 12px"] > a { font-size: 11px !important; padding: 6px 8px !important; }
+  .sidebar-panel-nav > div[style*="padding:0 16px"] { font-size: 14px !important; padding: 0 12px 8px !important; margin-bottom: 4px !important; }
+
+  /* === Resp-stack containers === */
   .resp-stack { flex-direction: column !important; min-height: auto !important; }
 
-  /* Sidebars: full width horizontal on mobile */
-  .mock-sidebar { width: 100% !important; border-right: none !important; border-bottom: 1px solid var(--border); padding: 8px 0 !important; }
-  .mock-sidebar a { display: inline-flex !important; font-size: 12px !important; }
+  /* === Mock sidebar (dashboard/form/drafts mockups) === */
+  .mock-sidebar { width: 100% !important; border-right: none !important; border-bottom: 1px solid var(--border) !important; padding: 8px 0 !important; display: flex !important; flex-wrap: wrap !important; overflow-x: auto !important; }
+  .mock-sidebar .logo { border-bottom: none !important; margin-bottom: 0 !important; padding: 0 12px 0 !important; display: flex; align-items: center; }
+  .mock-sidebar a { display: inline-flex !important; font-size: 11px !important; white-space: nowrap !important; padding: 6px 8px !important; }
 
-  /* Visibility score sidebar: full width */
-  .resp-stack > div[style*="width:200px"] { width: 100% !important; border-left: none !important; border-top: 1px solid var(--border); }
+  /* === Mobile demo frame cards === */
+  .mobile-frame-card { width: 100% !important; }
 
-  /* Search filters sidebar: full width */
-  .resp-stack > div[style*="width:220px"] { width: 100% !important; border-right: none !important; border-bottom: 1px solid var(--border); }
-
-  /* Homepage mockup */
-  .mock-hero { padding: 32px 16px; }
-  .mock-hero h1 { font-size: 20px; }
-  .mock-hero p { font-size: 13px; }
-  .mock-section { padding: 16px; }
-  .mock-section .grid-4 { grid-template-columns: repeat(2, 1fr) !important; }
-  .mock-nav { padding: 10px 16px; }
-
-  /* Trust bar */
-  .trust-bar { flex-direction: column; gap: 8px; align-items: flex-start; padding: 16px; }
-
-  /* Listing detail: photo full width */
-  .resp-stack > div[style*="flex:1.2"] { width: 100%; }
-
-  /* Listing detail grids: 2 cols */
-  .frame-body div[style*="grid-template-columns:repeat(4,1fr)"] { grid-template-columns: repeat(2, 1fr) !important; }
-
-  /* Form grid: single column on mobile */
-  .form-grid { grid-template-columns: 1fr !important; padding: 16px; }
-  .form-section-nav { padding: 10px 16px; gap: 4px; }
-  .form-section-btn { font-size: 11px; padding: 5px 10px; }
-
-  /* Dashboard KPIs & chart+alerts grid */
-  .frame-body .grid-3 { grid-template-columns: 1fr !important; }
-  .frame-body div[style*="grid-template-columns:1.5fr 1fr"] { grid-template-columns: 1fr !important; }
-
-  /* Nav page: mobile frames full width */
-  .resp-stack .frame { width: 100% !important; }
-
-  /* Footer 4-col → 2-col */
-  .frame-body div[style*="grid-template-columns:1.5fr 1fr 1fr 1fr"] { grid-template-columns: 1fr 1fr !important; gap: 16px !important; }
-
-  /* Search result cards: stack */
+  /* === Search page === */
+  .search-bar-row { flex-direction: column !important; padding: 12px !important; gap: 8px !important; }
+  .search-bar-row .input { max-width: 100% !important; width: 100% !important; }
+  .filter-panel { width: 100% !important; border-right: none !important; border-bottom: 1px solid var(--border) !important; }
   .listing-result { flex-direction: column !important; }
   .listing-result > div[style*="width:200px"] { width: 100% !important; height: 160px !important; }
+  .pagination-row { flex-direction: column !important; gap: 12px !important; align-items: center !important; }
+  .pagination-row .flex { flex-wrap: wrap !important; justify-content: center !important; }
 
-  /* Pagination */
-  .frame-body div[style*="margin-top:20px"] { flex-direction: column !important; gap: 12px; }
-  .frame-body div[style*="margin-top:20px"] .flex { flex-wrap: wrap; }
+  /* === Homepage === */
+  .mock-hero { padding: 32px 16px !important; }
+  .mock-hero h1 { font-size: 20px !important; }
+  .mock-hero p { font-size: 13px !important; }
+  .mock-section { padding: 16px !important; }
+  .mock-section .grid-4 { grid-template-columns: repeat(2, 1fr) !important; }
+  .mock-nav { padding: 10px 16px !important; flex-wrap: wrap !important; gap: 8px !important; }
+  .trust-bar { flex-direction: column !important; gap: 8px !important; align-items: flex-start !important; padding: 16px !important; }
 
-  /* Dark mode toggle */
-  .dm-toggle { top: 10px; right: 10px; padding: 6px 10px; font-size: 12px; }
+  /* === Listing detail === */
+  .specs-grid { grid-template-columns: 1fr 1fr !important; }
+  .history-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  .seller-card-layout { flex-direction: column !important; text-align: center !important; gap: 12px !important; }
+  .dropdown-preview { padding: 0 12px !important; }
+  .dropdown-preview > div { width: 100% !important; }
+
+  /* === Dashboard === */
+  .chart-alerts-grid { grid-template-columns: 1fr !important; }
+
+  /* === Listing form === */
+  .form-grid { grid-template-columns: 1fr !important; padding: 16px !important; }
+  .form-section-nav { padding: 10px 12px !important; gap: 4px !important; }
+  .form-section-btn { font-size: 11px !important; padding: 5px 10px !important; }
+  .score-panel { width: 100% !important; border-left: none !important; border-top: 1px solid var(--border) !important; }
+  .form-footer-bar { flex-direction: column !important; gap: 8px !important; padding: 12px !important; align-items: stretch !important; }
+  .form-footer-bar .flex { flex-wrap: wrap !important; justify-content: center !important; }
+
+  /* === Footer === */
+  .footer-grid { grid-template-columns: 1fr 1fr !important; gap: 16px !important; }
 }
 
 /* Small mobile */
 @media (max-width: 480px) {
-  .main { padding: 12px; }
-  .section { margin-bottom: 40px; }
-  .section-title { font-size: 20px; }
-  .section-sub { font-size: 13px; }
-
+  .main { padding: 52px 10px 10px; }
+  .section { margin-bottom: 32px; }
+  .section-title { font-size: 18px; }
+  .section-sub { font-size: 12px; }
+  .grid-6 { grid-template-columns: repeat(2, 1fr) !important; }
   .mock-section .grid-4 { grid-template-columns: 1fr !important; }
-  .mock-hero h1 { font-size: 18px; }
-
-  /* Listing detail specs: single col */
-  .frame-body div[style*="grid-template-columns:1fr 1fr;gap:8px"] { grid-template-columns: 1fr !important; }
-
-  /* Footer: single col */
-  .frame-body div[style*="grid-template-columns:1.5fr 1fr 1fr 1fr"] { grid-template-columns: 1fr !important; }
-
-  /* Swatch grids */
-  .grid-6 { grid-template-columns: repeat(2, 1fr); }
-
-  /* Buttons wrap */
-  .flex[style*="flex-wrap:wrap"] { gap: 6px !important; }
-
-  /* Table horizontal scroll */
-  .table-wrap { font-size: 13px; }
+  .mock-hero h1 { font-size: 18px !important; }
+  .specs-grid { grid-template-columns: 1fr !important; }
+  .history-grid { grid-template-columns: 1fr 1fr !important; }
+  .footer-grid { grid-template-columns: 1fr !important; }
+  .mock-header { padding: 8px !important; }
+  .search-bar-row { padding: 10px !important; }
+  .filter-panel { padding: 10px !important; }
+  .table-wrap { font-size: 12px; }
+  .card-header { padding: 14px 16px 0 !important; }
+  .card-content { padding: 12px 16px !important; }
 }
 </style>
 </head>
@@ -622,10 +622,10 @@ tr:hover td { background: var(--accent); }
       <div class="frame-url">auto-platform.fr/</div>
     </div>
     <div class="frame-body" style="min-height:auto">
-      <div style="background:var(--card);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px">
+      <div class="mock-header" style="background:var(--card);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px">
         <div class="flex items-center gap-6">
           <div class="mock-logo" style="font-size:18px">Auto<span>.</span></div>
-          <nav class="flex gap-4" style="font-size:14px">
+          <nav class="flex gap-4 desktop-links" style="font-size:14px">
             <a href="#" style="color:var(--fg);text-decoration:none;font-weight:500">Acheter</a>
             <a href="#" style="color:var(--muted-fg);text-decoration:none">Vendre</a>
             <a href="#" style="color:var(--muted-fg);text-decoration:none">Marques</a>
@@ -648,10 +648,10 @@ tr:hover td { background: var(--accent); }
       <div class="frame-url">auto-platform.fr/search?q=peugeot</div>
     </div>
     <div class="frame-body" style="min-height:auto">
-      <div style="background:var(--card);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px">
+      <div class="mock-header" style="background:var(--card);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px">
         <div class="flex items-center gap-6">
           <div class="mock-logo" style="font-size:18px">Auto<span>.</span></div>
-          <nav class="flex gap-4" style="font-size:14px">
+          <nav class="flex gap-4 desktop-links" style="font-size:14px">
             <a href="#" style="color:var(--fg);text-decoration:none;font-weight:500">Acheter</a>
             <a href="#" style="color:var(--muted-fg);text-decoration:none">Vendre</a>
             <a href="#" style="color:var(--muted-fg);text-decoration:none">Marques</a>
@@ -671,7 +671,7 @@ tr:hover td { background: var(--accent); }
         </div>
       </div>
       <!-- Dropdown preview -->
-      <div style="display:flex;justify-content:flex-end;padding:0 24px">
+      <div class="dropdown-preview" style="display:flex;justify-content:flex-end;padding:0 24px">
         <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);width:200px;padding:4px;margin-top:-1px">
           <a href="#" style="display:flex;align-items:center;gap:8px;padding:8px 12px;font-size:13px;color:var(--fg);text-decoration:none;border-radius:var(--radius-sm)"><i data-lucide="layout-dashboard" style="width:14px;height:14px;color:var(--muted-fg)"></i> Dashboard</a>
           <a href="#" style="display:flex;align-items:center;gap:8px;padding:8px 12px;font-size:13px;color:var(--fg);text-decoration:none;border-radius:var(--radius-sm)"><i data-lucide="file-text" style="width:14px;height:14px;color:var(--muted-fg)"></i> Mes annonces</a>
@@ -691,8 +691,8 @@ tr:hover td { background: var(--accent); }
       <div class="frame-dot" style="background:#ff5f57"></div><div class="frame-dot" style="background:#ffbd2e"></div><div class="frame-dot" style="background:#27c93f"></div>
       <div class="frame-url">auto-platform.fr/admin</div>
     </div>
-    <div class="frame-body" style="display:flex;min-height:auto">
-      <div style="width:220px;background:var(--sidebar-bg);border-right:1px solid var(--sidebar-border);padding:16px 0">
+    <div class="frame-body sidebar-layout" style="display:flex;min-height:auto">
+      <div class="sidebar-panel-nav" style="width:220px;background:var(--sidebar-bg);border-right:1px solid var(--sidebar-border);padding:16px 0">
         <div style="padding:0 16px 12px;font-weight:700;font-size:16px;border-bottom:1px solid var(--border);margin-bottom:8px">Auto<span style="color:var(--chart-1)">.</span> <span style="font-size:11px;font-weight:400;color:var(--muted-fg)">Admin</span></div>
         <div style="padding:0 12px">
           <div style="font-size:10px;font-weight:600;color:var(--muted-fg);text-transform:uppercase;letter-spacing:1px;padding:8px 4px 4px">Principal</div>
@@ -712,7 +712,7 @@ tr:hover td { background: var(--accent); }
       </div>
       <!-- TopBar -->
       <div style="flex:1;display:flex;flex-direction:column">
-        <div style="height:56px;border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;justify-content:space-between;background:var(--card)">
+        <div class="mock-header" style="height:56px;border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;justify-content:space-between;background:var(--card)">
           <h2 style="font-size:16px;font-weight:600">Dashboard</h2>
           <div class="flex items-center gap-3">
             <span style="font-size:12px;color:var(--success)"><i data-lucide="wifi" style="width:12px;height:12px;vertical-align:-2px"></i> Temps reel</span>
@@ -738,8 +738,8 @@ tr:hover td { background: var(--accent); }
       <div class="frame-dot" style="background:#ff5f57"></div><div class="frame-dot" style="background:#ffbd2e"></div><div class="frame-dot" style="background:#27c93f"></div>
       <div class="frame-url">auto-platform.fr/seller</div>
     </div>
-    <div class="frame-body" style="display:flex;min-height:auto">
-      <div style="width:220px;background:var(--sidebar-bg);border-right:1px solid var(--sidebar-border);padding:16px 0">
+    <div class="frame-body sidebar-layout" style="display:flex;min-height:auto">
+      <div class="sidebar-panel-nav" style="width:220px;background:var(--sidebar-bg);border-right:1px solid var(--sidebar-border);padding:16px 0">
         <div style="padding:0 16px 12px;font-weight:700;font-size:16px;border-bottom:1px solid var(--border);margin-bottom:8px">Auto<span style="color:var(--chart-1)">.</span></div>
         <div style="padding:0 12px">
           <a href="#" style="display:flex;align-items:center;gap:8px;padding:8px;font-size:13px;color:var(--fg);text-decoration:none;border-radius:var(--radius-sm);background:var(--accent);font-weight:500"><i data-lucide="layout-dashboard" style="width:15px;height:15px"></i> Dashboard</a>
@@ -752,7 +752,7 @@ tr:hover td { background: var(--accent); }
         </div>
       </div>
       <div style="flex:1;display:flex;flex-direction:column">
-        <div style="height:56px;border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;justify-content:space-between;background:var(--card)">
+        <div class="mock-header" style="height:56px;border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;justify-content:space-between;background:var(--card)">
           <h2 style="font-size:16px;font-weight:600">Espace vendeur</h2>
           <div class="flex items-center gap-2" style="cursor:pointer">
             <div class="avatar" style="width:28px;height:28px;font-size:11px">N</div>
@@ -770,7 +770,7 @@ tr:hover td { background: var(--accent); }
   <h3 style="font-size:14px;font-weight:600;margin-bottom:12px;color:var(--muted-fg);text-transform:uppercase;letter-spacing:1px">Navigation Mobile (responsive)</h3>
   <div class="resp-stack" style="display:flex;gap:24px;margin-bottom:24px">
     <!-- Mobile: Public header -->
-    <div class="frame" style="width:360px;flex-shrink:0">
+    <div class="frame mobile-frame-card" style="width:360px;flex-shrink:0">
       <div class="frame-header">
         <div class="frame-dot" style="background:#ff5f57"></div><div class="frame-dot" style="background:#ffbd2e"></div><div class="frame-dot" style="background:#27c93f"></div>
         <div class="frame-url" style="font-size:10px">mobile</div>
@@ -798,7 +798,7 @@ tr:hover td { background: var(--accent); }
       </div>
     </div>
     <!-- Mobile: Bottom tab bar (dashboard) -->
-    <div class="frame" style="width:360px;flex-shrink:0">
+    <div class="frame mobile-frame-card" style="width:360px;flex-shrink:0">
       <div class="frame-header">
         <div class="frame-dot" style="background:#ff5f57"></div><div class="frame-dot" style="background:#ffbd2e"></div><div class="frame-dot" style="background:#27c93f"></div>
         <div class="frame-url" style="font-size:10px">mobile - dashboard</div>
@@ -874,7 +874,7 @@ tr:hover td { background: var(--accent); }
     </div>
     <div class="frame-body" style="min-height:auto">
       <div style="background:var(--muted);padding:32px 24px;border-top:1px solid var(--border)">
-        <div style="display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:32px;margin-bottom:24px">
+        <div class="footer-grid" style="display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:32px;margin-bottom:24px">
           <div>
             <div class="mock-logo" style="font-size:18px;margin-bottom:8px">Auto<span>.</span></div>
             <p style="font-size:13px;color:var(--muted-fg);line-height:1.5">La plateforme d'annonces auto et moto de confiance. Historiques certifies, paiement securise, conforme RGPD.</p>
@@ -909,10 +909,10 @@ tr:hover td { background: var(--accent); }
     </div>
     <div class="frame-body">
       <!-- Header -->
-      <div style="background:var(--card);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px">
+      <div class="mock-header" style="background:var(--card);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px">
         <div class="flex items-center gap-6">
           <div class="mock-logo" style="font-size:18px">Auto<span>.</span></div>
-          <nav class="flex gap-4" style="font-size:14px">
+          <nav class="flex gap-4 desktop-links" style="font-size:14px">
             <a href="#" style="color:var(--fg);text-decoration:none;font-weight:500">Acheter</a>
             <a href="#" style="color:var(--muted-fg);text-decoration:none">Vendre</a>
             <a href="#" style="color:var(--muted-fg);text-decoration:none">Marques</a>
@@ -923,7 +923,7 @@ tr:hover td { background: var(--accent); }
         </div>
       </div>
       <!-- Search bar -->
-      <div style="background:var(--muted);padding:12px 24px;border-bottom:1px solid var(--border);display:flex;gap:8px">
+      <div class="search-bar-row" style="background:var(--muted);padding:12px 24px;border-bottom:1px solid var(--border);display:flex;gap:8px">
         <input class="input" value="Peugeot" style="max-width:300px" />
         <select class="input select" style="max-width:160px"><option>Paris</option></select>
         <button class="btn btn-primary"><i data-lucide="search" style="width:16px;height:16px"></i> Rechercher</button>
@@ -931,7 +931,7 @@ tr:hover td { background: var(--accent); }
       <!-- Content: Filters + Results -->
       <div class="resp-stack" style="display:flex;min-height:400px">
         <!-- Filters sidebar -->
-        <div style="width:220px;padding:16px;border-right:1px solid var(--border);background:var(--card)">
+        <div class="filter-panel" style="width:220px;padding:16px;border-right:1px solid var(--border);background:var(--card)">
           <div style="font-size:14px;font-weight:600;margin-bottom:12px">Filtres</div>
           <div style="margin-bottom:16px">
             <label class="label" style="font-size:12px">Prix</label>
@@ -1037,7 +1037,7 @@ tr:hover td { background: var(--accent); }
             </div>
           </div>
           <!-- Pagination -->
-          <div class="flex justify-between items-center" style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border)">
+          <div class="flex justify-between items-center pagination-row" style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border)">
             <span style="font-size:13px;color:var(--muted-fg)">Page 1 sur 25</span>
             <div class="flex gap-1">
               <button class="btn btn-outline btn-sm" disabled style="opacity:.4">Precedent</button>
@@ -1172,7 +1172,7 @@ tr:hover td { background: var(--accent); }
             <div style="font-size:28px;font-weight:700;margin-bottom:4px">15 900 &euro;</div>
             <div style="font-size:13px;color:var(--market-below);margin-bottom:20px;font-weight:500"><i data-lucide="trending-down" style="width:14px;height:14px;vertical-align:-2px"></i> 1 200 &euro; sous le prix du marche</div>
 
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px">
+            <div class="specs-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px">
               <div style="padding:10px;background:var(--muted);border-radius:var(--radius-md)">
                 <div style="font-size:11px;color:var(--muted-fg)">Carburant</div>
                 <div style="font-size:14px;font-weight:500">Diesel <span class="badge badge-certified" style="font-size:9px;padding:1px 5px">SIV</span></div>
@@ -1211,7 +1211,7 @@ tr:hover td { background: var(--accent); }
             <span class="badge badge-certified"><i data-lucide="shield-check" style="width:12px;height:12px"></i> Verifie</span>
           </div>
           <div class="card-content">
-            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+            <div class="history-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
               <div style="text-align:center;padding:12px;background:var(--muted);border-radius:var(--radius-md)">
                 <div style="font-size:24px;font-weight:700">2</div>
                 <div style="font-size:12px;color:var(--muted-fg)">Proprietaires</div>
@@ -1234,7 +1234,7 @@ tr:hover td { background: var(--accent); }
 
         <!-- Seller card -->
         <div class="card" style="margin-top:16px">
-          <div class="card-content" style="display:flex;align-items:center;gap:16px">
+          <div class="card-content seller-card-layout" style="display:flex;align-items:center;gap:16px">
             <div class="avatar" style="width:48px;height:48px;font-size:18px">JD</div>
             <div style="flex:1">
               <div style="font-weight:600">Jean Dupont</div>
@@ -1318,7 +1318,7 @@ tr:hover td { background: var(--accent); }
         </div>
 
         <!-- Chart + Alerts -->
-        <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:16px">
+        <div class="chart-alerts-grid" style="display:grid;grid-template-columns:1.5fr 1fr;gap:16px">
           <div class="card">
             <div class="card-header"><div class="card-title">Tendance des visiteurs</div></div>
             <div class="card-content">
@@ -1431,7 +1431,7 @@ tr:hover td { background: var(--accent); }
             </div>
           </div>
           <!-- Score sidebar -->
-          <div style="width:200px;border-left:1px solid var(--border);padding:16px;background:var(--muted)">
+          <div class="score-panel" style="width:200px;border-left:1px solid var(--border);padding:16px;background:var(--muted)">
             <div class="gauge-wrap">
               <svg viewBox="0 0 120 70" style="width:120px">
                 <path d="M 10 65 A 50 50 0 0 1 110 65" fill="none" stroke="var(--border)" stroke-width="8" stroke-linecap="round"/>
@@ -1455,7 +1455,7 @@ tr:hover td { background: var(--accent); }
           </div>
         </div>
         <!-- Sticky footer -->
-        <div style="padding:12px 24px;border-top:1px solid var(--border);background:var(--card);display:flex;justify-content:space-between;align-items:center">
+        <div class="form-footer-bar" style="padding:12px 24px;border-top:1px solid var(--border);background:var(--card);display:flex;justify-content:space-between;align-items:center">
           <span style="font-size:13px;color:var(--muted-fg)">Brouillon sauvegarde &middot; 14:32</span>
           <div class="flex gap-2">
             <button class="btn btn-outline btn-sm">Annuler</button>
