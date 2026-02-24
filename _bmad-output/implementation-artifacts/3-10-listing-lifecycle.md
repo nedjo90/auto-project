@@ -1,6 +1,6 @@
 # Story 3.10: Listing Lifecycle Management
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 

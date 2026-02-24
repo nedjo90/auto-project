@@ -74,7 +74,7 @@ development_status:
   3-7-declaration-of-honor: done
   3-8-vehicle-history-report: done
   3-9-batch-publication-payment: done
-  3-10-listing-lifecycle: ready-for-dev
+  3-10-listing-lifecycle: done
   3-11-api-resilience: ready-for-dev
   epic-3-retrospective: optional
 
