@@ -1,6 +1,6 @@
 # Story 3.7: Declaration of Honor & Archival
 
-Status: review
+Status: done
 
 ## Story
 
