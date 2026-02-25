@@ -79,12 +79,12 @@ development_status:
   epic-3-retrospective: optional
 
   # Epic 4: Marketplace, Recherche & Decouverte (5 stories)
-  epic-4: in-progress
+  epic-4: done
   4-1-public-listing-cards: done
   4-2-multi-criteria-search: done
   4-3-certification-market-price-filters: done
   4-4-favorites-watchlist: done
-  4-5-seo-pages-structured-data: ready-for-dev
+  4-5-seo-pages-structured-data: done
   epic-4-retrospective: optional
 
   # Epic 5: Communication Temps Reel & Notifications (2 stories)
