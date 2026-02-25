@@ -1,6 +1,6 @@
 # Story 4.4: Favorites & Watchlist
 
-Status: ready-for-dev
+Status: review
 
 ## Story
 
@@ -137,6 +137,63 @@ Backend: srv/catalog-service.cds + .ts, srv/favorite-service.cds + .ts, srv/lib/
 ## Dev Agent Record
 
 ### Agent Model Used
+Claude Opus 4.6
+
 ### Completion Notes List
+- [x] Task 1: Backend - Favorite Entity & Service (Favorite + Notification CDS entities, FavoriteService with 7 actions)
+- [x] Task 2: Backend - Change Detection & Highlighting (snapshot comparison in getMyFavorites, markAllAsSeen)
+- [x] Task 3: Backend - Notifications on Price Change & Sold Status (notifyPriceChange, notifySold fan-out)
+- [x] Task 4: Frontend - Favorite Toggle on Cards & Detail (FavoriteButton with optimistic UI, auth redirect)
+- [x] Task 5: Frontend - Favorites Page (change indicators, unfavorite, mark all as seen, empty state)
+- [x] Task 6: Frontend - Notification Display (NotificationBell with polling, NotificationDropdown)
+- All 3050 tests green (433 shared + 1266 backend + 1351 frontend)
+- Favorites page at /favorites (dashboard layout, authenticated)
+- NotificationBell integrated in top-bar header
+- Favorites nav item added to sidebar
+
 ### Change Log
+- auto-shared: 35adfa9 feat(types): add favorite, notification, and change detection types for Story 4-4
+- auto-backend: 78e9cb9 feat(listing): add favorites and notifications service with handlers and tests for Story 4-4
+- auto-frontend: 8277416 feat(listing): add favorites, watchlist, and notification UI for Story 4-4
+
 ### File List
+**auto-shared (new)**
+- src/types/favorite.ts — NotificationType, IFavoriteChanges, IFavorite, IFavoriteEnriched, INotification, IFavoriteToggleResult, IFavoriteCheckResult
+- src/constants/favorite.ts — NOTIFICATION_TYPES, MAX_FAVORITES_PER_USER, FAVORITES_PAGE_SIZE, NOTIFICATIONS_PAGE_SIZE
+
+**auto-shared (modified)**
+- src/types/index.ts — re-export favorite types
+- src/constants/index.ts — re-export favorite constants
+
+**auto-backend (new)**
+- db/schema/favorite.cds — Favorite + Notification CDS entities
+- srv/favorite-service.cds — FavoriteService with 7 actions
+- srv/favorite-service.ts — Service handler registration
+- srv/handlers/favorite-handler.ts — toggleFavorite, checkFavorites, getMyFavorites, markAllAsSeen
+- srv/handlers/notification-handler.ts — getNotifications, markNotificationsRead, getUnreadCount
+- srv/lib/favorite-notifications.ts — notifyPriceChange, notifySold
+- test/srv/handlers/favorite-handler.test.ts — 15 tests
+- test/srv/handlers/notification-handler.test.ts — 11 tests
+- test/srv/lib/favorite-notifications.test.ts — 11 tests
+
+**auto-backend (modified)**
+- db/schema.cds — include favorite schema
+- srv/handlers/lifecycle-handler.ts — notifySold integration
+- srv/seller-service.ts — notifyPriceChange integration
+
+**auto-frontend (new)**
+- src/lib/api/favorites-api.ts — API module for favorites and notifications
+- src/components/listing/favorite-button.tsx — Heart toggle with optimistic UI
+- src/components/favorites/change-indicator.tsx — Price/photos/certification badges
+- src/app/(dashboard)/favorites/page.tsx — Favorites page with change indicators
+- src/components/notifications/notification-bell.tsx — Bell icon with unread badge
+- src/components/notifications/notification-dropdown.tsx — Notification list dropdown
+- tests/components/listing/favorite-button.test.tsx — 9 tests
+- tests/components/favorites/change-indicator.test.tsx — 7 tests
+- tests/components/notifications/notification-bell.test.tsx — 6 tests
+
+**auto-frontend (modified)**
+- src/components/listing/listing-card.tsx — FavoriteButton overlay integration
+- src/app/(public)/listings/[id]/listing-detail-client.tsx — FavoriteButton + favorite state
+- src/components/layout/top-bar.tsx — NotificationBell integration
+- src/components/layout/sidebar.tsx — Favorites nav item
