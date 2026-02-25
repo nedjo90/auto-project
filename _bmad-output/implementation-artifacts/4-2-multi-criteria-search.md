@@ -1,6 +1,6 @@
 # Story 4.2: Multi-Criteria Search & Filters
 
-Status: review
+Status: done
 
 ## Story
 
