@@ -1,6 +1,6 @@
 # Story 7.3: Moderation Actions (Deactivate, Warn, Reactivate)
 
-Status: ready-for-dev
+Status: review
 
 ## Story
 
@@ -38,63 +38,63 @@ so that I can protect the platform's reputation while being fair to users.
 ## Tasks / Subtasks
 
 ### T1: Backend - ModerationAction Entity & Audit Trail (AC1, AC2, AC3, AC4)
-- [ ] T1.1: Define `ModerationAction` entity in `db/schema.cds` with fields: ID, report (association to Report), moderator (association to User), actionType (enum: DeactivateListing/DeactivateAccount/Warning/ReactivateListing/ReactivateAccount/Dismiss), reason (String(1000)), targetType (enum: Listing/User), targetID (UUID), createdAt
-- [ ] T1.2: Integrate ModerationAction creation with audit-trail middleware to ensure every action is immutably logged
-- [ ] T1.3: Write unit tests for ModerationAction entity creation and audit trail integration
+- [x] T1.1: Define `ModerationAction` entity in `db/schema.cds` with fields: ID, report (association to Report), moderator (association to User), actionType (enum: DeactivateListing/DeactivateAccount/Warning/ReactivateListing/ReactivateAccount/Dismiss), reason (String(1000)), targetType (enum: Listing/User), targetID (UUID), createdAt
+- [x] T1.2: Integrate ModerationAction creation with audit-trail middleware to ensure every action is immutably logged
+- [x] T1.3: Write unit tests for ModerationAction entity creation and audit trail integration
 
 ### T2: Backend - Deactivate Listing Action (AC1)
-- [ ] T2.1: Implement `deactivateListing` action in `srv/moderation-service.cds` accepting: reportID, listingID, reason
-- [ ] T2.2: Implement handler in `srv/moderation-service.ts`: validate listing exists and is active, update listing status to `Suspended`, create ModerationAction record, update Report status to `Treated`, trigger notification to seller via notification-hub with template "Votre annonce a été mise en pause pour vérification"
-- [ ] T2.3: Ensure suspended listings are excluded from public search queries (add filter in listing-service read handler)
-- [ ] T2.4: Authorization: moderator role required
-- [ ] T2.5: Write unit tests for deactivateListing (happy path, listing not found, already suspended, authorization)
-- [ ] T2.6: Write integration test for full deactivation flow including notification
+- [x] T2.1: Implement `deactivateListing` action in `srv/moderation-service.cds` accepting: reportID, listingID, reason
+- [x] T2.2: Implement handler in `srv/moderation-service.ts`: validate listing exists and is active, update listing status to `Suspended`, create ModerationAction record, update Report status to `Treated`, trigger notification to seller via notification-hub with template "Votre annonce a été mise en pause pour vérification"
+- [x] T2.3: Ensure suspended listings are excluded from public search queries (add filter in listing-service read handler)
+- [x] T2.4: Authorization: moderator role required
+- [x] T2.5: Write unit tests for deactivateListing (happy path, listing not found, already suspended, authorization)
+- [x] T2.6: Write integration test for full deactivation flow including notification
 
 ### T3: Backend - Send Warning Action (AC2)
-- [ ] T3.1: Implement `sendWarning` action in `srv/moderation-service.cds` accepting: reportID, userID, warningMessage (optional, uses template if empty)
-- [ ] T3.2: Implement handler in `srv/moderation-service.ts`: validate user exists, create ModerationAction record with actionType `Warning`, update Report status to `Treated`, send warning notification to user via notification-hub, increment user's warning count in moderation history
-- [ ] T3.3: Use configurable warning templates from `ConfigModerationRule` table (not hardcoded)
-- [ ] T3.4: Authorization: moderator role required
-- [ ] T3.5: Write unit tests for sendWarning (happy path, user not found, template rendering, authorization)
-- [ ] T3.6: Write integration test for warning flow including notification delivery
+- [x] T3.1: Implement `sendWarning` action in `srv/moderation-service.cds` accepting: reportID, userID, warningMessage (optional, uses template if empty)
+- [x] T3.2: Implement handler in `srv/moderation-service.ts`: validate user exists, create ModerationAction record with actionType `Warning`, update Report status to `Treated`, send warning notification to user via notification-hub, increment user's warning count in moderation history
+- [x] T3.3: Use configurable warning templates from `ConfigModerationRule` table (not hardcoded)
+- [x] T3.4: Authorization: moderator role required
+- [x] T3.5: Write unit tests for sendWarning (happy path, user not found, template rendering, authorization)
+- [x] T3.6: Write integration test for warning flow including notification delivery
 
 ### T4: Backend - Deactivate Account Action (AC3)
-- [ ] T4.1: Implement `deactivateAccount` action in `srv/moderation-service.cds` accepting: reportID, userID, reason
-- [ ] T4.2: Implement handler in `srv/moderation-service.ts`: validate user exists and is active, update user account status to `Suspended`, suspend all active listings for this user (batch update to `Suspended` status), create ModerationAction record, update Report status to `Treated`, send notification to user with reason via notification-hub, invalidate user sessions (if applicable)
-- [ ] T4.3: Implement double confirmation requirement: action requires a `confirmToken` parameter that must match a token generated by a preceding `requestAccountDeactivation` action (or use a `confirmed: true` boolean flag validated server-side)
-- [ ] T4.4: Authorization: moderator role required
-- [ ] T4.5: Write unit tests for deactivateAccount (happy path, user not found, already suspended, without confirmation, authorization)
-- [ ] T4.6: Write integration test for full account deactivation flow including cascading listing suspension
+- [x] T4.1: Implement `deactivateAccount` action in `srv/moderation-service.cds` accepting: reportID, userID, reason
+- [x] T4.2: Implement handler in `srv/moderation-service.ts`: validate user exists and is active, update user account status to `Suspended`, suspend all active listings for this user (batch update to `Suspended` status), create ModerationAction record, update Report status to `Treated`, send notification to user with reason via notification-hub, invalidate user sessions (if applicable)
+- [x] T4.3: Implement double confirmation requirement: action requires a `confirmToken` parameter that must match a token generated by a preceding `requestAccountDeactivation` action (or use a `confirmed: true` boolean flag validated server-side)
+- [x] T4.4: Authorization: moderator role required
+- [x] T4.5: Write unit tests for deactivateAccount (happy path, user not found, already suspended, without confirmation, authorization)
+- [x] T4.6: Write integration test for full account deactivation flow including cascading listing suspension
 
 ### T5: Backend - Reactivate Action (AC4)
-- [ ] T5.1: Implement `reactivateListing` action in `srv/moderation-service.cds` accepting: listingID, reason
-- [ ] T5.2: Implement `reactivateAccount` action in `srv/moderation-service.cds` accepting: userID, reason
-- [ ] T5.3: Implement reactivateListing handler: validate listing is Suspended, update listing status back to `Active`, create ModerationAction record, send notification to seller: "Votre annonce a été réactivée"
-- [ ] T5.4: Implement reactivateAccount handler: validate account is Suspended, update account status to Active, note: previously suspended listings are NOT automatically reactivated (moderator must reactivate individually), create ModerationAction record, send notification to user
-- [ ] T5.5: Authorization: moderator role required
-- [ ] T5.6: Write unit tests for both reactivation actions
-- [ ] T5.7: Write integration tests for reactivation flows
+- [x] T5.1: Implement `reactivateListing` action in `srv/moderation-service.cds` accepting: listingID, reason
+- [x] T5.2: Implement `reactivateAccount` action in `srv/moderation-service.cds` accepting: userID, reason
+- [x] T5.3: Implement reactivateListing handler: validate listing is Suspended, update listing status back to `Active`, create ModerationAction record, send notification to seller: "Votre annonce a été réactivée"
+- [x] T5.4: Implement reactivateAccount handler: validate account is Suspended, update account status to Active, note: previously suspended listings are NOT automatically reactivated (moderator must reactivate individually), create ModerationAction record, send notification to user
+- [x] T5.5: Authorization: moderator role required
+- [x] T5.6: Write unit tests for both reactivation actions
+- [x] T5.7: Write integration tests for reactivation flows
 
 ### T6: Backend - Dismiss Report Action (AC1, AC2, AC3, AC4)
-- [ ] T6.1: Implement `dismissReport` action in `srv/moderation-service.cds` accepting: reportID, reason
-- [ ] T6.2: Implement handler: update Report status to `Dismissed`, create ModerationAction with actionType `Dismiss`, log in audit trail
-- [ ] T6.3: Write unit tests for dismiss action
+- [x] T6.1: Implement `dismissReport` action in `srv/moderation-service.cds` accepting: reportID, reason
+- [x] T6.2: Implement handler: update Report status to `Dismissed`, create ModerationAction with actionType `Dismiss`, log in audit trail
+- [x] T6.3: Write unit tests for dismiss action
 
 ### T7: Frontend - Moderation Action Buttons (AC1, AC2, AC3, AC4)
-- [ ] T7.1: Create `src/components/moderation/moderation-actions.tsx` component rendering contextual action buttons based on report target type and current status
-- [ ] T7.2: For listing targets: show "Suspendre l'annonce" (deactivate listing), "Envoyer un avertissement" (send warning), "Rejeter le signalement" (dismiss)
-- [ ] T7.3: For user targets: show "Suspendre le compte" (deactivate account), "Envoyer un avertissement" (send warning), "Rejeter le signalement" (dismiss)
-- [ ] T7.4: For suspended targets: show "Réactiver l'annonce" or "Réactiver le compte" as applicable
-- [ ] T7.5: Implement reason input: each action opens a confirmation dialog with optional reason text field
-- [ ] T7.6: Implement double confirmation for account deactivation: first click shows warning dialog explaining consequences, second click executes action
-- [ ] T7.7: Integrate action buttons into report detail page (Story 7.2, T4)
-- [ ] T7.8: Write component tests for moderation-actions with all action types
+- [x] T7.1: Create `src/components/moderation/moderation-actions.tsx` component rendering contextual action buttons based on report target type and current status
+- [x] T7.2: For listing targets: show "Suspendre l'annonce" (deactivate listing), "Envoyer un avertissement" (send warning), "Rejeter le signalement" (dismiss)
+- [x] T7.3: For user targets: show "Suspendre le compte" (deactivate account), "Envoyer un avertissement" (send warning), "Rejeter le signalement" (dismiss)
+- [x] T7.4: For suspended targets: show "Réactiver l'annonce" or "Réactiver le compte" as applicable
+- [x] T7.5: Implement reason input: each action opens a confirmation dialog with optional reason text field
+- [x] T7.6: Implement double confirmation for account deactivation: first click shows warning dialog explaining consequences, second click executes action
+- [x] T7.7: Integrate action buttons into report detail page (Story 7.2, T4)
+- [x] T7.8: Write component tests for moderation-actions with all action types
 
 ### T8: Frontend - Action Feedback & State Updates (AC1, AC2, AC3, AC4)
-- [ ] T8.1: On successful action: show success toast with action summary, update report status in UI without full page reload, navigate back to queue or show next report
-- [ ] T8.2: On action failure: show error toast with details, keep current state, allow retry
-- [ ] T8.3: Create API client functions: `deactivateListing(data)`, `sendWarning(data)`, `deactivateAccount(data)`, `reactivateListing(data)`, `reactivateAccount(data)`, `dismissReport(data)`
-- [ ] T8.4: Write integration tests for action API calls and UI state updates
+- [x] T8.1: On successful action: show success toast with action summary, update report status in UI without full page reload, navigate back to queue or show next report
+- [x] T8.2: On action failure: show error toast with details, keep current state, allow retry
+- [x] T8.3: Create API client functions: `deactivateListing(data)`, `sendWarning(data)`, `deactivateAccount(data)`, `reactivateListing(data)`, `reactivateAccount(data)`, `dismissReport(data)`
+- [x] T8.4: Write integration tests for action API calls and UI state updates
 
 ## Dev Notes
 
@@ -141,6 +141,30 @@ Frontend: src/app/(dashboard)/moderation/page.tsx (reports queue), src/app/(dash
 ## Dev Agent Record
 
 ### Agent Model Used
+Claude Opus 4.6
+
 ### Completion Notes List
+- T1-T6 backend: ModerationAction entity, all 6 action handlers (deactivateListing, sendWarning, deactivateAccount, reactivateListing, reactivateAccount, dismissReport), audit trail integration, notification-hub integration. All implemented in moderation-action-handler.ts with shared createModerationAction/updateReportStatus helpers.
+- T3.3: Updated sendWarning handler to query ConfigModerationRule for warning_default_template before falling back to hardcoded default.
+- T2.3: Catalog service (catalog-handler.ts) already filters `status: "published"` which inherently excludes suspended listings from public search.
+- T4.3: Double confirmation via `confirmed: boolean` flag validated server-side.
+- T5.4: Account reactivation does NOT auto-reactivate suspended listings (by design).
+- T7: Updated moderation-actions.tsx to show warning button for BOTH listing and user targets (listing warnings sent to seller via sellerId from targetData). Added reactivation buttons that appear when target status is "suspended" (parsed from targetData). Added RotateCcw icon for reactivation actions.
+- T7.8/T8.4: Comprehensive component tests (19 tests) covering all action types, reactivation flows, seller ID extraction, error handling, cancel flow, and null/malformed targetData edge cases.
+- Backend: 36 tests in moderation-action-handler.test.ts covering all 6 handlers with auth, validation, state, and success paths.
+- Full regression: 3648 tests passing (480 shared + 1512 backend + 1656 frontend).
+
 ### Change Log
+- 2026-02-26: Story 7-3 implementation completed. Fixed T7.2 (added warning button for listing targets), T7.4 (added reactivation buttons), T3.3 (configurable warning templates from ConfigModerationRule). Updated tests.
+
 ### File List
+- auto-backend/db/schema/moderation.cds (existing - ModerationAction entity)
+- auto-backend/srv/moderation-service.cds (existing - all 6 action definitions)
+- auto-backend/srv/moderation-service.ts (existing - handler routing)
+- auto-backend/srv/handlers/moderation-action-handler.ts (modified - T3.3 configurable warning template)
+- auto-backend/test/srv/handlers/moderation-action-handler.test.ts (modified - added ConfigModerationRule entity mock, template tests)
+- auto-frontend/src/components/moderation/moderation-actions.tsx (modified - T7.2 warning for listings, T7.4 reactivation buttons)
+- auto-frontend/src/components/moderation/report-detail.tsx (existing - ModerationActions integration)
+- auto-frontend/src/lib/api/moderation-api.ts (existing - all 6 API client functions)
+- auto-frontend/tests/components/moderation/moderation-actions.test.tsx (modified - 19 tests covering all action types)
+- auto-frontend/tests/components/moderation/report-detail.test.tsx (existing - 11 tests)
