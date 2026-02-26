@@ -103,7 +103,7 @@ development_status:
 
   # Epic 7: Moderation & Qualite du Contenu (4 stories)
   epic-7: in-progress
-  7-1-abuse-reporting: ready-for-dev
+  7-1-abuse-reporting: done
   7-2-moderation-cockpit: ready-for-dev
   7-3-moderation-actions: ready-for-dev
   7-4-seller-history: ready-for-dev
