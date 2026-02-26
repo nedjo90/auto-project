@@ -1,6 +1,6 @@
 # Story 7.3: Moderation Actions (Deactivate, Warn, Reactivate)
 
-Status: review
+Status: done
 
 ## Story
 
