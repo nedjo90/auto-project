@@ -102,9 +102,9 @@ development_status:
   epic-6-retrospective: optional
 
   # Epic 7: Moderation & Qualite du Contenu (4 stories)
-  epic-7: in-progress
+  epic-7: done
   7-1-abuse-reporting: done
   7-2-moderation-cockpit: done
   7-3-moderation-actions: done
-  7-4-seller-history: ready-for-dev
+  7-4-seller-history: done
   epic-7-retrospective: optional
