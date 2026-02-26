@@ -1,6 +1,6 @@
 # Story 8.1: Realistic Seed Data for Dev Experience
 
-Status: review
+Status: done
 
 ## Story
 
@@ -170,6 +170,13 @@ so that I can test all user journeys without manually creating content through t
 - 53 listing photos, 14 declarations, 38 certified field records, 11 listing analytics
 - All existing tests pass (1535 backend, 480 shared, 1683+ frontend)
 
+### Code Review Findings & Fixes
+**H1 FIXED**: Missing `publishedAt` timestamps — added publishedAt for all non-draft listings (staggered Jan-Feb 2026)
+**M1 FIXED**: Missing `soldAt` timestamps — added soldAt for sold listings L9 (2026-01-10) and L10 (2026-02-05)
+**M2 NOTED**: Conv1 also has unread message (msg5, deliveryStatus=delivered) for seller1 — actually beneficial, provides two unread conversations for richer test coverage
+**L1-L3 ACCEPTED**: recallCount=0 for non-certified (no adapter data), missing detail fields on non-certified (intentional partial docs), avatarUrl present on all users
+Post-fix validation: cds deploy succeeds, 1518 backend + 480 shared + 1682 frontend tests pass
+
 ## File List
 
 ### New Files
@@ -190,3 +197,4 @@ so that I can test all user journeys without manually creating content through t
 
 ## Change Log
 - 2026-02-26: Story 8-1 implemented — 14 seed CSV files created covering all ACs
+- 2026-02-26: Code review — fixed H1 (publishedAt) and M1 (soldAt) in Listing CSV
