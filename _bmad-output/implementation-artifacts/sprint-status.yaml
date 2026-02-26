@@ -88,17 +88,17 @@ development_status:
   epic-4-retrospective: optional
 
   # Epic 5: Communication Temps Reel & Notifications (2 stories)
-  epic-5: in-progress
-  5-1-realtime-chat: ready-for-dev
-  5-2-notifications-push: ready-for-dev
+  epic-5: done
+  5-1-realtime-chat: done
+  5-2-notifications-push: done
   epic-5-retrospective: optional
 
   # Epic 6: Cockpit Vendeur & Intelligence Marche (4 stories)
-  epic-6: in-progress
-  6-1-seller-dashboard-kpis: ready-for-dev
-  6-2-market-price-positioning: ready-for-dev
-  6-3-market-watch: ready-for-dev
-  6-4-empty-state-onboarding: ready-for-dev
+  epic-6: done
+  6-1-seller-dashboard-kpis: done
+  6-2-market-price-positioning: done
+  6-3-market-watch: done
+  6-4-empty-state-onboarding: done
   epic-6-retrospective: optional
 
   # Epic 7: Moderation & Qualite du Contenu (4 stories)
