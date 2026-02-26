@@ -258,8 +258,8 @@ One per published/sold/draft/suspended listing. All v1.0 with 4 checkboxes check
 
 ## 5. Seller Journey
 
-*Persona: seller1@test.com (Marie Dupont) — 7 listings (4 published, 2 sold, 1 expired)*
-*Secondary: seller2@test.com (Pierre Martin) — 8 listings (5 published, 1 sold, 1 expired, 1 draft)*
+*Persona: seller1@test.com (Marie Dupont) — 7 listings (5 published, 1 sold, 1 expired)*
+*Secondary: seller2@test.com (Pierre Martin) — 8 listings (4 published, 1 sold, 1 expired, 1 draft, 1 suspended)*
 
 ### 5.1 Dashboard & Cockpit
 
@@ -676,12 +676,12 @@ One per published/sold/draft/suspended listing. All v1.0 with 4 checkboxes check
 
 | Persona | Test Cases | P0 | P1 | P2 |
 |---------|-----------|----|----|----|
-| Anonymous Visitor | 42 (V-01 to V-42) | 10 | 18 | 14 |
-| Buyer | 39 (B-01 to B-39) | 8 | 19 | 12 |
-| Seller | 38 (S-01 to S-38) | 12 | 17 | 9 |
-| Moderator | 19 (M-01 to M-19) | 5 | 9 | 5 |
-| Admin | 41 (A-01 to A-41) | 5 | 25 | 11 |
-| **Total unique test cases** | **179** | **40** | **88** | **51** |
+| Anonymous Visitor | 42 (V-01 to V-42) | 10 | 19 | 13 |
+| Buyer | 39 (B-01 to B-39) | 9 | 21 | 9 |
+| Seller | 38 (S-01 to S-38) | 16 | 14 | 8 |
+| Moderator | 19 (M-01 to M-19) | 7 | 9 | 3 |
+| Admin | 41 (A-01 to A-41) | 7 | 25 | 9 |
+| **Total unique test cases** | **179** | **49** | **88** | **42** |
 
 ### Error Scenario Coverage
 
