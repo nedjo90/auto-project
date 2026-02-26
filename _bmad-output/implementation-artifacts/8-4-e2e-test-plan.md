@@ -1,6 +1,6 @@
 # Story 8.4: E2E Test Plan — Complete User Journeys
 
-Status: review
+Status: done
 
 ## Story
 
