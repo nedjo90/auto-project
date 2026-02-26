@@ -112,7 +112,7 @@ development_status:
   # Epic 8: Completude Site & Experience Dev (4 stories)
   epic-8: in-progress
   8-1-seed-data: done
-  8-2-homepage-landing: ready-for-dev
+  8-2-homepage-landing: in-progress
   8-3-public-navigation: ready-for-dev
   8-4-e2e-test-plan: ready-for-dev
   epic-8-retrospective: optional
