@@ -1,6 +1,6 @@
 # Story 8.2: Homepage & Landing Page
 
-Status: review
+Status: done
 
 ## Story
 
